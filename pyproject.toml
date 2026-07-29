@@ -1,0 +1,19 @@
+[project]
+name = "release-radar"
+version = "0.1.0"
+description = "Jira hygiene and release-lifecycle rule engine for RHOAI"
+requires-python = ">=3.11"
+dependencies = [
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+]
+
+[project.scripts]
+release-radar = "engine.run:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

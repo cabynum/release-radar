@@ -1,0 +1,32 @@
+id: stale-backlog-with-tv
+name: Stale Backlog with Target Version
+description: >
+  Features in New or Backlog for 60+ days with Target Version set are
+  likely stale commitments. Either start refinement, remove the Target
+  Version, or push to a later release.
+
+applies_to: [Feature]
+
+condition:
+  status: [New, Backlog]
+  days_in_status: 60
+  field_set: target_version
+
+action:
+  type: alert
+  message: >
+    Feature {key} has been in {status} for {days} days with Target
+    Version = {target_version}. Start refinement, remove TV, or push
+    to later release.
+  recipients: [assignee, product_manager]
+
+scope: team
+verification: deterministic
+enforcement: flag
+severity: medium
+
+sources:
+  - id: SOURCE-12
+    excerpt: "Feature in New/Backlog for more than 60 days with Target Version set"
+
+date_added: 2026-07-28

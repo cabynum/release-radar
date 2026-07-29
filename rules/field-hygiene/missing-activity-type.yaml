@@ -1,0 +1,33 @@
+id: missing-activity-type
+name: Missing Activity Type
+description: >
+  Team-level issues must have Activity Type set for 40/40/20 allocation
+  tracking. Auto-classifier handles most cases; this rule catches misses.
+
+applies_to: [Story, Task, Bug, Spike, CVE]
+
+condition:
+  status_category: "In Progress"
+  field_empty: activity_type
+  updated_before_days: 7
+
+action:
+  type: alert
+  message: >
+    {key} has no Activity Type after 7 days. Auto-classifier may have
+    missed it. Set to: New Features, Tech Debt & Quality, or Learning
+    & Enablement.
+  recipients: [assignee]
+
+scope: org
+verification: deterministic
+enforcement: comment
+severity: low
+
+sources:
+  - id: SOURCE-10
+    excerpt: "Implementation of Engineering Work Classification & Allocation Guidance (40/40/20)"
+  - id: SOURCE-148
+    excerpt: "Activity Type auto-classification has been launched using an AI-powered classifier"
+
+date_added: 2026-07-28

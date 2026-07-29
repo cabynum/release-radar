@@ -1,0 +1,36 @@
+id: feature-freeze-enforcement
+name: Feature Freeze Enforcement
+description: >
+  At Feature Freeze, any Feature with Fix Version matching current
+  release that is still in In Progress or earlier will have Fix Version
+  removed. Release Exception required to restore.
+
+applies_to: [Feature]
+
+trigger:
+  milestone: feature_freeze
+  days_after: 0
+
+condition:
+  status: [Refinement, To Do, In Progress]
+  field_set: fix_version
+  fix_version_matches_release: true
+
+action:
+  type: alert
+  message: >
+    Feature {key} is incomplete ({status}) at Feature Freeze. Fix
+    Version will be removed. Release Exception required to restore.
+  recipients: [assignee, manager, product_manager]
+
+release_phase: feature-freeze
+scope: org
+verification: deterministic
+enforcement: alert
+severity: critical
+
+sources:
+  - id: SOURCE-102
+    excerpt: "Incomplete features (dev/coding work) removed or pushed to next release"
+
+date_added: 2026-07-28

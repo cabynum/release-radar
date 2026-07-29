@@ -1,0 +1,35 @@
+id: stale-status-summary
+name: Stale or Missing Status Summary
+description: >
+  Active issues must have a Status Summary updated at least weekly.
+  Format: COLOR as of DATE. Current state. Next step or blocker.
+
+applies_to: [Story, Task, Bug, Spike, Epic, Feature]
+
+condition:
+  status: [In Progress, Review, Testing]
+  any_of:
+    - field_empty: status_summary
+    - field_stale_days:
+        field: status_summary
+        threshold: 7
+
+action:
+  type: alert
+  message: >
+    {key} has no Status Summary or it hasn't been updated in 7+ days.
+    Update with: COLOR as of DATE. Current state. Next step.
+  recipients: [assignee]
+
+scope: org
+verification: deterministic
+enforcement: comment
+severity: medium
+
+sources:
+  - id: SOURCE-01
+    excerpt: "Issue in active status for more than 7 days with no Status Summary, OR not updated in more than 7 days"
+  - id: SOURCE-07
+    excerpt: "Status Summary: updated weekly on active Features. Color word matches Color Status field."
+
+date_added: 2026-07-28

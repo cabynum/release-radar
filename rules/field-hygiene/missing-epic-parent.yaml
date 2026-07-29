@@ -1,0 +1,29 @@
+id: missing-epic-parent
+name: Missing Epic Parent Link (Story/Task/Spike)
+description: >
+  Stories, Tasks, and Spikes must link to a parent Epic via Epic Link.
+  Orphaned work items break hierarchy tracking and rollup reporting.
+
+applies_to: [Story, Task, Spike]
+
+condition:
+  status: [In Progress, Review, Testing]
+  field_empty: epic_link
+
+action:
+  type: alert
+  message: >
+    {key} has no Epic Link. Link to the parent Epic for hierarchy
+    tracking.
+  recipients: [assignee]
+
+scope: org
+verification: deterministic
+enforcement: comment
+severity: medium
+
+sources:
+  - id: SOURCE-14
+    excerpt: "Issue hierarchy requires Stories/Tasks/Spikes link to an Epic"
+
+date_added: 2026-07-28

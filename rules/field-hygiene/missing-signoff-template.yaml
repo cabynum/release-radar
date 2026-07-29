@@ -1,0 +1,33 @@
+id: missing-signoff-template
+name: Feature Signoff Template Missing
+description: >
+  Delivery Owners must include the appropriate Jira signoff template
+  (DP/TP/GA) immediately when creating a feature. PM and UX sign-off
+  is required before code freeze.
+
+applies_to: [Feature]
+
+condition:
+  field_set: release_type
+  status: [In Progress, Review]
+  no_linked_signoff_template: true
+
+action:
+  type: alert
+  message: >
+    Feature {key} has Release Type = {release_type} but no linked
+    signoff template. Add the appropriate template: Dev Preview
+    (RHOAIENG-31244), Tech Preview (RHOAIENG-31290), or GA
+    (RHOAIENG-31303).
+  recipients: [assignee]
+
+scope: org
+verification: heuristic
+enforcement: comment
+severity: medium
+
+sources:
+  - id: SOURCE-149
+    excerpt: "Delivery Owners must include the appropriate Jira template immediately when creating the feature"
+
+date_added: 2026-07-28

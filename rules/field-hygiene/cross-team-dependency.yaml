@@ -1,0 +1,36 @@
+id: cross-team-dependency
+name: Cross-Team Dependency in Bad State
+description: >
+  When your issue is blocked by another team's issue, and that blocker
+  is in Backlog, New, or has no assignee, your work is at risk. Surface
+  these early.
+
+applies_to: [Feature, Epic, Story, Task]
+
+condition:
+  has_outward_link: "is blocked by"
+  linked_issue:
+    status_category_not: Done
+    any_of:
+      - status: [New, Backlog]
+      - field_empty: assignee
+
+action:
+  type: alert
+  message: >
+    {key} is blocked by {linked_key} which is in {linked_status}
+    {linked_assignee_note}. Cross-team dependency at risk.
+  recipients: [assignee, manager]
+
+scope: org
+verification: deterministic
+enforcement: flag
+severity: high
+
+sources:
+  - id: SOURCE-05
+    excerpt: "Jira agent config checks linked issues in other teams for bad state"
+  - id: SOURCE-12
+    excerpt: "Cross-field validations include dependency state checks"
+
+date_added: 2026-07-28

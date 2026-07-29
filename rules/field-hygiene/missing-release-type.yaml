@@ -1,0 +1,32 @@
+id: missing-release-type
+name: Missing Release Type on Feature
+description: >
+  Features must have Release Type set (GA, Tech Preview, Dev Preview).
+  Release Type determines documentation requirements, signoff templates,
+  and support obligations. Required by QG1.
+
+applies_to: [Feature]
+
+condition:
+  status_category: ["In Progress", "To Do"]
+  field_empty: release_type
+
+action:
+  type: alert
+  message: >
+    Feature {key} has no Release Type. Set to GA, Tech Preview, or Dev
+    Preview. Required for QG1 and determines signoff requirements.
+  recipients: [assignee, product_manager]
+
+scope: org
+verification: deterministic
+enforcement: comment
+severity: high
+
+sources:
+  - id: SOURCE-144
+    excerpt: "Mandatory Jira Fields: Product Manager, Assignee, Release Type, Target Version, Product, and Components"
+  - id: SOURCE-133
+    excerpt: "Release stage = support contract; API tier = compatibility guarantee. Default to GA."
+
+date_added: 2026-07-28

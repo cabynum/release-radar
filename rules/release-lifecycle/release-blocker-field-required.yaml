@@ -1,0 +1,41 @@
+id: release-blocker-field-required
+name: Release Blocker Field Required for Post-Freeze Changes
+description: >
+  Any issue modified after Code Freeze with Fix Version matching the
+  current release must have the Release Blocker field set (Proposed or
+  Approved). Empty Release Blocker after freeze = process violation.
+
+applies_to: [Feature, Epic, Story, Task, Bug]
+
+trigger:
+  milestone: code_freeze
+  days_after: 0
+
+condition:
+  field_set: fix_version
+  fix_version_matches_release: true
+  status_changed_after: code_freeze_date
+  field_empty: release_blocker
+
+action:
+  type: alert
+  message: >
+    {key} was modified after Code Freeze without Release Blocker field
+    set. Must be Proposed (awaiting review) or Approved (exception
+    granted). Populate Affected Version + Fix Version and add risk
+    assessment.
+  recipients: [assignee, manager]
+
+release_phase: post-code-freeze
+scope: org
+verification: deterministic
+enforcement: alert
+severity: high
+
+sources:
+  - id: SOURCE-85
+    excerpt: "Set Release Blocker field to Proposed, populate Affected/Fix Version, complete risk assessment"
+  - id: SOURCE-145
+    excerpt: "Release Blocker field was not populated, suggesting the process was not followed consistently"
+
+date_added: 2026-07-28

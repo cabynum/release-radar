@@ -1,0 +1,33 @@
+id: missing-refinement-doc
+name: Missing Feature Refinement Document
+description: >
+  Features in RHAISTRAT should have a Feature Refinement Google Doc in
+  the DP verification Drive folder. Presence satisfies the check;
+  content completeness is not evaluated.
+
+applies_to: [Feature]
+
+condition:
+  project: RHAISTRAT
+  status: [In Progress, Review]
+  no_refinement_doc_in_drive: true
+
+action:
+  type: alert
+  message: >
+    Feature {key} has no Refinement Doc in the DP Drive folder. Create
+    one using the Feature Refinement Template.
+  recipients: [assignee]
+
+scope: team
+verification: heuristic
+enforcement: flag
+severity: medium
+
+sources:
+  - id: SOURCE-08
+    excerpt: "Feature Refinement process (Confluence)"
+  - id: SOURCE-09
+    excerpt: "Feature Refinement Template"
+
+date_added: 2026-07-28

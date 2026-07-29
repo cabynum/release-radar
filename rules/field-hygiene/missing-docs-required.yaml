@@ -1,0 +1,36 @@
+id: missing-docs-required
+name: Missing Docs Required Field on Feature
+description: >
+  Features must indicate whether product documentation is required.
+  "None" is not a valid value. This field gates the docs intake process
+  and release notes workflow.
+
+applies_to: [Feature]
+
+condition:
+  status: [In Progress, Review]
+  any_of:
+    - field_empty: docs_required
+    - field_value:
+        field: docs_required
+        value: "None"
+
+action:
+  type: alert
+  message: >
+    Feature {key} has Product Documentation Required = empty or "None".
+    Set to Yes or No.
+  recipients: [assignee]
+
+scope: org
+verification: deterministic
+enforcement: comment
+severity: medium
+
+sources:
+  - id: SOURCE-144
+    excerpt: "Complete the Product Documentation Required field if docs are needed"
+  - id: SOURCE-13
+    excerpt: "RHAI Docs Intake Process: release type doc requirements for DP/TP/GA"
+
+date_added: 2026-07-28

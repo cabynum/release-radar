@@ -1,0 +1,33 @@
+id: premature-target-version
+name: Premature Release Target
+description: >
+  Issues in New status with Target Version already set suggest premature
+  release assignment before refinement confirms scope. Initiatives are
+  exempt (visibility is acceptable).
+
+applies_to: [Feature, Epic, Story, Task, Bug]
+excludes: [Initiative]
+
+condition:
+  status: [New]
+  field_set: target_version
+
+action:
+  type: alert
+  message: >
+    {key} is in New with Target Version = {target_version}. Target
+    Version should only be set after refinement confirms scope.
+  recipients: [assignee]
+
+scope: team
+verification: deterministic
+enforcement: flag
+severity: low
+
+sources:
+  - id: SOURCE-01
+    excerpt: "Issue is in New status with a Target Version already set"
+  - id: SOURCE-02
+    excerpt: "Initiatives with TV in New is acceptable for visibility"
+
+date_added: 2026-07-28

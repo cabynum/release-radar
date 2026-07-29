@@ -1,0 +1,32 @@
+id: missing-git-pr
+name: Missing Git Pull Request Field
+description: >
+  Issues in Review or Testing must have the Git Pull Request field
+  populated (not links in comments). The PR/MR automation gate checks
+  this field.
+
+applies_to: [Story, Task, Bug, CVE]
+
+condition:
+  status: [Review, Testing]
+  field_empty: git_pull_request
+
+action:
+  type: alert
+  message: >
+    {key} is in {status} with no Git Pull Request field. Move PR links
+    from comments to the dedicated field. Automation gate checks this.
+  recipients: [assignee]
+
+scope: org
+verification: deterministic
+enforcement: comment
+severity: medium
+
+sources:
+  - id: SOURCE-85
+    excerpt: "PR/MR automation gate updated to check both native GitHub integration and Web Links field"
+  - id: SOURCE-03
+    excerpt: "Git link appears in comments instead of dedicated Git Pull Request field"
+
+date_added: 2026-07-28

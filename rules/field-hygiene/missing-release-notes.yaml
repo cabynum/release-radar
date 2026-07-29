@@ -1,0 +1,35 @@
+id: missing-release-notes
+name: Missing Release Note Fields
+description: >
+  Features with Docs Required = Yes must have Release Note, Release
+  Note Type, and Release Text populated. These fields feed the
+  documentation pipeline.
+
+applies_to: [Feature]
+
+condition:
+  field_value:
+    field: docs_required
+    value: "Yes"
+  any_of:
+    - field_empty: release_note
+    - field_empty: release_note_type
+    - field_empty: release_text
+
+action:
+  type: alert
+  message: >
+    Feature {key} has Docs Required = Yes but missing release note
+    fields. Populate: Release Note, Release Note Type, Release Text.
+  recipients: [assignee]
+
+scope: org
+verification: deterministic
+enforcement: comment
+severity: medium
+
+sources:
+  - id: SOURCE-04
+    excerpt: "Docs Required is Yes but Release Note, Release Note Type, or Release Text is empty"
+
+date_added: 2026-07-28

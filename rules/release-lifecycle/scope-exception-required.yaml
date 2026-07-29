@@ -1,0 +1,38 @@
+id: scope-exception-required
+name: Post-Planning-Freeze Scope Exception Required
+description: >
+  Features or Initiatives added after Planning Freeze require a Release
+  Scope Exception. Hard cap of 5 exceptions per release.
+
+applies_to: [Feature, Initiative]
+
+trigger:
+  milestone: planning_freeze
+  days_after: 0
+
+condition:
+  field_set: fix_version
+  fix_version_matches_release: true
+  created_after: planning_freeze_date
+
+action:
+  type: alert
+  message: >
+    Feature {key} was added after Planning Freeze ({milestone_date}).
+    Requires Release Scope Exception approval. Org hard cap: 5
+    exceptions per release.
+  recipients: [assignee, manager]
+
+release_phase: post-planning-freeze
+scope: org
+verification: deterministic
+enforcement: alert
+severity: high
+
+sources:
+  - id: SOURCE-85
+    excerpt: "Release Scope Exception Process: Features/Initiatives added after Planning Freeze require exception review"
+  - id: SOURCE-108
+    excerpt: "5-exception hard cap per release"
+
+date_added: 2026-07-28

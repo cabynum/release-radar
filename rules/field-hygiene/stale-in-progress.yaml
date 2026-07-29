@@ -1,0 +1,32 @@
+id: stale-in-progress
+name: Stale In Progress
+description: >
+  Issues in In Progress for more than 21 days without any update
+  (status change, comment, or field modification) are likely stalled.
+
+applies_to: [Story, Task, Bug, Spike, Epic]
+
+condition:
+  status: [In Progress]
+  days_in_status: 21
+  no_recent_update: true
+
+action:
+  type: alert
+  message: >
+    {key} has been In Progress for {days} days with no updates. Is this
+    still active? Update status, add a comment, or move to Backlog.
+  recipients: [assignee, manager]
+
+scope: org
+verification: deterministic
+enforcement: comment
+severity: medium
+
+sources:
+  - id: SOURCE-01
+    excerpt: "Staleness thresholds for in-progress work"
+  - id: SOURCE-12
+    excerpt: "Cadence scoring penalizes issues without recent updates"
+
+date_added: 2026-07-28

@@ -1,0 +1,29 @@
+id: missing-contributors
+name: Missing Contributors on Feature
+description: >
+  Active features should have the Contributors field populated with
+  the people doing day-to-day work. Feeds cadence scoring and rollup.
+
+applies_to: [Feature]
+
+condition:
+  status: [In Progress, Review]
+  field_empty: contributors
+
+action:
+  type: alert
+  message: >
+    Feature {key} has no Contributors. Add the people doing active work
+    for cadence tracking.
+  recipients: [assignee]
+
+scope: team
+verification: deterministic
+enforcement: flag
+severity: low
+
+sources:
+  - id: SOURCE-12
+    excerpt: "Multi-user; feeds cadence scoring"
+
+date_added: 2026-07-28

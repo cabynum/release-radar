@@ -1,0 +1,31 @@
+id: version-mismatch
+name: Inconsistent Target Version vs Fix Version
+description: >
+  When both Target Version and Fix Version are set on the same issue,
+  they should point to the same release. Different values indicate a
+  planning/commitment conflict that needs resolution.
+
+applies_to: [Feature, Epic]
+
+condition:
+  versions_differ: true
+
+action:
+  type: alert
+  message: >
+    {key} has Target Version = {target_version} but Fix Version =
+    {fix_version}. Align the two fields or document why they differ.
+  recipients: [assignee, product_manager]
+
+scope: org
+verification: deterministic
+enforcement: comment
+severity: medium
+
+sources:
+  - id: SOURCE-06
+    excerpt: "Target Version (planned) vs Fix Version/s (committed)"
+  - id: SOURCE-21
+    excerpt: "Target Version = PM request, Fix Version = delivery commitment"
+
+date_added: 2026-07-28

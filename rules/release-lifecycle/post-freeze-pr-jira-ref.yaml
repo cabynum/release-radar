@@ -1,0 +1,39 @@
+id: post-freeze-pr-jira-ref
+name: Post-Code-Freeze PR Must Reference Jira
+description: >
+  All human-authored PRs merged to a release branch after Code Freeze
+  must include a Jira key. This enables cross-referencing between code
+  changes and approved exceptions.
+
+applies_to: [Story, Task, Bug, Epic]
+
+trigger:
+  milestone: code_freeze
+  days_after: 0
+
+condition:
+  pr_merged_to_release_branch: true
+  no_jira_key_in_pr: true
+
+action:
+  type: alert
+  message: >
+    PR merged to release branch for {key} without Jira reference. All
+    post-Code-Freeze merges must include the approved Jira issue key in
+    the PR title or body.
+  recipients: [assignee]
+
+release_phase: post-code-freeze
+scope: org
+verification: heuristic
+enforcement: alert
+severity: high
+note: >
+  This is a Git/CI-level check. release-radar surfaces it as awareness;
+  enforcement may be via the Gatekeeper (SOURCE-147).
+
+sources:
+  - id: SOURCE-145
+    excerpt: "The Jira ticket approved to merge must be included in the PR so we can cross-reference the change"
+
+date_added: 2026-07-28

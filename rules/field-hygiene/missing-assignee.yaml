@@ -1,0 +1,31 @@
+id: missing-assignee
+name: Missing Assignee on Active Issue
+description: >
+  Issues in active status must have an assignee. Work without an owner
+  cannot be tracked, reported on, or held accountable.
+
+applies_to: [Story, Task, Bug, Spike, Epic, Feature]
+
+condition:
+  status: [In Progress, Review, Testing]
+  field_empty: assignee
+
+action:
+  type: alert
+  message: >
+    {key} is in {status} with no assignee. Assign an owner before
+    progressing work.
+  recipients: [manager]
+
+scope: org
+verification: deterministic
+enforcement: comment
+severity: high
+
+sources:
+  - id: SOURCE-01
+    excerpt: "Issue is in active status with no assignee -> transitioned back to Refinement"
+  - id: SOURCE-14
+    excerpt: "Delivery Owner role: EM, Architect, Team Lead, responsible for seeing the feature from definition to delivery"
+
+date_added: 2026-07-28

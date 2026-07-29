@@ -1,0 +1,28 @@
+id: missing-qa-contact
+name: Missing QA Contact on Epic
+description: >
+  Active Epics should have a named QA owner for test coordination.
+
+applies_to: [Epic]
+
+condition:
+  status: [In Progress, Review, Testing]
+  field_empty: qa_contact
+
+action:
+  type: alert
+  message: >
+    Epic {key} has no QA Contact. Assign a QA owner for test
+    coordination.
+  recipients: [assignee]
+
+scope: team
+verification: deterministic
+enforcement: flag
+severity: low
+
+sources:
+  - id: SOURCE-12
+    excerpt: "Health score formula includes QA Contact population rate"
+
+date_added: 2026-07-28

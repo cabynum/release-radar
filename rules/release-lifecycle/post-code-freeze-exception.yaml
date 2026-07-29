@@ -1,0 +1,45 @@
+id: post-code-freeze-exception
+name: Post-Code-Freeze Exception Process
+description: >
+  After Code Freeze, any change merged to a release branch must go
+  through the blocker exception process. Release Blocker field must be
+  set to Proposed with Affected/Fix Version populated and risk
+  assessment in comments. 1-business-day SLA from Release Delivery
+  Domain.
+
+applies_to: [Feature, Epic, Story, Task, Bug]
+
+trigger:
+  milestone: code_freeze
+  days_after: 0
+
+condition:
+  field_set: fix_version
+  fix_version_matches_release: true
+  status_changed_after: code_freeze_date
+  field_not_value:
+    field: release_blocker
+    value: Approved
+
+action:
+  type: alert
+  message: >
+    {key} was modified after Code Freeze without Release Blocker =
+    Approved. Follow the exception process: set Release Blocker to
+    Proposed, populate Affected Version + Fix Version, add risk
+    assessment in comments.
+  recipients: [assignee, manager]
+
+release_phase: post-code-freeze
+scope: org
+verification: deterministic
+enforcement: alert
+severity: critical
+
+sources:
+  - id: SOURCE-85
+    excerpt: "Code Freeze Blocker Exception Process: set Release Blocker to Proposed, populate Affected/Fix Version, complete risk assessment; 1-biz-day turnaround"
+  - id: SOURCE-145
+    excerpt: "Follow the post-code freeze exception process for any changes to release branch"
+
+date_added: 2026-07-28

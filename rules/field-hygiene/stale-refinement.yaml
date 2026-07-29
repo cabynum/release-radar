@@ -1,0 +1,29 @@
+id: stale-refinement
+name: Stale Refinement
+description: >
+  Issues should not linger in Refinement indefinitely. After 21 days,
+  either advance to In Progress, return to Backlog, or escalate blockers.
+
+applies_to: [Story, Task, Bug, Spike, Epic, Feature]
+
+condition:
+  status: [Refinement]
+  days_in_status: 21
+
+action:
+  type: alert
+  message: >
+    {key} has been in Refinement for {days} days. Move forward to In
+    Progress, return to Backlog, or escalate blockers.
+  recipients: [assignee, manager]
+
+scope: org
+verification: deterministic
+enforcement: comment
+severity: medium
+
+sources:
+  - id: SOURCE-01
+    excerpt: "Issue has been in Refinement status for more than 21 days"
+
+date_added: 2026-07-28

@@ -1,0 +1,30 @@
+id: missing-products
+name: Missing Products Field on Feature
+description: >
+  Active Features must have the Products field set to indicate the
+  product line. Do not use Components for product-line identification.
+
+applies_to: [Feature]
+
+condition:
+  status: [Refinement, In Progress, Review]
+  field_empty: products
+
+action:
+  type: alert
+  message: >
+    Feature {key} has no Products field. Set the product-line indicator.
+  recipients: [assignee]
+
+scope: org
+verification: deterministic
+enforcement: comment
+severity: medium
+
+sources:
+  - id: SOURCE-144
+    excerpt: "Product must be populated"
+  - id: SOURCE-06
+    excerpt: "Do not use Components for product-line identification"
+
+date_added: 2026-07-28

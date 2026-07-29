@@ -1,0 +1,31 @@
+id: missing-story-points
+name: Missing Story Points in Sprint
+description: >
+  All issues in an active sprint must have story points assigned.
+  Unpointed work breaks allocation tracking and velocity calculations.
+
+applies_to: [Story, Task, Bug, Spike]
+
+condition:
+  in_active_sprint: true
+  field_empty: story_points
+
+action:
+  type: alert
+  message: >
+    {key} is in sprint {sprint_name} with no story points. Assign
+    points for accurate allocation tracking.
+  recipients: [assignee]
+
+scope: org
+verification: deterministic
+enforcement: comment
+severity: medium
+
+sources:
+  - id: SOURCE-12
+    excerpt: "Health score formula penalizes missing story points on in-sprint items"
+  - id: SOURCE-01
+    excerpt: "Issue in active sprint with no story points assigned"
+
+date_added: 2026-07-28
