@@ -1,13 +1,14 @@
 # How We Work in Jira
 
-Rules encoding our expectations for Jira hygiene and release delivery.
-Each traces to internal process documents, leadership announcements, or
-team conventions. Nothing here is invented.
+This is the integrated picture of how our Jira process works and what
+we expect at each stage of the release cycle. Every rule here traces to a process doc,leadership announcement, or an
+established team convention. If you want to understand what "good"
+looks like in our projects, this is the reference.
 
-The rules fall into two categories: **Field Hygiene** rules apply on
-every evaluation regardless of release timing. **Release Lifecycle**
-rules activate only within a milestone's trigger window (e.g., 3 days
-before Code Freeze).
+Two categories. **Field Hygiene** rules check data quality on every run
+regardless of where we are in the release. **Release Lifecycle** rules
+only wake up within a milestone's trigger window, like 3 days before
+Code Freeze.
 
 ## Field Hygiene
 
@@ -26,7 +27,9 @@ before Code Freeze).
 
 ### Planning & Release Commitment
 
-Target Version = PM request. Fix Version = engineering commitment.
+The distinction that trips people up: Target Version is a PM request
+("we'd like this in 3.6") and Fix Version is an engineering commitment
+("we will deliver this in 3.6").
 
 | ID | Expectation |
 |---|---|
@@ -40,7 +43,8 @@ Target Version = PM request. Fix Version = engineering commitment.
 
 ### Progress & Freshness
 
-Stale issues erode trust in the board.
+If something hasn't moved or been updated, it's either blocked (and
+should say so) or forgotten (and should be moved).
 
 | ID | Expectation |
 |---|---|
@@ -95,7 +99,9 @@ Stale issues erode trust in the board.
 
 ### Planning Freeze
 
-Scope locks. Adding anything new requires a formal exception.
+This is where scope locks. After Planning Freeze, adding anything new
+to the release requires a formal exception with a hard cap of 5 per
+release.
 
 | ID | Expectation |
 |---|---|
@@ -107,7 +113,8 @@ Scope locks. Adding anything new requires a formal exception.
 
 ### Feature Freeze
 
-Development complete. Features still in flight get descoped.
+Development should be done. If a feature is still in flight at Feature
+Freeze, it gets descoped from the release.
 
 | ID | Expectation |
 |---|---|
@@ -118,7 +125,8 @@ Development complete. Features still in flight get descoped.
 
 ### Code Freeze
 
-Blocker fixes only. Every change requires an exception.
+After Code Freeze, only blocker fixes merge and every single change
+goes through the exception process.
 
 | ID | Expectation |
 |---|---|
@@ -132,12 +140,15 @@ Blocker fixes only. Every change requires an exception.
 
 ## Provenance
 
-Every rule traces to one or more internal process documents. Each rule
-YAML includes `sources` with document IDs and excerpts for verification.
+None of this is made up. Every rule traces to one or more internal
+process documents, and each rule's YAML file includes the specific
+source IDs and excerpts so you can verify where it came from.
 
 ## Adding rules
 
-Rules are YAML files in `rules/field-hygiene/` or `rules/release-lifecycle/`.
-Each specifies: `applies_to`, `condition`, `action`, `enforcement`, and
-`sources`. To add one: write the YAML, add a test, run `pytest`, and
-reference the source document that establishes the expectation.
+Rules live as YAML files in `rules/field-hygiene/` or
+`rules/release-lifecycle/`. Each one specifies what issue types it
+applies to, what conditions trigger a violation, what action to take,
+and where the expectation comes from. To add a new rule, write the
+YAML, add a test, run `pytest`, and cite the source document that
+establishes the expectation.
