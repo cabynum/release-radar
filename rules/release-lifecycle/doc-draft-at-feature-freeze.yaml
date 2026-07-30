@@ -1,0 +1,39 @@
+id: doc-draft-at-feature-freeze
+name: AI Doc Draft Required at Feature Freeze
+description: >
+  Features with Docs Required = Yes must have an AI-generated doc draft
+  available to Tech Writers at Feature Freeze to inform documentation.
+
+applies_to: [Feature]
+
+trigger:
+  milestone: feature_freeze
+  days_before: 0
+
+condition:
+  field_set: fix_version
+  fix_version_matches_release: true
+  field_value:
+    field: docs_required
+    value: "Yes"
+  no_doc_draft_linked: true
+
+action:
+  type: alert
+  message: >
+    Feature {key} requires documentation but no AI-generated doc draft
+    is available at Feature Freeze. Tech Writers need this for
+    documentation handoff.
+  recipients: [assignee]
+
+release_phase: feature-freeze
+scope: org
+verification: heuristic
+enforcement: alert
+severity: medium
+
+sources:
+  - id: SOURCE-102
+    excerpt: "AI-generated doc draft available to Tech Writers to inform documentation"
+
+date_added: 2026-07-28

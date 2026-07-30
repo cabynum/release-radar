@@ -1,0 +1,37 @@
+id: pre-freeze-signoff
+name: PM/UX Signoff Before Feature Freeze
+description: >
+  PM and UX sign-off is required before code freeze. Surface features
+  that haven't obtained signoff 14 days before Feature Freeze to allow
+  time for validation.
+
+applies_to: [Feature]
+
+trigger:
+  milestone: feature_freeze
+  days_before: 14
+
+condition:
+  field_set: fix_version
+  fix_version_matches_release: true
+  no_signoff_complete: true
+
+action:
+  type: alert
+  message: >
+    Feature {key} needs PM/UX sign-off before Feature Freeze
+    ({milestone_date}). {days} days remaining. Begin continuous
+    validation now.
+  recipients: [assignee, product_manager]
+
+release_phase: pre-feature-freeze
+scope: org
+verification: heuristic
+enforcement: alert
+severity: high
+
+sources:
+  - id: SOURCE-149
+    excerpt: "Allow time for sign-off by Product Management & UX before code freeze. Begin continuous validation immediately."
+
+date_added: 2026-07-28

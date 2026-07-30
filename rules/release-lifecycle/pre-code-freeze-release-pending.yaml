@@ -1,0 +1,39 @@
+id: pre-code-freeze-release-pending
+name: Release Pending Transition Before Code Freeze
+description: >
+  Features with Fix Version for the upcoming release must move to
+  Release Pending before Code Freeze. This indicates all child work is
+  complete and confirmed for release.
+
+applies_to: [Feature]
+
+trigger:
+  milestone: code_freeze
+  days_before: 3
+
+condition:
+  field_set: fix_version
+  fix_version_matches_release: true
+  status_not: [Release Pending, Closed]
+
+action:
+  type: alert
+  message: >
+    Feature {key} must move to Release Pending before Code Freeze
+    ({milestone_date}). {days} days remaining. Status is currently
+    {status}.
+  recipients: [assignee, manager]
+
+release_phase: pre-code-freeze
+scope: org
+verification: deterministic
+enforcement: alert
+severity: critical
+
+sources:
+  - id: SOURCE-102
+    excerpt: "Jira field for the feature must be changed to 'Release Pending'"
+  - id: SOURCE-146
+    excerpt: "OJA-WFS-009: Resolved replaced by Release Pending"
+
+date_added: 2026-07-28

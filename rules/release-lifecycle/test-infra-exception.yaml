@@ -1,0 +1,36 @@
+id: test-infra-exception
+name: Test Infrastructure Requires Exception Process
+description: >
+  Test infrastructure and test-related changes also require the
+  post-Code-Freeze exception process. They are not exempt.
+
+applies_to: [Story, Task]
+
+trigger:
+  milestone: code_freeze
+  days_before: 3
+
+condition:
+  component_matches: ["test", "infra", "ci"]
+  field_set: fix_version
+  fix_version_matches_release: true
+
+action:
+  type: alert
+  message: >
+    {key} appears to be test/infrastructure work targeting {fix_version}.
+    Reminder: test and infra changes also require the post-Code-Freeze
+    exception process if merged after freeze.
+  recipients: [assignee]
+
+release_phase: pre-code-freeze
+scope: org
+verification: heuristic
+enforcement: flag
+severity: medium
+
+sources:
+  - id: SOURCE-145
+    excerpt: "Test infrastructure or test-related changes need to go through the process. After consideration, these changes are not exempt."
+
+date_added: 2026-07-28

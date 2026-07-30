@@ -4,8 +4,8 @@ A rule engine that evaluates Jira issues against field-hygiene and
 release-lifecycle policies. Outputs structured violations with full
 provenance (rule ID, severity, source references).
 
-Built for the RHOAI Data Processing team's Jira workflow on
-`redhat.atlassian.net`.
+Built for RHOAI teams on `redhat.atlassian.net`. Defaults target the
+Data Processing team but any team can override via CLI flags.
 
 ![System Design](design/system-design.png)
 
@@ -13,7 +13,7 @@ Built for the RHOAI Data Processing team's Jira workflow on
 
 - Fetches issues from Jira REST API (with changelog for staleness detection)
 - Normalizes raw API responses into a flat snapshot format
-- Evaluates 49 YAML rules (40 field-hygiene + 9 release-lifecycle)
+- Evaluates 57 YAML rules (41 field-hygiene + 16 release-lifecycle)
 - Some rules check external sources (GitHub PRs, Jira subtask sign-offs)
 - Outputs `violations.json` with per-issue findings
 
@@ -30,12 +30,30 @@ pip install -e ".[dev]"
 cp .env.example .env
 # Edit .env with your Jira email and API token
 
-# Run against live Jira
+# Run against live Jira (defaults to Data Processing team)
 python3 -m engine.run --releases 3.5,3.6
+
+# Target a different team
+python3 -m engine.run --releases 3.5,3.6 --component "Model Serving"
+python3 -m engine.run --releases 3.5,3.6 --projects RHAISTRAT,RHOAIENG
 
 # Run against a saved snapshot (no network needed)
 python3 -m engine.run --snapshot output/snapshot.json
 ```
+
+## Team configuration
+
+By default, the engine targets the Data Processing team across three
+Jira projects:
+
+| Flag | Default | Description |
+|---|---|---|
+| `--component` | `Data Processing` | Jira component to filter on |
+| `--projects` | `RHAISTRAT,RHAIENG,RHOAIENG` | Comma-separated Jira project keys |
+| `--releases` | `3.5,3.6` | Comma-separated release versions |
+
+Override any flag to target your team's issues. The rules themselves are
+org-wide RHOAI policy and apply to all teams.
 
 ## Rules
 
@@ -47,16 +65,17 @@ Rules are YAML files in `rules/`. Each rule specifies:
 - `action` - what to report (message template, recipients)
 - `sources` - provenance (SOURCE-XX references to process docs)
 
-### Field hygiene (40 rules)
+### Field hygiene (41 rules)
 
 Data correctness checks that run on every evaluation. Missing required
 fields, data integrity, staleness, hierarchy violations, cross-system
 checks (sign-off completeness, doc links, PR compliance).
 
-### Release lifecycle (9 rules)
+### Release lifecycle (16 rules)
 
-Org-policy checks that activate within milestone windows (post-freeze
-requirements, exception processes, quality gates).
+Org-policy checks that activate within milestone windows. Feature freeze
+readiness, code freeze enforcement, sign-off gates, exception processes,
+quality gates.
 
 ## Architecture
 
@@ -78,7 +97,7 @@ engine/
 pytest
 ```
 
-134 unit tests covering condition operators, normalization, changelog
+132 unit tests covering condition operators, normalization, changelog
 parsing, and milestone trigger logic.
 
 ## Configuration
@@ -88,7 +107,7 @@ parsing, and milestone trigger logic.
 - `JIRA_EMAIL` - Jira account email
 - `JIRA_API_TOKEN` - Jira API token
 
-### Optional (for full enrichment)
+### Optional
 
 - `gh` CLI authenticated (for GitHub PR inspection post-code-freeze)
 

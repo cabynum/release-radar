@@ -1,0 +1,39 @@
+id: pre-feature-freeze-status
+name: Features Must Advance Before Feature Freeze
+description: >
+  Features with Fix Version for the upcoming release that are still In
+  Progress must advance to Review or Testing before Feature Freeze.
+  Incomplete features will be removed from the release.
+
+applies_to: [Feature]
+
+trigger:
+  milestone: feature_freeze
+  days_before: 7
+
+condition:
+  status: [In Progress]
+  field_set: fix_version
+  fix_version_matches_release: true
+
+action:
+  type: alert
+  message: >
+    Feature {key} is still In Progress with {days} days until Feature
+    Freeze ({milestone_date}). Must advance to Review/Testing or Fix
+    Version will be removed.
+  recipients: [assignee, manager]
+
+release_phase: pre-feature-freeze
+scope: org
+verification: deterministic
+enforcement: alert
+severity: critical
+
+sources:
+  - id: SOURCE-102
+    excerpt: "All development/coding work complete before Feature Freeze. Incomplete features removed or pushed."
+  - id: SOURCE-73
+    excerpt: "Focus shifts to stabilization and integration hardening"
+
+date_added: 2026-07-28

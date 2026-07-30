@@ -28,13 +28,14 @@ from .evaluate import evaluate
 from .enrich import run_enrichment
 
 DEFAULT_RELEASES = ["3.5", "3.6"]
-COMPONENT = "Data Processing"
-PROJECTS = ["RHAISTRAT", "RHAIENG", "RHOAIENG"]
+DEFAULT_COMPONENT = "Data Processing"
+DEFAULT_PROJECTS = ["RHAISTRAT", "RHAIENG", "RHOAIENG"]
 
 
-def _build_jql(releases: list[str], milestones: dict | None = None) -> str:
-    """Build JQL targeting DP issues in the given release cycles."""
-    projects = ", ".join(PROJECTS)
+def _build_jql(releases: list[str], projects: list[str],
+               component: str, milestones: dict | None = None) -> str:
+    """Build JQL targeting issues for the given team and release cycles."""
+    projects_str = ", ".join(projects)
 
     all_versions = set()
     if milestones:
@@ -49,8 +50,8 @@ def _build_jql(releases: list[str], milestones: dict | None = None) -> str:
     versions = ", ".join(f'"{v}"' for v in sorted(all_versions))
 
     return (
-        f"project in ({projects}) AND "
-        f"component = '{COMPONENT}' AND ("
+        f"project in ({projects_str}) AND "
+        f"component = '{component}' AND ("
         f"fixVersion in ({versions}) OR "
         f'"Target Version" in ({versions}) OR '
         f"statusCategory = 'In Progress'"
@@ -60,9 +61,12 @@ def _build_jql(releases: list[str], milestones: dict | None = None) -> str:
 
 def run_pipeline(releases: list[str], rules_dir: Path, output_dir: Path,
                  verbose: bool = False, snapshot_path: Path | None = None,
-                 milestones_path: Path | None = None):
+                 milestones_path: Path | None = None,
+                 component: str = DEFAULT_COMPONENT,
+                 projects: list[str] | None = None):
     """Full pipeline: fetch -> normalize -> evaluate -> output."""
     now = datetime.now(timezone.utc)
+    projects = projects or DEFAULT_PROJECTS
 
     ms = None
     if milestones_path and milestones_path.exists():
@@ -81,13 +85,14 @@ def run_pipeline(releases: list[str], rules_dir: Path, output_dir: Path,
         print(f"Snapshot: {len(issues)} issues (fetched {snapshot_data.get('fetched_at', 'unknown')})")
     else:
         print(f"=== release-radar | {now.strftime('%Y-%m-%d %H:%M UTC')} ===")
-        print(f"Projects: {', '.join(PROJECTS)}")
+        print(f"Component: {component}")
+        print(f"Projects: {', '.join(projects)}")
         print(f"Releases: {', '.join(releases)}")
         print()
 
         print("Fetching from Jira...")
         load_env()
-        jql = _build_jql(releases, ms)
+        jql = _build_jql(releases, projects, component, ms)
         raw_issues = fetch_issues(jql, JIRA_FIELDS, verbose=verbose)
         print(f"  {len(raw_issues)} issues fetched")
 
@@ -171,6 +176,14 @@ def main():
         "--releases", default=",".join(DEFAULT_RELEASES),
         help=f"Comma-separated release versions (default: {','.join(DEFAULT_RELEASES)})"
     )
+    parser.add_argument(
+        "--component", default=DEFAULT_COMPONENT,
+        help=f"Jira component to filter on (default: {DEFAULT_COMPONENT})"
+    )
+    parser.add_argument(
+        "--projects", default=",".join(DEFAULT_PROJECTS),
+        help=f"Comma-separated Jira projects (default: {','.join(DEFAULT_PROJECTS)})"
+    )
     parser.add_argument("--snapshot", type=Path, default=None)
     parser.add_argument("--rules-dir", type=Path, default=PROJECT_DIR / "rules")
     parser.add_argument("--output-dir", type=Path, default=PROJECT_DIR / "output")
@@ -178,6 +191,7 @@ def main():
     args = parser.parse_args()
 
     releases = [r.strip() for r in args.releases.split(",")]
+    projects = [p.strip() for p in args.projects.split(",")]
 
     run_pipeline(
         releases=releases,
@@ -185,6 +199,8 @@ def main():
         output_dir=args.output_dir,
         verbose=args.verbose,
         snapshot_path=args.snapshot,
+        component=args.component,
+        projects=projects,
     )
 
 
