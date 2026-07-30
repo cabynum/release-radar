@@ -1,0 +1,33 @@
+id: missing-strat-creator-signoff
+name: Missing Strat-Creator Human Sign-Off
+description: >
+  Features in RHAISTRAT must have the strat-creator-human-sign-off label
+  applied, indicating the feature has been through the strat-creator flow
+  and received human review. Required for Quality Gate 1.
+
+applies_to: [Feature]
+
+condition:
+  project: RHAISTRAT
+  status: [In Progress, Review]
+  label_missing: strat-creator-human-sign-off
+
+action:
+  type: alert
+  message: >
+    Feature {key} is missing the strat-creator-human-sign-off label.
+    Run the strat-creator flow and apply the label after human review.
+  recipients: [assignee]
+
+scope: org
+verification: deterministic
+enforcement: flag
+severity: medium
+
+sources:
+  - id: SOURCE-140
+    excerpt: "strat-creator flow with human sign-off label"
+  - id: SOURCE-144
+    excerpt: "QG1 requires strat-creator-human-sign-off label"
+
+date_added: 2026-07-29
