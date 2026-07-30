@@ -32,7 +32,7 @@ we expect at each stage of the release cycle. Every rule here traces to a proces
 | `missing-fix-version` | **Fix Version** must be set when work begins, not after it ships. If **status** is In Progress or beyond, this field should already be populated. |
 | `fix-version-without-target` | If **Fix Version** is set but **Target Version** is not, engineering has committed to delivery without PM planning approval. |
 | `labels-as-commitment` | **Labels** should not be used as a substitute for **Fix Version**. Delivery commitments belong in **Fix Version**. |
-| `premature-target-version` | If **status = New**, **Target Version** should not be set yet. No scoping or refinement has happened. |
+| `premature-target-version` | If **status** = **New**, **Target Version** should not be set yet. No scoping or refinement has happened. |
 | `version-mismatch` | **Target Version** and **Fix Version** should point to the same release. A mismatch means PM and engineering disagree on timing. |
 | `missing-target-end` | **Features need a Target End date.** Drives timeline reporting and surfaces schedule risk. |
 
@@ -43,10 +43,10 @@ These rules surface both.
 
 | ID | Expectation |
 |---|---|
-| `stale-in-progress` | If **status = In Progress** for 21+ days with no update (status change, comment, or field edit), the issue is likely stalled. Update it or move it. |
-| `stale-refinement` | If **status = Refinement** for an extended period with no progress, the issue needs to move forward or be removed from scope. |
+| `stale-in-progress` | If **status** = **In Progress** for 21+ days with no update (status change, comment, or field edit), the issue is likely stalled. Update it or move it. |
+| `stale-refinement` | If **status** = **Refinement** for an extended period with no progress, the issue needs to move forward or be removed from scope. |
 | `stale-status-summary` | **Status Summary** should be updated at least every 7 days on active work. This is how stakeholders get signal without interrupting engineers. |
-| `stale-backlog-with-tv` | If **status = New/Backlog** for 60+ days but **Target Version** is set, that's a false commitment. Either activate the work or remove the version. |
+| `stale-backlog-with-tv` | If **status** = **New/Backlog** for 60+ days but **Target Version** is set, that's a false commitment. Either activate the work or remove the version. |
 | `missing-color-status` | If **Target Version** is set on an active issue, **Color Status** (Red/Yellow/Green) should be set too. Takes 10 seconds and gives stakeholders visibility. |
 | `color-summary-mismatch` | **Color Status** and **Status Summary** should tell the same story. If color is Green but the summary says "blocked on dependency," reporting becomes unreliable. |
 | `status-sprint-mismatch` | If **status** is active (In Progress, Review, Testing) the issue should be in an active sprint. If it's not, either the status or the sprint association is wrong. |
@@ -61,8 +61,8 @@ release managers to plan around them.
 | ID | Expectation |
 |---|---|
 | `missing-docs-required` | **Features must indicate whether docs are needed.** Docs team plans capacity from this field. |
-| `docs-required-no-link` | If **Docs Required = Yes**, there should be a linked documentation issue. This gives the docs team something to track and plan against. |
-| `missing-release-notes` | If **Docs Required = Yes**, the **Release Note** fields must be populated. Empty release notes delay the release. |
+| `docs-required-no-link` | If **Docs Required** = **Yes**, there should be a linked documentation issue. This gives the docs team something to track and plan against. |
+| `missing-release-notes` | If **Docs Required** = **Yes**, the **Release Note** fields must be populated. Empty release notes delay the release. |
 | `missing-release-type` | **Features need a Release Type.** Dev Preview, Tech Preview, or GA determines support contract and doc scope. |
 | `missing-products` | **Features need the Products field.** Organizes cross-product impact and release notes. |
 
@@ -126,8 +126,8 @@ this and go straight from Planning Freeze to Code Freeze).
 
 | ID | Expectation |
 |---|---|
-| `doc-draft-at-feature-freeze` | If **Docs Required = Yes**, a doc draft must be available to Tech Writers by Feature Freeze. AI-generated first drafts are acceptable. |
-| `feature-freeze-enforcement` | If **status = In Progress** at Feature Freeze, **Fix Version** is removed. The feature is no longer included in the release. |
+| `doc-draft-at-feature-freeze` | If **Docs Required** = **Yes**, a doc draft must be available to Tech Writers by Feature Freeze. AI-generated first drafts are acceptable. |
+| `feature-freeze-enforcement` | If **status** = **In Progress** at Feature Freeze, **Fix Version** is removed. The feature is no longer included in the release. |
 | `pre-feature-freeze-status` | Features must advance past **In Progress** before Feature Freeze. If development is not complete, the feature is not in this release. |
 | `pre-freeze-signoff` | **PM** and **UX** sign-off must be obtained before Feature Freeze, confirming delivered work matches what was planned. |
 
@@ -139,9 +139,9 @@ Feature Freeze window now require formal approval too.
 
 | ID | Expectation |
 |---|---|
-| `post-code-freeze-exception` | All changes after Code Freeze require the exception process: set **Release Blocker = Proposed**, populate **Affected Version** and **Fix Version**, and complete a risk assessment. Turnaround is 1 business day. |
+| `post-code-freeze-exception` | All changes after Code Freeze require the exception process: set **Release Blocker** = **Proposed**, populate **Affected Version** and **Fix Version**, and complete a risk assessment. Turnaround is 1 business day. |
 | `post-freeze-pr-jira-ref` | Every PR merged after Code Freeze must reference a Jira key. In the 3.5 EA2 audit, only 32 of 54 human-authored PRs included one. |
-| `pre-code-freeze-release-pending` | Features must move to **status = Release Pending** before Code Freeze. This status means all child work is complete and the feature is confirmed for release. |
+| `pre-code-freeze-release-pending` | Features must move to **status** = **Release Pending** before Code Freeze. This status means all child work is complete and the feature is confirmed for release. |
 | `release-blocker-field-required` | Post-freeze issues must have the **Release Blocker** field set. The exception process cannot evaluate or prioritize without it. |
 | `release-notes-frozen` | **Release Notes** must be submitted before Code Freeze. Late notes delay the release. |
 | `test-infra-exception` | Test and infrastructure changes also require the exception process after Code Freeze. "Just a test fix" does not bypass the gate. |
