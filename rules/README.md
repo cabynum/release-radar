@@ -23,9 +23,8 @@ we expect at each stage of the release cycle. Every rule here traces to a proces
 
 ### Planning & Release Commitment
 
-The distinction that trips people up: Target Version is a PM request
-("we'd like this in 3.6") and Fix Version is an engineering commitment
-("we will deliver this in 3.6").
+- **Target Version** is set by Product Management. Requested release for delivery.
+- **Fix Version** is set by Engineering. Committed release for delivery.
 
 | ID | Expectation |
 |---|---|
@@ -37,10 +36,10 @@ The distinction that trips people up: Target Version is a PM request
 | `version-mismatch` | **Target and Fix Version should match.** A mismatch means PM and engineering disagree on timing. |
 | `missing-target-end` | **Features need a Target End date.** Drives timeline reporting and surfaces schedule risk. |
 
-### Progress & Freshness
+### Progress & Maintenance
 
-If something hasn't moved or been updated, it's either blocked (and
-should say so) or forgotten (and should be moved).
+Issues that haven't moved or been updated are either blocked or forgotten.
+These rules surface both.
 
 | ID | Expectation |
 |---|---|
@@ -56,6 +55,9 @@ should say so) or forgotten (and should be moved).
 
 ### Documentation & Release Readiness
 
+Documentation fields need to be set early enough for tech writers and
+release managers to plan around them.
+
 | ID | Expectation |
 |---|---|
 | `missing-docs-required` | **Features must indicate whether docs are needed.** Docs team plans capacity from this field. |
@@ -65,6 +67,9 @@ should say so) or forgotten (and should be moved).
 | `missing-products` | **Features need the Products field.** Organizes cross-product impact and release notes. |
 
 ### Structure & Hierarchy
+
+Our Jira hierarchy connects individual work items to strategic goals.
+These rules ensure the links between levels actually exist.
 
 | ID | Expectation |
 |---|---|
@@ -76,6 +81,9 @@ should say so) or forgotten (and should be moved).
 
 ### Refinement & Sign-off
 
+Features go through a refinement and approval process before delivery.
+These rules check that the process is complete and traceable.
+
 | ID | Expectation |
 |---|---|
 | `missing-rice-score` | **Features past Refinement need a RICE score.** Objective prioritization requires it. |
@@ -85,6 +93,9 @@ should say so) or forgotten (and should be moved).
 | `signoff-incomplete` | **All sign-off subtasks must be Done.** The checklist isn't optional. |
 
 ### Cross-System Integrity
+
+Some expectations span Jira and external systems like GitHub and docs
+tooling. These rules check that those connections are in place.
 
 | ID | Expectation |
 |---|---|
