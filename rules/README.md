@@ -1,14 +1,10 @@
 # How We Work in Jira
 
 This is the integrated picture of how our Jira process works and what
-we expect at each stage of the release cycle. Every rule here traces to a process doc,leadership announcement, or an
-established team convention. If you want to understand what "good"
-looks like in our projects, this is the reference.
+we expect at each stage of the release cycle. Every rule here traces to a process doc,leadership announcement, or established team conventions.
 
-Two categories. **Field Hygiene** rules check data quality on every run
-regardless of where we are in the release. **Release Lifecycle** rules
-only wake up within a milestone's trigger window, like 3 days before
-Code Freeze.
+- **Field Hygiene** rules check Jira data quality each time the engine runs.\
+- **Release Lifecycle** rules a are driven by release milestone windows (i.e fire 3 days before Code Freeze)
 
 ## Field Hygiene
 
@@ -99,9 +95,8 @@ should say so) or forgotten (and should be moved).
 
 ### Planning Freeze
 
-This is where scope locks. After Planning Freeze, adding anything new
-to the release requires a formal exception with a hard cap of 5 per
-release.
+Planning Freeze is where release scope locks. After Planning Freeze, adding anything new
+to the release requires a formal exception with a hard cap of 5 per release before requiring executive approval.
 
 | ID | Expectation |
 |---|---|
@@ -113,8 +108,10 @@ release.
 
 ### Feature Freeze
 
-Development should be done. If a feature is still in flight at Feature
-Freeze, it gets descoped from the release.
+Development should be done and focus shifts to testing and
+stabilization. If a feature is still in flight at Feature Freeze, it
+gets descoped. Only applies to stable/GA releases (EA releases skip
+this and go straight from Planning Freeze to Code Freeze).
 
 | ID | Expectation |
 |---|---|
@@ -126,7 +123,8 @@ Freeze, it gets descoped from the release.
 ### Code Freeze
 
 After Code Freeze, only blocker fixes merge and every single change
-goes through the exception process.
+goes through the exception process. Bug fixes that were fine during the
+Feature Freeze window now require formal approval too.
 
 | ID | Expectation |
 |---|---|
