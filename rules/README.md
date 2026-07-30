@@ -29,11 +29,11 @@ we expect at each stage of the release cycle. Every rule here traces to a proces
 | ID | Expectation |
 |---|---|
 | `missing-target-version` | **Active features need a Target Version.** Without one, the feature is invisible to release planning. |
-| `missing-fix-version` | **Committed work needs a Fix Version.** Must be set at commit time, not after work is done. |
-| `fix-version-without-target` | **Fix Version without Target Version is backwards.** Engineering committed without PM planning approval. |
-| `labels-as-commitment` | **Labels are not Fix Version.** Use Fix Version for delivery commitments. |
-| `premature-target-version` | **Issues in New shouldn't have Target Version.** No scoping has happened yet. |
-| `version-mismatch` | **Target and Fix Version should match.** A mismatch means PM and engineering disagree on timing. |
+| `missing-fix-version` | **Fix Version** must be set when work begins, not after it ships. If **status** is In Progress or beyond, this field should already be populated. |
+| `fix-version-without-target` | If **Fix Version** is set but **Target Version** is not, engineering has committed to delivery without PM planning approval. |
+| `labels-as-commitment` | **Labels** should not be used as a substitute for **Fix Version**. Delivery commitments belong in **Fix Version**. |
+| `premature-target-version` | If **status = New**, **Target Version** should not be set yet. No scoping or refinement has happened. |
+| `version-mismatch` | **Target Version** and **Fix Version** should point to the same release. A mismatch means PM and engineering disagree on timing. |
 | `missing-target-end` | **Features need a Target End date.** Drives timeline reporting and surfaces schedule risk. |
 
 ### Progress & Maintenance
@@ -43,13 +43,13 @@ These rules surface both.
 
 | ID | Expectation |
 |---|---|
-| `stale-in-progress` | **21+ days in In Progress with no update.** Either blocked (say so) or abandoned (move it). |
-| `stale-refinement` | **Stuck in Refinement too long.** Move forward or descope. |
-| `stale-status-summary` | **Status Summary older than 7 days.** Stakeholders get signal from this without interrupting engineers. |
-| `stale-backlog-with-tv` | **60+ days in Backlog with a Target Version.** That's a false commitment. Activate or remove the version. |
-| `missing-color-status` | **Active issues with Target Version need a color.** Red/Yellow/Green takes 10 seconds to set. |
-| `color-summary-mismatch` | **Color and summary should agree.** Green + "blocked on dependency" is unreliable reporting. |
-| `status-sprint-mismatch` | **Active status but no active sprint (or vice versa).** One of them is wrong. |
+| `stale-in-progress` | If **status = In Progress** for 21+ days with no update (status change, comment, or field edit), the issue is likely stalled. Update it or move it. |
+| `stale-refinement` | If **status = Refinement** for an extended period with no progress, the issue needs to move forward or be removed from scope. |
+| `stale-status-summary` | **Status Summary** should be updated at least every 7 days on active work. This is how stakeholders get signal without interrupting engineers. |
+| `stale-backlog-with-tv` | If **status = New/Backlog** for 60+ days but **Target Version** is set, that's a false commitment. Either activate the work or remove the version. |
+| `missing-color-status` | If **Target Version** is set on an active issue, **Color Status** (Red/Yellow/Green) should be set too. Takes 10 seconds and gives stakeholders visibility. |
+| `color-summary-mismatch` | **Color Status** and **Status Summary** should tell the same story. If color is Green but the summary says "blocked on dependency," reporting becomes unreliable. |
+| `status-sprint-mismatch` | If **status** is active (In Progress, Review, Testing) the issue should be in an active sprint. If it's not, either the status or the sprint association is wrong. |
 | `missing-story-points` | **Sprint issues need story points.** Velocity tracking and capacity planning depend on it. |
 | `missing-activity-type` | **Issues need an Activity Type.** Drives 40/40/20 allocation tracking. |
 
@@ -61,8 +61,8 @@ release managers to plan around them.
 | ID | Expectation |
 |---|---|
 | `missing-docs-required` | **Features must indicate whether docs are needed.** Docs team plans capacity from this field. |
-| `docs-required-no-link` | **Docs Required = Yes needs a linked doc issue.** Gives the docs team something to track. |
-| `missing-release-notes` | **Release note fields can't be empty when docs are required.** Empty notes delay releases. |
+| `docs-required-no-link` | If **Docs Required = Yes**, there should be a linked documentation issue. This gives the docs team something to track and plan against. |
+| `missing-release-notes` | If **Docs Required = Yes**, the **Release Note** fields must be populated. Empty release notes delay the release. |
 | `missing-release-type` | **Features need a Release Type.** Dev Preview, Tech Preview, or GA determines support contract and doc scope. |
 | `missing-products` | **Features need the Products field.** Organizes cross-product impact and release notes. |
 
@@ -111,11 +111,11 @@ to the release requires a formal exception with a hard cap of 5 per release befo
 
 | ID | Expectation |
 |---|---|
-| `fix-version-at-planning-freeze` | **Features with Target Version must have Fix Version by freeze.** Converts PM request into engineering commitment. |
-| `qg1-completeness` | **Quality Gate 1 must pass.** Required labels + PM, Assignee, Release Type, Target Version, Product, Components. Fail = excluded from GA. |
-| `scope-exception-required` | **Post-freeze additions need a Scope Exception.** Hard cap: 5 per release. |
-| `strat-review-required` | **Strat-review approval required.** Leadership sign-off on scope. |
-| `strat-status-at-planning-freeze` | **STRAT issue must be at least To Do.** Can't be sitting unstarted in New. |
+| `fix-version-at-planning-freeze` | If **Target Version** is set for the upcoming release, **Fix Version** must also be set by Planning Freeze. This is what converts a PM request into an engineering commitment. |
+| `qg1-completeness` | Features must pass Quality Gate 1: the `strat-creator-human-sign-off` and `rp-qg1-pass` labels, plus **PM**, **Assignee**, **Release Type**, **Target Version**, **Product**, and **Components** must all be populated. Features that fail are excluded from GA scope. |
+| `scope-exception-required` | Features added after Planning Freeze require a formal Release Scope Exception. Hard cap of 5 exceptions per release before requiring executive review. |
+| `strat-review-required` | Features must have **strat-review** approval before Planning Freeze, confirming leadership sign-off on scope. |
+| `strat-status-at-planning-freeze` | The associated STRAT issue must have **status** at least **To Do** or **In Progress** by Planning Freeze. It cannot still be sitting in **New**. |
 
 ### Feature Freeze
 
@@ -126,10 +126,10 @@ this and go straight from Planning Freeze to Code Freeze).
 
 | ID | Expectation |
 |---|---|
-| `doc-draft-at-feature-freeze` | **Doc draft must be available to Tech Writers.** AI-generated first drafts are acceptable. |
-| `feature-freeze-enforcement` | **In Progress at freeze = Fix Version removed.** The release moves on. |
-| `pre-feature-freeze-status` | **Features must advance past In Progress.** Not complete = not in this release. |
-| `pre-freeze-signoff` | **PM/UX sign-off required.** Confirms delivered work matches what was planned. |
+| `doc-draft-at-feature-freeze` | If **Docs Required = Yes**, a doc draft must be available to Tech Writers by Feature Freeze. AI-generated first drafts are acceptable. |
+| `feature-freeze-enforcement` | If **status = In Progress** at Feature Freeze, **Fix Version** is removed. The feature is no longer included in the release. |
+| `pre-feature-freeze-status` | Features must advance past **In Progress** before Feature Freeze. If development is not complete, the feature is not in this release. |
+| `pre-freeze-signoff` | **PM** and **UX** sign-off must be obtained before Feature Freeze, confirming delivered work matches what was planned. |
 
 ### Code Freeze
 
@@ -139,13 +139,13 @@ Feature Freeze window now require formal approval too.
 
 | ID | Expectation |
 |---|---|
-| `post-code-freeze-exception` | **All post-freeze changes need the exception process.** Release Blocker = Proposed, versions populated, risk assessment. 1-biz-day turnaround. |
-| `post-freeze-pr-jira-ref` | **Every post-freeze PR must reference a Jira key.** 3.5 EA2 audit found only 32/54 human PRs had them. |
-| `pre-code-freeze-release-pending` | **Features must be Release Pending before freeze.** Means all child work is complete. |
-| `release-blocker-field-required` | **Post-freeze issues need Release Blocker field set.** Exception process can't evaluate without it. |
-| `release-notes-frozen` | **Release notes must be submitted before freeze.** Late notes delay releases. |
-| `test-infra-exception` | **Test changes need exceptions too.** "Just a test fix" doesn't bypass the gate. |
-| `unresolved-blockers` | **All blockers must be resolved or reprioritized.** Carrying them into freeze creates churn. |
+| `post-code-freeze-exception` | All changes after Code Freeze require the exception process: set **Release Blocker = Proposed**, populate **Affected Version** and **Fix Version**, and complete a risk assessment. Turnaround is 1 business day. |
+| `post-freeze-pr-jira-ref` | Every PR merged after Code Freeze must reference a Jira key. In the 3.5 EA2 audit, only 32 of 54 human-authored PRs included one. |
+| `pre-code-freeze-release-pending` | Features must move to **status = Release Pending** before Code Freeze. This status means all child work is complete and the feature is confirmed for release. |
+| `release-blocker-field-required` | Post-freeze issues must have the **Release Blocker** field set. The exception process cannot evaluate or prioritize without it. |
+| `release-notes-frozen` | **Release Notes** must be submitted before Code Freeze. Late notes delay the release. |
+| `test-infra-exception` | Test and infrastructure changes also require the exception process after Code Freeze. "Just a test fix" does not bypass the gate. |
+| `unresolved-blockers` | All identified blockers must be resolved or reprioritized before Code Freeze. Carrying unresolved blockers into freeze creates churn. |
 
 ## Provenance
 
