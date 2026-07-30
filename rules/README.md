@@ -124,8 +124,7 @@ this and go straight from Planning Freeze to Code Freeze).
 
 After Code Freeze, only blocker fixes merge and every single change
 goes through the exception process. Bug fixes that were ok to merge during the
-Feature Freeze window now require formal approval too.  
-
+Feature Freeze window now require formal approval too.
 
 | ID | Expectation |
 |---|---|
