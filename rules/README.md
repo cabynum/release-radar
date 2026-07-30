@@ -145,45 +145,12 @@ Blocker fixes only. Every change requires an exception.
 
 ---
 
-## Where these rules come from
+## Provenance
 
-Every rule traces to one or more of 25 source documents:
-
-**Process & policy documents**
-
-- JIRA Standards for OpenShift AI (org-wide field expectations)
-- AAET Agile and Jira Playbook (team conventions)
-- Standardize Agile Processes (process proposals)
-- Feature Refinement process and template (Confluence)
-- RHAI Release Milestone Definitions and Expectations (Confluence, canonical)
-- Release Process and Operations space (Confluence, 14 child pages)
-- RHAI Release Stages and API Tiers practical guide
-- Docs Intake Process (doc requirements by release type)
-
-**Leadership & program announcements**
-
-- Target vs Fix Version policy (effective 3.5 EA1)
-- Strengthening Release Integrity and Predictability (scope + freeze processes)
-- Post-Code-Freeze Exception Audit (3.5 EA2 findings)
-- 3.6 Release Planning & Quality Gate 1 requirements
-- Resolved Status Retirement (Release Pending replaces Resolved)
-- Jira Team Standardization and AI SDLC Process Updates
-- Unified Release Milestones + Automated Activity Type
-- Quality First: Feature Signoff Process (DP/TP/GA templates)
-- 40/40/20 Engineering Work Classification & Allocation Guidance
-- Proposed Process Changes Supporting Release Improvements
-- Security & FIPS Compliance Tools (strat-creator sign-off integration)
-
-**Cross-team tooling & automation**
-
-- `accorvin/jira-tracker` (Jira hygiene automation, staleness thresholds)
-- Agent Ops `team_home/jira_process` (health scoring, cadence scoring)
-- Nathan Weinberg's Jira Agent Config (Llama Stack Core conventions)
-- Docs Planning Companion (Target Version vs Fix Version semantics)
-
-Each rule YAML includes specific source excerpts for per-rule
-verification. The full source registry with document links lives in
-the Argus knowledge base.
+Every rule traces to one or more internal process documents (Confluence
+pages, leadership announcements, team playbooks, or cross-team tooling).
+Each rule YAML includes `sources` with document IDs and excerpts for
+verification.
 
 ---
 
