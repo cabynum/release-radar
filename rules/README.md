@@ -3,7 +3,7 @@
 This is the integrated picture of how our Jira process works and what
 we expect at each stage of the release cycle. Every rule here traces to a process doc,leadership announcement, or established team conventions.
 
-- **Field Hygiene** rules check Jira data quality each time the engine runs.\
+- **Field Hygiene** rules check Jira data quality each time the engine runs.
 - **Release Lifecycle** rules a are driven by release milestone windows (i.e fire 3 days before Code Freeze)
 
 ## Field Hygiene
