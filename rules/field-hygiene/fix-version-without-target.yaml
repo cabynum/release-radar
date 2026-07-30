@@ -1,30 +1,29 @@
 id: fix-version-without-target
 name: Fix Version Without Target Version
-description: >
-  Issues with Fix Version set but no Target Version suggest committed
-  work that PM hasn't planned for. Both fields should be aligned for
-  proper release tracking.
+description: 'Issues with Fix Version set but no Target Version suggest committed
+  work that PM hasn''t planned for. Both fields should be aligned for proper
+  release tracking.
 
-applies_to: [Feature, Epic]
-
+  '
+applies_to:
+- Feature
+- Epic
 condition:
   field_set: fix_version
   field_empty: target_version
-
 action:
   type: alert
-  message: >
-    {key} has Fix Version {fix_version} but no Target Version. Ensure
+  message: '{key} has Fix Version {fix_version} but no Target Version. Ensure
     PM has set Target Version to align planning and commitment.
-  recipients: [assignee]
 
+    '
+  recipients:
+  - assignee
 scope: org
 verification: deterministic
 enforcement: flag
-severity: low
-
 sources:
-  - id: SOURCE-21
-    excerpt: "Target Version = PM request, Fix Version = delivery commitment (single source of truth)"
-
+- id: SOURCE-21
+  excerpt: Target Version = PM request, Fix Version = delivery commitment
+    (single source of truth)
 date_added: 2026-07-28

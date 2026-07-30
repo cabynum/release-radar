@@ -1,35 +1,32 @@
 id: strat-review-required
 name: Strat-Review Approval Required Before Planning Freeze
-description: >
-  All features targeting the upcoming release must have passed
+description: 'All features targeting the upcoming release must have passed
   strat-review with approved status before Planning Freeze.
 
-applies_to: [Feature]
-
+  '
+applies_to:
+- Feature
 trigger:
   milestone: planning_freeze
   days_before: 7
-
 condition:
   field_set: target_version
   target_version_matches_release: true
   label_missing: strat-review-approved
-
 action:
   type: alert
-  message: >
-    Feature {key} targets {target_version} but lacks strat-review
+  message: 'Feature {key} targets {target_version} but lacks strat-review
     approval with {days} days until Planning Freeze ({milestone_date}).
-  recipients: [assignee, product_manager]
 
+    '
+  recipients:
+  - assignee
+  - product_manager
 release_phase: pre-planning-freeze
 scope: org
 verification: heuristic
 enforcement: alert
-severity: high
-
 sources:
-  - id: SOURCE-102
-    excerpt: "All features must have passed strat-review with approved status"
-
+- id: SOURCE-102
+  excerpt: All features must have passed strat-review with approved status
 date_added: 2026-07-28

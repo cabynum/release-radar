@@ -1,32 +1,36 @@
 id: missing-fix-version
 name: Missing Fix Version on Committed Work
-description: >
-  Fix Version must be set at commit time, not after work is done.
-  Features moved to In Progress or beyond without Fix Version indicate
-  uncommitted work advancing without delivery agreement.
+description: 'Fix Version must be set at commit time, not after work is done.
+  Features moved to In Progress or beyond without Fix Version indicate uncommitted
+  work advancing without delivery agreement.
 
-applies_to: [Feature]
-
+  '
+applies_to:
+- Feature
 condition:
-  status: [In Progress, Review, Testing, Release Pending]
+  status:
+  - In Progress
+  - Review
+  - Testing
+  - Release Pending
   field_empty: fix_version
-
 action:
   type: alert
-  message: >
-    Feature {key} is in {status} with no Fix Version. Fix Version
+  message: 'Feature {key} is in {status} with no Fix Version. Fix Version
     indicates engineering commitment and must be set when work begins.
-  recipients: [assignee, manager]
 
+    '
+  recipients:
+  - assignee
+  - manager
 scope: org
 verification: deterministic
 enforcement: comment
-severity: high
-
 sources:
-  - id: SOURCE-21
-    excerpt: "Fix Version must be set at commit time, not after work is done (Sherard Griffin)"
-  - id: SOURCE-144
-    excerpt: "By Planning Freeze all Fix Versions must be applied to indicate engineering commitment"
-
+- id: SOURCE-21
+  excerpt: Fix Version must be set at commit time, not after work is done
+    (Sherard Griffin)
+- id: SOURCE-144
+  excerpt: By Planning Freeze all Fix Versions must be applied to indicate
+    engineering commitment
 date_added: 2026-07-28

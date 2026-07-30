@@ -1,29 +1,30 @@
 id: missing-product-manager
 name: Missing Product Manager on Feature
-description: >
-  Features must have a Product Manager assigned. PM owns the RFE
+description: 'Features must have a Product Manager assigned. PM owns the RFE
   lifecycle, sets Target End, and closes features. Required by QG1.
 
-applies_to: [Feature]
-
+  '
+applies_to:
+- Feature
 condition:
-  status_category: ["In Progress", "To Do"]
+  status_category:
+  - In Progress
+  - To Do
   field_empty: product_manager
-
 action:
   type: alert
-  message: >
-    Feature {key} has no Product Manager. PM assignment is mandatory
+  message: 'Feature {key} has no Product Manager. PM assignment is mandatory
     (QG1 requirement).
-  recipients: [assignee, manager]
 
+    '
+  recipients:
+  - assignee
+  - manager
 scope: org
 verification: deterministic
 enforcement: comment
-severity: high
-
 sources:
-  - id: SOURCE-144
-    excerpt: "Mandatory Jira Fields: Product Manager, Assignee, Release Type, Target Version, Product, and Components"
-
+- id: SOURCE-144
+  excerpt: 'Mandatory Jira Fields: Product Manager, Assignee, Release Type,
+    Target Version, Product, and Components'
 date_added: 2026-07-28

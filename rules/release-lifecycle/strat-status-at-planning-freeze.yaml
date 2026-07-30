@@ -1,39 +1,40 @@
 id: strat-status-at-planning-freeze
 name: STRAT Status Must Be At Least To Do by Planning Freeze
-description: >
-  By Planning Freeze, all Features with Fix Version for the upcoming
-  release must have workflow status of at least To Do or In Progress.
-  Features still in New, Backlog, or Refinement indicate work has not
-  been adequately scoped or started for committed scope.
+description: 'By Planning Freeze, all Features with Fix Version for the upcoming
+  release must have workflow status of at least To Do or In Progress. Features
+  still in New, Backlog, or Refinement indicate work has not been adequately
+  scoped or started for committed scope.
 
-applies_to: [Feature]
-
+  '
+applies_to:
+- Feature
 trigger:
   milestone: planning_freeze
   days_before: 3
-
 condition:
   field_set: fix_version
   fix_version_matches_release: true
-  status_in: [New, Backlog, Refinement]
-
+  status_in:
+  - New
+  - Backlog
+  - Refinement
 action:
   type: alert
-  message: >
-    Feature {key} has Fix Version {fix_version} but status is still
+  message: 'Feature {key} has Fix Version {fix_version} but status is still
     "{status}" with {days} days until Planning Freeze ({milestone_date}).
-    STRAT status must be at least To Do or In Progress to confirm
-    readiness for committed scope.
-  recipients: [assignee, manager]
+    STRAT status must be at least To Do or In Progress to confirm readiness
+    for committed scope.
 
+    '
+  recipients:
+  - assignee
+  - manager
 release_phase: pre-planning-freeze
 scope: org
 verification: deterministic
 enforcement: alert
-severity: high
-
 sources:
-  - id: SOURCE-SLACK
-    excerpt: "STRAT status also has to be at least in To Do or In Progress (kitam, Planning Freeze guidance, 2026-07-29)"
-
+- id: SOURCE-SLACK
+  excerpt: STRAT status also has to be at least in To Do or In Progress (kitam,
+    Planning Freeze guidance, 2026-07-29)
 date_added: 2026-07-29

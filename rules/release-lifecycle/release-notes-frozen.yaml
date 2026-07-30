@@ -1,40 +1,38 @@
 id: release-notes-frozen
 name: Release Notes Frozen at Code Freeze
-description: >
-  All release notes must be submitted before Code Freeze. Features with
-  Docs Required = Yes and empty Release Note field at Code Freeze are
+description: 'All release notes must be submitted before Code Freeze. Features
+  with Docs Required = Yes and empty Release Note field at Code Freeze are
   in violation.
 
-applies_to: [Feature]
-
+  '
+applies_to:
+- Feature
 trigger:
   milestone: code_freeze
   days_before: 0
-
 condition:
   field_set: fix_version
   fix_version_matches_release: true
   field_value:
     field: docs_required
-    value: "Yes"
+    value: 'Yes'
   field_empty: release_note
-
 action:
   type: alert
-  message: >
-    Feature {key} has Docs Required = Yes but no Release Note at Code
-    Freeze ({milestone_date}). Release notes are now frozen. No
-    additional submissions accepted.
-  recipients: [assignee, product_manager]
+  message: 'Feature {key} has Docs Required = Yes but no Release Note at Code
+    Freeze ({milestone_date}). Release notes are now frozen. No additional
+    submissions accepted.
 
+    '
+  recipients:
+  - assignee
+  - product_manager
 release_phase: code-freeze
 scope: org
 verification: deterministic
 enforcement: alert
-severity: high
-
 sources:
-  - id: SOURCE-102
-    excerpt: "All release notes submitted; no additional release note submissions accepted after Code Freeze"
-
+- id: SOURCE-102
+  excerpt: All release notes submitted; no additional release note submissions
+    accepted after Code Freeze
 date_added: 2026-07-28

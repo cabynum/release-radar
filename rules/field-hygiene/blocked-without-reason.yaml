@@ -1,31 +1,31 @@
 id: blocked-without-reason
 name: Blocked Without Blocked Reason
-description: >
-  When Blocked = true, the Blocked Reason field must explain what the
-  blocker is. Execution domain tracks blockers via JQL.
+description: 'When Blocked = true, the Blocked Reason field must explain what
+  the blocker is. Execution domain tracks blockers via JQL.
 
-applies_to: [Feature, Epic, Story, Task]
-
+  '
+applies_to:
+- Feature
+- Epic
+- Story
+- Task
 condition:
   field_value:
     field: blocked
     value: true
   field_empty: blocked_reason
-
 action:
   type: alert
-  message: >
-    {key} is marked Blocked but has no Blocked Reason. Describe the
+  message: '{key} is marked Blocked but has no Blocked Reason. Describe the
     blocker so it can be tracked and resolved.
-  recipients: [assignee]
 
+    '
+  recipients:
+  - assignee
 scope: org
 verification: deterministic
 enforcement: comment
-severity: medium
-
 sources:
-  - id: SOURCE-12
-    excerpt: "Blocked field = true must pair with Blocked Reason description"
-
+- id: SOURCE-12
+  excerpt: Blocked field = true must pair with Blocked Reason description
 date_added: 2026-07-28

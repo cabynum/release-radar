@@ -1,32 +1,32 @@
 id: missing-strat-parent
 name: Missing Feature Parent Link on Epic
-description: >
-  Active Epics must link to a parent Feature or Initiative in RHAISTRAT
-  via Parent Link. Orphaned epics break feature rollup and release
+description: 'Active Epics must link to a parent Feature or Initiative in
+  RHAISTRAT via Parent Link. Orphaned epics break feature rollup and release
   tracking.
 
-applies_to: [Epic]
-
+  '
+applies_to:
+- Epic
 condition:
-  status: [In Progress, Review, Testing]
+  status:
+  - In Progress
+  - Review
+  - Testing
   field_empty: parent_link
-
 action:
   type: alert
-  message: >
-    {key} has no Parent Link to a Feature (RHAISTRAT). Link to the
+  message: '{key} has no Parent Link to a Feature (RHAISTRAT). Link to the
     parent Feature for release tracking.
-  recipients: [assignee]
 
+    '
+  recipients:
+  - assignee
 scope: org
 verification: deterministic
 enforcement: comment
-severity: medium
-
 sources:
-  - id: SOURCE-14
-    excerpt: "Epic: Goal-based chunk of work; child of Feature or Initiative"
-  - id: SOURCE-03
-    excerpt: "Active epic has no Parent Link connecting it to a Feature"
-
+- id: SOURCE-14
+  excerpt: 'Epic: Goal-based chunk of work; child of Feature or Initiative'
+- id: SOURCE-03
+  excerpt: Active epic has no Parent Link connecting it to a Feature
 date_added: 2026-07-28

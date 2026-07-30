@@ -1,29 +1,29 @@
 id: component-hierarchy-mismatch
 name: Component Mismatch Across Hierarchy
-description: >
-  A child issue's Component should align with its parent's Component.
+description: 'A child issue''s Component should align with its parent''s Component.
   Mismatches confuse ownership and routing.
 
-applies_to: [Epic, Story, Task, Bug]
-
+  '
+applies_to:
+- Epic
+- Story
+- Task
+- Bug
 condition:
   has_parent: true
   component_differs_from_parent: true
-
 action:
   type: alert
-  message: >
-    {key} has Component = {component} but parent {parent_key} has
+  message: '{key} has Component = {component} but parent {parent_key} has
     Component = {parent_component}. Align or document why they differ.
-  recipients: [assignee]
 
+    '
+  recipients:
+  - assignee
 scope: team
 verification: deterministic
 enforcement: flag
-severity: low
-
 sources:
-  - id: SOURCE-12
-    excerpt: "Child issue Component differs from parent Component"
-
+- id: SOURCE-12
+  excerpt: Child issue Component differs from parent Component
 date_added: 2026-07-28

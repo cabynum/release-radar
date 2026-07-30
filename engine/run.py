@@ -152,14 +152,6 @@ def _print_summary(result: dict):
         print(f"  {rule_id:40s} {count:4d}")
 
     print()
-    print("BY SEVERITY")
-    print("-" * 40)
-    for sev in ("critical", "high", "medium", "low"):
-        count = result["summary"]["by_severity"].get(sev, 0)
-        if count:
-            print(f"  {sev:12s} {count:4d}")
-
-    print()
     skipped = result["meta"].get("rules_skipped", {})
     if skipped:
         print(f"SKIPPED RULES ({len(skipped)})")

@@ -1,29 +1,31 @@
 id: missing-test-coverage
 name: Missing Test Coverage Field
-description: >
-  Work items should indicate test coverage status: Automated, Manual,
-  or No Coverage.
+description: 'Work items should indicate test coverage status: Automated,
+  Manual, or No Coverage.
 
-applies_to: [Story, Task, Bug]
-
+  '
+applies_to:
+- Story
+- Task
+- Bug
 condition:
-  status: [Review, Testing, Release Pending]
+  status:
+  - Review
+  - Testing
+  - Release Pending
   field_empty: test_coverage
-
 action:
   type: alert
-  message: >
-    {key} has no Test Coverage field. Set to Automated, Manual, or No
-    Coverage.
-  recipients: [assignee]
+  message: '{key} has no Test Coverage field. Set to Automated, Manual, or
+    No Coverage.
 
+    '
+  recipients:
+  - assignee
 scope: team
 verification: deterministic
 enforcement: flag
-severity: low
-
 sources:
-  - id: SOURCE-07
-    excerpt: "Test Coverage field: Automated, Manual, No Coverage"
-
+- id: SOURCE-07
+  excerpt: 'Test Coverage field: Automated, Manual, No Coverage'
 date_added: 2026-07-28

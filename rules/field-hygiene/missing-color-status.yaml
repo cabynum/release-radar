@@ -1,33 +1,39 @@
 id: missing-color-status
 name: Missing Color Status
-description: >
-  Issues in active status with Target Version set must have Color Status
-  (Green/Yellow/Red). Without TV there's no release commitment to be
-  "green" or "red" on.
+description: 'Issues in active status with Target Version set must have Color
+  Status (Green/Yellow/Red). Without TV there''s no release commitment to
+  be "green" or "red" on.
 
-applies_to: [Story, Task, Bug, Spike, Epic, Feature]
-
+  '
+applies_to:
+- Story
+- Task
+- Bug
+- Spike
+- Epic
+- Feature
 condition:
-  status: [In Progress, Review, Testing]
+  status:
+  - In Progress
+  - Review
+  - Testing
   field_set: target_version
   field_empty: color_status
-
 action:
   type: alert
-  message: >
-    {key} is {status} with Target Version {target_version} but no Color
-    Status. Set to Green, Yellow, or Red.
-  recipients: [assignee]
+  message: '{key} is {status} with Target Version {target_version} but no
+    Color Status. Set to Green, Yellow, or Red.
 
+    '
+  recipients:
+  - assignee
 scope: org
 verification: deterministic
 enforcement: comment
-severity: medium
-
 sources:
-  - id: SOURCE-01
-    excerpt: "Issue in In Progress, Review, or Testing with Target Version set and no Color Status"
-  - id: SOURCE-12
-    excerpt: "Health score formula includes Color Status population"
-
+- id: SOURCE-01
+  excerpt: Issue in In Progress, Review, or Testing with Target Version set
+    and no Color Status
+- id: SOURCE-12
+  excerpt: Health score formula includes Color Status population
 date_added: 2026-07-28

@@ -1,31 +1,31 @@
 id: signoff-incomplete
 name: Incomplete Sign-Off on Feature
-description: >
-  Features with a cloned sign-off template (DP/TP/GA) must have all
-  subtask sign-offs completed before the feature can be considered
-  release-ready. Incomplete sign-offs indicate outstanding approvals.
+description: 'Features with a cloned sign-off template (DP/TP/GA) must have
+  all subtask sign-offs completed before the feature can be considered release-ready.
+  Incomplete sign-offs indicate outstanding approvals.
 
-applies_to: [Feature]
-
+  '
+applies_to:
+- Feature
 condition:
-  status: [In Progress, Review]
+  status:
+  - In Progress
+  - Review
   no_signoff_complete: true
-
 action:
   type: alert
-  message: >
-    {key} has an incomplete sign-off template. One or more subtask
-    sign-offs are not Done. Complete all sign-offs before marking the
-    feature as release-ready.
-  recipients: [assignee]
+  message: '{key} has an incomplete sign-off template. One or more subtask
+    sign-offs are not Done. Complete all sign-offs before marking the feature
+    as release-ready.
 
+    '
+  recipients:
+  - assignee
 scope: org
 verification: heuristic
 enforcement: alert
-severity: medium
-
 sources:
-  - id: SOURCE-08
-    excerpt: "Sign-off process requires cloning the template and completing all subtask approvals"
-
+- id: SOURCE-08
+  excerpt: Sign-off process requires cloning the template and completing all
+    subtask approvals
 date_added: 2026-07-29

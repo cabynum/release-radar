@@ -78,7 +78,6 @@ def _make_rule(condition: dict, **overrides) -> dict:
         "applies_to": ["Story", "Task", "Bug", "Epic", "Feature", "Spike"],
         "condition": condition,
         "action": {"type": "alert", "message": "test"},
-        "severity": "medium",
     }
     rule.update(overrides)
     return rule

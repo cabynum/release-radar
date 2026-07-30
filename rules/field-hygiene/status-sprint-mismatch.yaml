@@ -1,29 +1,32 @@
 id: status-sprint-mismatch
 name: Status/Sprint Mismatch
-description: >
-  Issues in active status (In Progress, Review, Testing) must be in an
-  active sprint. Active work outside a sprint is invisible to planning.
+description: 'Issues in active status (In Progress, Review, Testing) must
+  be in an active sprint. Active work outside a sprint is invisible to planning.
 
-applies_to: [Story, Task, Bug, Spike]
-
+  '
+applies_to:
+- Story
+- Task
+- Bug
+- Spike
 condition:
-  status: [In Progress, Review, Testing]
+  status:
+  - In Progress
+  - Review
+  - Testing
   in_active_sprint: false
-
 action:
   type: alert
-  message: >
-    {key} is {status} but not in any active sprint. Add to the current
+  message: '{key} is {status} but not in any active sprint. Add to the current
     sprint or reset status to Backlog if work has paused.
-  recipients: [assignee]
 
+    '
+  recipients:
+  - assignee
 scope: org
 verification: deterministic
 enforcement: comment
-severity: medium
-
 sources:
-  - id: SOURCE-12
-    excerpt: "Health scoring penalizes in-progress issues without sprint assignment"
-
+- id: SOURCE-12
+  excerpt: Health scoring penalizes in-progress issues without sprint assignment
 date_added: 2026-07-28

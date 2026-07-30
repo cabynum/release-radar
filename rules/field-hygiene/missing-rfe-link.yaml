@@ -1,30 +1,31 @@
 id: missing-rfe-link
 name: Missing RFE Link on Feature
-description: >
-  Features should be linked via a "clones" link to an approved RHAIRFE
-  issue. Features without RFE provenance lack the RFE Council vetting
+description: 'Features should be linked via a "clones" link to an approved
+  RHAIRFE issue. Features without RFE provenance lack the RFE Council vetting
   that establishes priority and team assignment.
 
-applies_to: [Feature]
-
+  '
+applies_to:
+- Feature
 condition:
-  status: [Refinement, In Progress, Review]
-  no_clones_link_to: "RHAIRFE-*"
-
+  status:
+  - Refinement
+  - In Progress
+  - Review
+  no_clones_link_to: RHAIRFE-*
 action:
   type: alert
-  message: >
-    Feature {key} has no "clones" link to an approved RHAIRFE issue.
+  message: 'Feature {key} has no "clones" link to an approved RHAIRFE issue.
     Was this feature vetted through RFE Council?
-  recipients: [assignee]
 
+    '
+  recipients:
+  - assignee
 scope: team
 verification: deterministic
 enforcement: flag
-severity: medium
-
 sources:
-  - id: SOURCE-01
-    excerpt: "Feature is in active status and is not linked via 'clones' link to an approved RHAIRFE issue"
-
+- id: SOURCE-01
+  excerpt: Feature is in active status and is not linked via 'clones' link
+    to an approved RHAIRFE issue
 date_added: 2026-07-28

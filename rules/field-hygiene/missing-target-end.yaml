@@ -1,31 +1,31 @@
 id: missing-target-end
 name: Missing Target End on Feature
-description: >
-  Features should have a Target End date (PM's need-by date). Useful
-  for planning but not included in QG1 mandatory fields.
+description: 'Features should have a Target End date (PM''s need-by date).
+  Useful for planning but not included in QG1 mandatory fields.
 
-applies_to: [Feature]
-
+  '
+applies_to:
+- Feature
 condition:
-  status: [Refinement, In Progress, Review]
+  status:
+  - Refinement
+  - In Progress
+  - Review
   field_empty: target_end
-
 action:
   type: alert
-  message: >
-    Feature {key} has no Target End date. PM should set the need-by
+  message: 'Feature {key} has no Target End date. PM should set the need-by
     date for planning purposes.
-  recipients: [product_manager]
 
+    '
+  recipients:
+  - product_manager
 scope: team
 verification: deterministic
 enforcement: flag
-severity: low
-
 sources:
-  - id: SOURCE-01
-    excerpt: "Feature in active status with no Target End date set"
-  - id: SOURCE-14
-    excerpt: "Target End: PM's 'no later than' delivery date"
-
+- id: SOURCE-01
+  excerpt: Feature in active status with no Target End date set
+- id: SOURCE-14
+  excerpt: 'Target End: PM''s ''no later than'' delivery date'
 date_added: 2026-07-28

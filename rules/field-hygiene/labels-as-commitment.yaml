@@ -1,31 +1,36 @@
 id: labels-as-commitment
 name: Labels Used as Commitment Substitute
-description: >
-  Fix Version is the single source of truth for delivery commitment.
-  Labels like "committed", release numbers, or similar are not valid
-  substitutes and create confusion.
+description: 'Fix Version is the single source of truth for delivery commitment.
+  Labels like "committed", release numbers, or similar are not valid substitutes
+  and create confusion.
 
-applies_to: [Feature, Epic, Story, Task, Bug]
-
+  '
+applies_to:
+- Feature
+- Epic
+- Story
+- Task
+- Bug
 condition:
-  label_matches: ["committed", "3\\.\\d+", "rhoai-\\d+"]
+  label_matches:
+  - committed
+  - 3\.\d+
+  - rhoai-\d+
   field_empty: fix_version
-
 action:
   type: alert
-  message: >
-    {key} has label "{label}" suggesting commitment but no Fix Version.
-    Fix Version is the single source of truth. Remove the label and set
-    Fix Version instead.
-  recipients: [assignee]
+  message: '{key} has label "{label}" suggesting commitment but no Fix Version.
+    Fix Version is the single source of truth. Remove the label and set Fix
+    Version instead.
 
+    '
+  recipients:
+  - assignee
 scope: org
 verification: deterministic
 enforcement: flag
-severity: low
-
 sources:
-  - id: SOURCE-21
-    excerpt: "Stop using labels for commitment. Fix Version is the single source of truth for delivery commitment."
-
+- id: SOURCE-21
+  excerpt: Stop using labels for commitment. Fix Version is the single source
+    of truth for delivery commitment.
 date_added: 2026-07-28

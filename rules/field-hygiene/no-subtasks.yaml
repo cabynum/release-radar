@@ -1,28 +1,25 @@
 id: no-subtasks
 name: No Subtask Usage
-description: >
-  Work is tracked at the story/task/spike level. Subtasks are not visible
-  in sprint tracking and break allocation calculations. Any subtask in
-  the snapshot is a violation.
+description: 'Work is tracked at the story/task/spike level. Subtasks are
+  not visible in sprint tracking and break allocation calculations. Any subtask
+  in the snapshot is a violation.
 
-applies_to: [Sub-task]
-
+  '
+applies_to:
+- Sub-task
 condition: {}
-
 action:
   type: alert
-  message: >
-    Subtask {key} exists under {parent_link}. Team convention: do not
-    use subtasks. Track work as Stories, Tasks, or Spikes instead.
-  recipients: [assignee]
+  message: 'Subtask {key} exists under {parent_link}. Team convention: do
+    not use subtasks. Track work as Stories, Tasks, or Spikes instead.
 
+    '
+  recipients:
+  - assignee
 scope: org
 verification: deterministic
 enforcement: flag
-severity: low
-
 sources:
-  - id: SOURCE-03
-    excerpt: "Do not use subtasks. Work is tracked at the story/task/spike level."
-
+- id: SOURCE-03
+  excerpt: Do not use subtasks. Work is tracked at the story/task/spike level.
 date_added: 2026-07-28

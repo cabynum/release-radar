@@ -1,31 +1,35 @@
 id: missing-component
 name: Missing Component
-description: >
-  Issues in active status must have a Component set. Component drives
-  routing, ownership queries, and board scope.
+description: 'Issues in active status must have a Component set. Component
+  drives routing, ownership queries, and board scope.
 
-applies_to: [Epic, Story, Task, Bug, Spike]
-
+  '
+applies_to:
+- Epic
+- Story
+- Task
+- Bug
+- Spike
 condition:
-  status: [In Progress, Review, Testing]
+  status:
+  - In Progress
+  - Review
+  - Testing
   field_empty: component
-
 action:
   type: alert
-  message: >
-    {key} is in {status} with no Component. Set the Component field to
-    enable proper routing and tracking.
-  recipients: [assignee]
+  message: '{key} is in {status} with no Component. Set the Component field
+    to enable proper routing and tracking.
 
+    '
+  recipients:
+  - assignee
 scope: org
 verification: deterministic
 enforcement: comment
-severity: medium
-
 sources:
-  - id: SOURCE-12
-    excerpt: "Health score formula penalizes missing component"
-  - id: SOURCE-14
-    excerpt: "Components/Teams listed as required field"
-
+- id: SOURCE-12
+  excerpt: Health score formula penalizes missing component
+- id: SOURCE-14
+  excerpt: Components/Teams listed as required field
 date_added: 2026-07-28

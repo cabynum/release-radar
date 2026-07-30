@@ -1,31 +1,37 @@
 id: missing-team
 name: Missing Team Field
-description: >
-  All issues in non-Done status must have the Team field set. Team field
-  drives ownership, workload distribution, and board filtering.
+description: 'All issues in non-Done status must have the Team field set.
+  Team field drives ownership, workload distribution, and board filtering.
 
-applies_to: [Story, Task, Bug, Spike, Epic, Feature]
-
+  '
+applies_to:
+- Story
+- Task
+- Bug
+- Spike
+- Epic
+- Feature
 condition:
-  status_category: ["To Do", "In Progress"]
+  status_category:
+  - To Do
+  - In Progress
   field_empty: team
-
 action:
   type: alert
-  message: >
-    {key} has no Team field set. Set to the owning team (RHAI naming
+  message: '{key} has no Team field set. Set to the owning team (RHAI naming
     convention: "RHAI <Team Name>").
-  recipients: [assignee, manager]
 
+    '
+  recipients:
+  - assignee
+  - manager
 scope: org
 verification: deterministic
 enforcement: comment
-severity: high
-
 sources:
-  - id: SOURCE-01
-    excerpt: "Issue is in active status with no Team field set"
-  - id: SOURCE-97
-    excerpt: "All teams adopt RHAI <Team Name> naming convention. Engineering Leads must update shared Jira teams."
-
+- id: SOURCE-01
+  excerpt: Issue is in active status with no Team field set
+- id: SOURCE-97
+  excerpt: All teams adopt RHAI <Team Name> naming convention. Engineering
+    Leads must update shared Jira teams.
 date_added: 2026-07-28

@@ -1,31 +1,32 @@
 id: missing-rice-score
 name: Missing RICE Score on Feature
-description: >
-  Features in Refinement or beyond should have complete RICE scoring
-  (Reach, Impact, Confidence, Effort). Grandfathering: features on
-  releases <= rhoai-3.3 or rhoai-3.4-ea1 are exempt.
+description: 'Features in Refinement or beyond should have complete RICE scoring
+  (Reach, Impact, Confidence, Effort). Grandfathering: features on releases
+  <= rhoai-3.3 or rhoai-3.4-ea1 are exempt.
 
-applies_to: [Feature]
-
+  '
+applies_to:
+- Feature
 condition:
-  status: [Refinement, In Progress, Review]
+  status:
+  - Refinement
+  - In Progress
+  - Review
   field_empty: rice_score
   not_grandfathered: true
-
 action:
   type: alert
-  message: >
-    Feature {key} has incomplete RICE score. Complete all four fields:
+  message: 'Feature {key} has incomplete RICE score. Complete all four fields:
     Reach, Impact, Confidence, Effort.
-  recipients: [assignee, product_manager]
 
+    '
+  recipients:
+  - assignee
+  - product_manager
 scope: team
 verification: deterministic
 enforcement: flag
-severity: medium
-
 sources:
-  - id: SOURCE-01
-    excerpt: "Feature in Refinement with incomplete RICE score"
-
+- id: SOURCE-01
+  excerpt: Feature in Refinement with incomplete RICE score
 date_added: 2026-07-28

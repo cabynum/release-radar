@@ -185,11 +185,6 @@ def evaluate(rules_dir: Path, issues: list[dict], verbose: bool = False,
         for rule_id, reason in rules_skipped.items():
             print(f"    {rule_id}: {reason}")
 
-    severity_counts = {}
-    for v in violations:
-        sev = v["severity"]
-        severity_counts[sev] = severity_counts.get(sev, 0) + 1
-
     rule_counts = {}
     for v in violations:
         rid = v["rule_id"]
@@ -206,7 +201,6 @@ def evaluate(rules_dir: Path, issues: list[dict], verbose: bool = False,
         },
         "summary": {
             "total_violations": len(violations),
-            "by_severity": severity_counts,
             "by_rule": dict(sorted(rule_counts.items(), key=lambda x: -x[1])),
         },
         "violations": violations,

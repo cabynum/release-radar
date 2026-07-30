@@ -2,7 +2,7 @@
 
 A rule engine that evaluates Jira issues against field-hygiene and
 release-lifecycle policies. Outputs structured violations with full
-provenance (rule ID, severity, source references).
+provenance (rule ID, enforcement level, source references).
 
 Built for RHOAI teams on `redhat.atlassian.net`. Defaults target the
 Data Processing team but any team can override via CLI flags.

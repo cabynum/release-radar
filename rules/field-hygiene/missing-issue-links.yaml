@@ -1,29 +1,29 @@
 id: missing-issue-links
 name: Missing Issue Links on Feature
-description: >
-  Features that are blocked by, dependent on, or related to other
+description: 'Features that are blocked by, dependent on, or related to other
   issues must use the Issue Links field to capture those relationships.
 
-applies_to: [Feature]
-
+  '
+applies_to:
+- Feature
 condition:
-  status: [In Progress, Review]
+  status:
+  - In Progress
+  - Review
   field_empty: issue_links
-
 action:
   type: alert
-  message: >
-    Feature {key} has no Issue Links. If there are dependencies or
+  message: 'Feature {key} has no Issue Links. If there are dependencies or
     blockers, capture them in the Issue Links field.
-  recipients: [assignee]
 
+    '
+  recipients:
+  - assignee
 scope: team
 verification: heuristic
 enforcement: flag
-severity: low
-
 sources:
-  - id: SOURCE-04
-    excerpt: "Feature is blocked/dependent/related but Issue Links field not populated"
-
+- id: SOURCE-04
+  excerpt: Feature is blocked/dependent/related but Issue Links field not
+    populated
 date_added: 2026-07-28

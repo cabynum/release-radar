@@ -1,38 +1,43 @@
 id: unresolved-blockers
 name: Unresolved Blockers at Code Freeze
-description: >
-  All known blocker issues must be resolved or re-prioritized before
-  Code Freeze. Unresolved blockers require explicit leadership approval
+description: 'All known blocker issues must be resolved or re-prioritized
+  before Code Freeze. Unresolved blockers require explicit leadership approval
   to persist in the release.
 
-applies_to: [Bug, Story, Task, Epic]
-
+  '
+applies_to:
+- Bug
+- Story
+- Task
+- Epic
 trigger:
   milestone: code_freeze
   days_before: 3
-
 condition:
-  priority: [Blocker]
+  priority:
+  - Blocker
   field_set: fix_version
   fix_version_matches_release: true
-  status_not: [Release Pending, Closed]
-
+  status_not:
+  - Release Pending
+  - Closed
 action:
   type: alert
-  message: >
-    Blocker {key} is unresolved with {days} days until Code Freeze
-    ({milestone_date}). Must be resolved or approved by leadership
-    (Steven's staff) to persist in release.
-  recipients: [assignee, manager]
+  message: 'Blocker {key} is unresolved with {days} days until Code Freeze
+    ({milestone_date}). Must be resolved or approved by leadership (Steven''s
+    staff) to persist in release.
 
+    '
+  recipients:
+  - assignee
+  - manager
 release_phase: pre-code-freeze
 scope: org
 verification: deterministic
 enforcement: alert
-severity: critical
-
 sources:
-  - id: SOURCE-102
-    excerpt: "All known blocker issues expected to be resolved or re-prioritized before Code Freeze. Unresolved blockers must be explicitly approved by Steven's staff."
-
+- id: SOURCE-102
+  excerpt: All known blocker issues expected to be resolved or re-prioritized
+    before Code Freeze. Unresolved blockers must be explicitly approved by
+    Steven's staff.
 date_added: 2026-07-28
