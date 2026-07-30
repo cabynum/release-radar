@@ -6,9 +6,13 @@ we expect at each stage of the release cycle. Every rule here traces to a proces
 - **Field Hygiene** rules check Jira data quality each time the engine runs.
 - **Release Lifecycle** rules a are driven by release milestone windows (i.e fire 3 days before Code Freeze)
 
+<p align="center">
+  <img src="assets/radar-scan.png" width="480" alt="Radar scanning tickets">
+</p>
+
 ## Field Hygiene
 
-### 👤 Ownership & Accountability
+### Ownership & Accountability
 
 | ID | Expectation |
 |---|---|
@@ -21,7 +25,7 @@ we expect at each stage of the release cycle. Every rule here traces to a proces
 | `blocked-without-reason` | **Blocked flag requires a reason.** A flag without context doesn't help anyone resolve it. |
 | `cross-team-dependency` | **Cross-team blockers in bad state need escalation.** Blocked by another team's issue that's in Backlog/New or unassigned. |
 
-### 🎯 Planning & Release Commitment
+### Planning & Release Commitment
 
 - **Target Version** is set by Product Management. Requested release for delivery.
 - **Fix Version** is set by Engineering. Committed release for delivery.
@@ -36,7 +40,7 @@ we expect at each stage of the release cycle. Every rule here traces to a proces
 | `version-mismatch` | **Target Version** and **Fix Version** should point to the same release. A mismatch means PM and engineering disagree on timing. |
 | `missing-target-end` | **Features need a Target End date.** Drives timeline reporting and surfaces schedule risk. |
 
-### ⏱️ Progress & Maintenance
+### Progress & Maintenance
 
 Issues that haven't moved or been updated are either blocked or forgotten.
 These rules surface both.
@@ -53,7 +57,7 @@ These rules surface both.
 | `missing-story-points` | **Sprint issues need story points.** Velocity tracking and capacity planning depend on it. |
 | `missing-activity-type` | **Issues need an Activity Type.** Drives 40/40/20 allocation tracking. |
 
-### 📄 Documentation & Release Readiness
+### Documentation & Release Readiness
 
 Documentation fields need to be set early enough for tech writers and
 release managers to plan around them.
@@ -66,7 +70,7 @@ release managers to plan around them.
 | `missing-release-type` | **Features need a Release Type.** Dev Preview, Tech Preview, or GA determines support contract and doc scope. |
 | `missing-products` | **Features need the Products field.** Organizes cross-product impact and release notes. |
 
-### 🔗 Structure & Hierarchy
+### Structure & Hierarchy
 
 Our Jira hierarchy connects individual work items to strategic goals.
 These rules ensure the links between levels actually exist.
@@ -79,7 +83,7 @@ These rules ensure the links between levels actually exist.
 | `missing-issue-links` | **Features with dependencies should use Issue Links.** Makes relationships explicit and trackable. |
 | `no-subtasks` | **Track work at Story/Task level, not subtasks.** Team convention. Subtasks don't surface in sprint boards. |
 
-### ✅ Refinement & Sign-off
+### Refinement & Sign-off
 
 Features go through a refinement and approval process before delivery.
 These rules check that the process is complete and traceable.
@@ -92,7 +96,7 @@ These rules check that the process is complete and traceable.
 | `missing-signoff-template` | **Features need a sign-off template.** The DP/TP/GA checklist of pre-delivery requirements. |
 | `signoff-incomplete` | **All sign-off subtasks must be Done.** The checklist isn't optional. |
 
-### 🔌 Cross-System Integrity
+### Cross-System Integrity
 
 Some expectations span Jira and external systems like GitHub and docs
 tooling. These rules check that those connections are in place.
@@ -102,9 +106,13 @@ tooling. These rules check that those connections are in place.
 | `missing-git-pr` | **Issues in Review/Testing need the PR field populated.** Traces code changes back to work items. |
 | `missing-test-coverage` | **Issues should indicate test coverage status.** Feeds quality dashboards and release confidence. |
 
+<p align="center">
+  <img src="assets/freeze-locks.png" width="480" alt="Progressive freeze stages">
+</p>
+
 ## Release Lifecycle
 
-### 🔒 Planning Freeze
+### Planning Freeze
 
 Planning Freeze is where release scope locks. After Planning Freeze, adding anything new
 to the release requires a formal exception with a hard cap of 5 per release before requiring executive approval.
@@ -117,7 +125,7 @@ to the release requires a formal exception with a hard cap of 5 per release befo
 | `strat-review-required` | Features must have **strat-review** approval before Planning Freeze, confirming leadership sign-off on scope. |
 | `strat-status-at-planning-freeze` | The associated STRAT issue must have **status** at least **To Do** or **In Progress** by Planning Freeze. It cannot still be sitting in **New**. |
 
-### 🧊 Feature Freeze
+### Feature Freeze
 
 Feature Freeze marks "development complete" and focus shifts to testing and
 stabilization. If a feature is still in flight at Feature Freeze, it
@@ -131,7 +139,7 @@ this and go straight from Planning Freeze to Code Freeze).
 | `pre-feature-freeze-status` | Features must advance past **In Progress** before Feature Freeze. If development is not complete, the feature is not in this release. |
 | `pre-freeze-signoff` | **PM** and **UX** sign-off must be obtained before Feature Freeze, confirming delivered work matches what was planned. |
 
-### ⛔ Code Freeze
+### Code Freeze
 
 After Code Freeze, only blocker fixes merge and every single change
 goes through the exception process. Bug fixes that were ok to merge during the
