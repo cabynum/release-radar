@@ -108,9 +108,9 @@ to the release requires a formal exception with a hard cap of 5 per release befo
 
 ### Feature Freeze
 
-Development should be done and focus shifts to testing and
+Feature Freeze marks "development complete" and focus shifts to testing and
 stabilization. If a feature is still in flight at Feature Freeze, it
-gets descoped. Only applies to stable/GA releases (EA releases skip
+gets removed from the release. Only applies to stable/GA releases (EA releases skip
 this and go straight from Planning Freeze to Code Freeze).
 
 | ID | Expectation |
@@ -123,7 +123,7 @@ this and go straight from Planning Freeze to Code Freeze).
 ### Code Freeze
 
 After Code Freeze, only blocker fixes merge and every single change
-goes through the exception process. Bug fixes that were fine during the
+goes through the exception process. Bug fixes that were ok to merge during the
 Feature Freeze window now require formal approval too.
 
 | ID | Expectation |
@@ -138,9 +138,7 @@ Feature Freeze window now require formal approval too.
 
 ## Provenance
 
-None of this is made up. Every rule traces to one or more internal
-process documents, and each rule's YAML file includes the specific
-source IDs and excerpts so you can verify where it came from.
+Every rule traces to one or more internal process documents, and each rule's YAML file includes the specific source IDs and excerpts so you can verify where it came from.
 
 ## Adding rules
 
