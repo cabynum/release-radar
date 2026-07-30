@@ -113,7 +113,7 @@ class TestFieldEmpty:
 
     def test_external_field_never_empty(self):
         issue = _make_issue()
-        assert is_field_empty(issue, "refinement_doc") is False
+        assert is_field_empty(issue, "signoff_template") is False
 
     def test_field_set_inverse(self):
         issue = _make_issue(story_points=5)
@@ -147,7 +147,7 @@ class TestFieldValue:
 
     def test_external_field_returns_false(self):
         issue = _make_issue()
-        assert check_field_value(issue, {"field": "refinement_doc", "value": "yes"}) is False
+        assert check_field_value(issue, {"field": "signoff_template", "value": "yes"}) is False
 
 
 # --- Status conditions ---
@@ -662,7 +662,7 @@ class TestDaysSince:
 class TestUnsupportedConditions:
     def test_unsupported_key_skips_rule(self):
         issue = _make_issue()
-        rule = _make_rule({"no_refinement_doc_in_drive": True})
+        rule = _make_rule({"some_removed_condition": True})
         assert matches_condition(issue, rule) is False
 
     def test_unknown_key_skips_rule(self):
@@ -792,17 +792,6 @@ class TestSignoffTemplate:
 # --- External enrichment flags ---
 
 class TestExternalEnrichmentFlags:
-    def test_refinement_doc_missing_flag(self):
-        issue = _make_issue()
-        issue["_refinement_doc_missing"] = True
-        rule = _make_rule({"no_refinement_doc_in_drive": True})
-        assert matches_condition(issue, rule) is True
-
-    def test_refinement_doc_present_no_flag(self):
-        issue = _make_issue()
-        rule = _make_rule({"no_refinement_doc_in_drive": True})
-        assert matches_condition(issue, rule) is False
-
     def test_signoff_incomplete_flag(self):
         issue = _make_issue()
         issue["_signoff_incomplete"] = True

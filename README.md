@@ -7,11 +7,14 @@ provenance (rule ID, severity, source references).
 Built for the RHOAI Data Processing team's Jira workflow on
 `redhat.atlassian.net`.
 
+![System Design](design/system-design.png)
+
 ## What it does
 
 - Fetches issues from Jira REST API (with changelog for staleness detection)
 - Normalizes raw API responses into a flat snapshot format
-- Evaluates 46 YAML rules (38 field-hygiene + 8 release-lifecycle)
+- Evaluates 49 YAML rules (40 field-hygiene + 9 release-lifecycle)
+- Some rules check external sources (GitHub PRs, Jira subtask sign-offs)
 - Outputs `violations.json` with per-issue findings
 
 ## Quick start
@@ -32,9 +35,6 @@ python3 -m engine.run --releases 3.5,3.6
 
 # Run against a saved snapshot (no network needed)
 python3 -m engine.run --snapshot output/snapshot.json
-
-# Run with external enrichment (Google Drive, GitHub)
-python3 -m engine.run --releases 3.5,3.6 --enrich
 ```
 
 ## Rules
@@ -47,12 +47,13 @@ Rules are YAML files in `rules/`. Each rule specifies:
 - `action` - what to report (message template, recipients)
 - `sources` - provenance (SOURCE-XX references to process docs)
 
-### Field hygiene (38 rules)
+### Field hygiene (40 rules)
 
 Data correctness checks that run on every evaluation. Missing required
-fields, data integrity, staleness, hierarchy violations.
+fields, data integrity, staleness, hierarchy violations, cross-system
+checks (sign-off completeness, doc links, PR compliance).
 
-### Release lifecycle (8 rules)
+### Release lifecycle (9 rules)
 
 Org-policy checks that activate within milestone windows (post-freeze
 requirements, exception processes, quality gates).
@@ -67,7 +68,7 @@ engine/
   violations.py   - violation building + message templates
   milestones.py   - milestone loading + trigger windows
   jira_client.py  - Jira REST auth/fetch
-  enrich.py       - optional external data enrichment
+  enrich.py       - external data resolution (GitHub, Jira subtasks)
   run.py          - CLI pipeline
 ```
 
@@ -87,10 +88,9 @@ parsing, and milestone trigger logic.
 - `JIRA_EMAIL` - Jira account email
 - `JIRA_API_TOKEN` - Jira API token
 
-### Optional (for enrichment)
+### Optional (for full enrichment)
 
-- Google Workspace MCP server on port 8000 (for Drive searches)
-- `gh` CLI authenticated (for GitHub PR inspection)
+- `gh` CLI authenticated (for GitHub PR inspection post-code-freeze)
 
 ## Milestones
 

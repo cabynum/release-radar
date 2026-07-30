@@ -27,7 +27,6 @@ FIELD_ALIASES = {
     "sprint": "sprint",
     "issue_links": "issue_links",
     "labels": "labels",
-    "refinement_doc": "_EXTERNAL",
     "signoff_template": "_EXTERNAL",
     "release_type": "release_type",
     "product_manager": "product_manager",
@@ -70,7 +69,7 @@ KNOWN_CONDITION_KEYS = {
     "status_changed_after", "created_after",
     "updated_before_days", "not_grandfathered",
     "no_linked_signoff_template",
-    "no_refinement_doc_in_drive", "no_doc_draft_linked",
+    "no_doc_draft_linked",
     "no_signoff_complete",
     "pr_merged_to_release_branch", "no_jira_key_in_pr",
 }
@@ -551,10 +550,6 @@ def matches_condition(issue: dict, rule: dict,
             return False
 
     # --- External integration conditions ---
-
-    if "no_refinement_doc_in_drive" in condition and condition["no_refinement_doc_in_drive"]:
-        if not issue.get("_refinement_doc_missing"):
-            return False
 
     if "no_doc_draft_linked" in condition and condition["no_doc_draft_linked"]:
         if not issue.get("_doc_draft_missing"):

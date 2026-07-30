@@ -1,159 +1,20 @@
-"""External data enrichment for release-radar.
+"""External data resolution for release-radar.
 
-Fetches data from Google Drive, Jira subtask links, and GitHub to set
-boolean flags consumed by condition evaluation. Each enrichment function
-annotates issues in-place with underscore-prefixed keys.
+Some rules check facts that live outside the Jira issue itself (GitHub
+PRs, sign-off subtask status, doc link presence). This module fetches
+that data and annotates issues with boolean flags before rule evaluation.
 
-Enrichment is best-effort: if an external service is unavailable, the
-affected rules will not fire (flags default to False = "no problem found").
-The run summary reports which enrichments succeeded.
+Best-effort: if an external service is unavailable, the affected rules
+simply will not fire (flags default to False).
 """
 
 import json
-import os
 import re
 import subprocess
 import urllib.error
 import urllib.request
-from pathlib import Path
 
 from .jira_client import jira_get, load_env
-
-# Google Drive folder ID for DP refinement/verification docs
-_REFINEMENT_DRIVE_FOLDER = os.environ.get(
-    "REFINEMENT_DRIVE_FOLDER_ID", "1aD4YOsNLESxDrGXdWBVMh7u99dc9rKi0"
-)
-
-# GWS MCP streamable-http endpoint
-_GWS_MCP_URL = "http://localhost:8000/mcp"
-_GOOGLE_EMAIL = os.environ.get("GOOGLE_EMAIL", "cbynum@redhat.com")
-
-
-def enrich_refinement_docs(issues: list[dict], verbose: bool = False) -> bool:
-    """Check Google Drive for Feature Refinement docs.
-
-    Sets _refinement_doc_missing = True on features that have no
-    matching doc (by key) in the DP refinement Drive folder.
-    Returns True if enrichment succeeded.
-    """
-    features = [i for i in issues if i.get("issue_type") == "Feature"
-                and i.get("project") == "RHAISTRAT"
-                and i.get("status") in ("In Progress", "Review")]
-
-    if not features:
-        return True
-
-    found_keys = _search_drive_for_keys([f["key"] for f in features], verbose)
-    if found_keys is None:
-        if verbose:
-            print("  Refinement docs: SKIPPED (Drive unavailable)")
-        return False
-
-    for issue in features:
-        issue["_refinement_doc_missing"] = issue["key"] not in found_keys
-
-    if verbose:
-        missing = sum(1 for i in features if i.get("_refinement_doc_missing"))
-        print(f"  Refinement docs: {len(features)} features checked, "
-              f"{missing} missing")
-    return True
-
-
-def _mcp_call(method: str, params: dict, session_id: str | None = None) -> dict | None:
-    """Make a JSON-RPC call to the GWS MCP server.
-
-    Returns the result dict or None on failure.
-    """
-    payload = {
-        "jsonrpc": "2.0",
-        "id": 1,
-        "method": method,
-        "params": params,
-    }
-    headers = {
-        "Content-Type": "application/json",
-        "Accept": "application/json, text/event-stream",
-    }
-    if session_id:
-        headers["mcp-session-id"] = session_id
-
-    req = urllib.request.Request(
-        _GWS_MCP_URL,
-        data=json.dumps(payload).encode(),
-        method="POST",
-        headers=headers,
-    )
-    try:
-        with urllib.request.urlopen(req, timeout=20) as resp:
-            body = resp.read().decode()
-            session = resp.headers.get("mcp-session-id") or session_id
-            for line in body.splitlines():
-                if line.startswith("data: "):
-                    data = json.loads(line[6:])
-                    if "result" in data:
-                        return {"result": data["result"], "session_id": session}
-                    if "error" in data:
-                        return None
-            try:
-                data = json.loads(body)
-                if "result" in data:
-                    return {"result": data["result"], "session_id": session}
-            except json.JSONDecodeError:
-                pass
-    except (urllib.error.URLError, OSError, json.JSONDecodeError):
-        pass
-    return None
-
-
-def _get_mcp_session() -> str | None:
-    """Initialize an MCP session and return the session ID."""
-    result = _mcp_call("initialize", {
-        "protocolVersion": "2024-11-05",
-        "capabilities": {},
-        "clientInfo": {"name": "release-radar", "version": "1.0"},
-    })
-    if result:
-        return result.get("session_id")
-    return None
-
-
-def _search_drive_for_keys(keys: list[str],
-                           verbose: bool = False) -> set[str] | None:
-    """Search Google Drive for docs matching Jira keys.
-
-    Uses the GWS MCP server's search_drive_files tool.
-    Returns set of found keys, or None if service unavailable.
-    """
-    session_id = _get_mcp_session()
-    if not session_id:
-        return None
-
-    query = f"'{_REFINEMENT_DRIVE_FOLDER}' in parents"
-    result = _mcp_call("tools/call", {
-        "name": "search_drive_files",
-        "arguments": {
-            "user_google_email": _GOOGLE_EMAIL,
-            "query": query,
-            "page_size": 100,
-            "detailed": False,
-        }
-    }, session_id=session_id)
-
-    if not result:
-        return None
-
-    content = result.get("result", {}).get("content", [])
-    file_text = ""
-    for block in content:
-        if isinstance(block, dict) and block.get("type") == "text":
-            file_text += block.get("text", "")
-
-    found = set()
-    for key in keys:
-        if key in file_text:
-            found.add(key)
-
-    return found
 
 
 def enrich_doc_drafts(issues: list[dict], verbose: bool = False) -> bool:
@@ -367,7 +228,6 @@ def run_enrichment(issues: list[dict], milestones: dict | None = None,
     """
     results = {}
 
-    results["refinement_docs"] = enrich_refinement_docs(issues, verbose)
     results["doc_drafts"] = enrich_doc_drafts(issues, verbose)
     results["signoff_status"] = enrich_signoff_status(issues, verbose)
 

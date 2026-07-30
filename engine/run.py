@@ -60,7 +60,7 @@ def _build_jql(releases: list[str], milestones: dict | None = None) -> str:
 
 def run_pipeline(releases: list[str], rules_dir: Path, output_dir: Path,
                  verbose: bool = False, snapshot_path: Path | None = None,
-                 milestones_path: Path | None = None, enrich: bool = False):
+                 milestones_path: Path | None = None):
     """Full pipeline: fetch -> normalize -> evaluate -> output."""
     now = datetime.now(timezone.utc)
 
@@ -123,15 +123,11 @@ def run_pipeline(releases: list[str], rules_dir: Path, output_dir: Path,
         snapshot_file.write_text(json.dumps(snapshot_data, indent=2))
         print(f"  Snapshot saved: {snapshot_file}")
 
-    if enrich:
-        print("Enriching with external data...")
-        enrichment = run_enrichment(issues, milestones=ms, verbose=verbose)
-    else:
-        enrichment = None
+    print("Resolving external data...")
+    ext_status = run_enrichment(issues, milestones=ms, verbose=verbose)
 
     result = evaluate(rules_dir, issues, verbose=verbose, milestones=ms)
-    if enrichment:
-        result["meta"]["enrichment"] = enrichment
+    result["meta"]["external_sources"] = ext_status
 
     violations_file = output_dir / "violations.json"
     violations_file.write_text(json.dumps(result, indent=2))
@@ -178,8 +174,6 @@ def main():
     parser.add_argument("--snapshot", type=Path, default=None)
     parser.add_argument("--rules-dir", type=Path, default=PROJECT_DIR / "rules")
     parser.add_argument("--output-dir", type=Path, default=PROJECT_DIR / "output")
-    parser.add_argument("--enrich", action="store_true",
-                        help="Run external enrichment (requires Drive/GitHub auth)")
     parser.add_argument("--verbose", "-v", action="store_true")
     args = parser.parse_args()
 
@@ -191,7 +185,6 @@ def main():
         output_dir=args.output_dir,
         verbose=args.verbose,
         snapshot_path=args.snapshot,
-        enrich=args.enrich,
     )
 
 

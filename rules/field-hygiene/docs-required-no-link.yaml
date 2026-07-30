@@ -1,0 +1,33 @@
+id: docs-required-no-link
+name: Docs Required but No Doc Link
+description: >
+  Features with Docs Required set to Yes must have a linked documentation
+  issue (via "documents" or "is documented by" link type). Missing doc
+  links risk shipping a feature without customer-facing documentation.
+
+applies_to: [Feature]
+
+condition:
+  field_value:
+    field: docs_required
+    value: "Yes"
+  no_doc_draft_linked: true
+
+action:
+  type: alert
+  message: >
+    {key} has Docs Required = Yes but no documentation issue linked.
+    Link the doc issue via "documents" or "is documented by" before
+    the feature ships.
+  recipients: [assignee]
+
+scope: org
+verification: heuristic
+enforcement: alert
+severity: medium
+
+sources:
+  - id: SOURCE-01
+    excerpt: "Features with documentation requirements must have linked doc issues"
+
+date_added: 2026-07-29
