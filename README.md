@@ -1,21 +1,39 @@
 # release-radar
 
-A rule engine that evaluates Jira issues against field-hygiene and
-release-lifecycle policies. Outputs structured violations with full
+A system for detecting and acting on Jira policy violations across
+field-hygiene and release-lifecycle rules. The engine evaluates issues
+against 57 YAML rules and outputs structured violations with full
 provenance (rule ID, enforcement level, source references).
 
 Built for RHOAI teams on `redhat.atlassian.net`. Defaults target the
 Data Processing team but any team can override via CLI flags.
 
-![System Design](design/system-design.png)
+![Architecture](design/architecture.png)
 
-## What it does
+## System layers
 
-- Fetches issues from Jira REST API (with changelog for staleness detection)
-- Normalizes raw API responses into a flat snapshot format
-- Evaluates 57 YAML rules (41 field-hygiene + 16 release-lifecycle)
-- Some rules check external sources (GitHub PRs, Jira subtask sign-offs)
-- Outputs `violations.json` with per-issue findings
+release-radar has three layers: the **Engine** (this repo), the
+**Orchestrator**, and **Actions**.
+
+The Engine is what you're looking at. It detects violations. What you
+*do* about those violations is a separate concern, handled by the
+Orchestrator and Actions layers.
+
+**The Orchestrator and Actions are local.** This is intentional. How a
+team responds to findings is a matter of preference: which Slack channel
+to post to, whether to DM individuals or summarize for leads, what
+thresholds warrant escalation, whether to run daily or on-demand. These
+are opinions, not universal truths. Teams should have autonomy over how
+they act on findings.
+
+Today the engine is what's published. The full system (orchestration +
+actions) may be adopted by the extended team as patterns mature.
+
+| Layer | What it does | Where it lives |
+|---|---|---|
+| **Engine** | Fetch, normalize, evaluate, output violations | This repo |
+| **Orchestrator** | Configure scan parameters, route findings | Local |
+| **Actions** | Post to dedicated Slack channel, tag owners | Local |
 
 ## Quick start
 
@@ -65,31 +83,17 @@ Rules are YAML files in `rules/`. Each rule specifies:
 - `action` - what to report (message template, recipients)
 - `sources` - provenance (SOURCE-XX references to process docs)
 
-### Field hygiene (41 rules)
+### Field hygiene (39 rules)
 
 Data correctness checks that run on every evaluation. Missing required
 fields, data integrity, staleness, hierarchy violations, cross-system
 checks (sign-off completeness, doc links, PR compliance).
 
-### Release lifecycle (16 rules)
+### Release lifecycle (18 rules)
 
 Org-policy checks that activate within milestone windows. Feature freeze
 readiness, code freeze enforcement, sign-off gates, exception processes,
 quality gates.
-
-## Architecture
-
-```
-engine/
-  conditions.py   - condition operators (AND-gate evaluation)
-  normalize.py    - Jira REST API -> flat snapshot
-  evaluate.py     - rule loop orchestrator
-  violations.py   - violation building + message templates
-  milestones.py   - milestone loading + trigger windows
-  jira_client.py  - Jira REST auth/fetch
-  enrich.py       - external data resolution (GitHub, Jira subtasks)
-  run.py          - CLI pipeline
-```
 
 ## Tests
 
