@@ -2,7 +2,7 @@
 
 A system for detecting and acting on Jira policy violations across
 field-hygiene and release-lifecycle rules. The engine evaluates issues
-against 57 YAML rules and outputs structured violations with full
+against a library of YAML rules and outputs structured violations with full
 provenance (rule ID, enforcement level, source references).
 
 Built for RHOAI teams on `redhat.atlassian.net`. Defaults target the
@@ -15,9 +15,14 @@ Data Processing team but any team can override via CLI flags.
 release-radar has three layers: the **Engine** (this repo), the
 **Orchestrator**, and **Actions**.
 
-The Engine is what you're looking at. It detects violations. What you
-*do* about those violations is a separate concern, handled by the
-Orchestrator and Actions layers.
+The Engine is what you're looking at. It's a standalone CLI tool that
+provides immediate value on its own: point it at your team's Jira
+issues, get back a structured report of every policy violation with
+rule IDs, severity, and source references. No orchestration needed,
+no setup beyond credentials. One command, full visibility.
+
+What you *do* about those violations is a separate concern, handled by
+the Orchestrator and Actions layers.
 
 **The Orchestrator and Actions are local.** This is intentional. How a
 team responds to findings is a matter of preference: which Slack channel
@@ -26,8 +31,9 @@ thresholds warrant escalation, whether to run daily or on-demand. These
 are opinions, not universal truths. Teams should have autonomy over how
 they act on findings.
 
-Today the engine is what's published. The full system (orchestration +
-actions) may be adopted by the extended team as patterns mature.
+The engine is published and ready to use today. The full system
+(orchestration + actions) may be adopted by the extended team as
+patterns mature.
 
 | Layer | What it does | Where it lives |
 |---|---|---|
@@ -83,13 +89,13 @@ Rules are YAML files in `rules/`. Each rule specifies:
 - `action` - what to report (message template, recipients)
 - `sources` - provenance (SOURCE-XX references to process docs)
 
-### Field hygiene (39 rules)
+### Field hygiene
 
 Data correctness checks that run on every evaluation. Missing required
 fields, data integrity, staleness, hierarchy violations, cross-system
 checks (sign-off completeness, doc links, PR compliance).
 
-### Release lifecycle (18 rules)
+### Release lifecycle
 
 Org-policy checks that activate within milestone windows. Feature freeze
 readiness, code freeze enforcement, sign-off gates, exception processes,
@@ -101,7 +107,7 @@ quality gates.
 pytest
 ```
 
-132 unit tests covering condition operators, normalization, changelog
+Unit tests covering condition operators, normalization, changelog
 parsing, and milestone trigger logic.
 
 ## Configuration
