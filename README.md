@@ -10,6 +10,9 @@ Data Processing team but any team can override via CLI flags.
 
 ![Architecture](design/architecture.png)
 
+Layer deep-dives: [Engine](design/engine-component-design.png) ·
+[Actions](design/actions-component-design.png)
+
 ## System layers
 
 release-radar has three layers: the **Engine** (this repo), the

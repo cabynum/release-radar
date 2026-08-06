@@ -3,7 +3,7 @@
 Detection library for Jira field-hygiene and release-lifecycle policy
 violations. Deterministic evaluation with structured output.
 
-![Engine](../design/system-design.png)
+![Engine](../design/engine-component-design.png)
 
 ## What it does
 
