@@ -27,6 +27,7 @@ CUSTOM_FIELDS = {
     "customfield_10875": "git_pull_request",
     "customfield_10023": "target_end",
     "customfield_10847": "release_blocker",
+    "customfield_10849": "release_commit_exception",
 }
 
 JIRA_FIELDS = [
@@ -247,6 +248,7 @@ def normalize_rest_issue(raw: dict, histories: list | None = None) -> dict:
         "release_note_type": _get_option_value(f.get("customfield_10785")),
         "release_text": _get_adf_text(f.get("customfield_10783")),
         "release_blocker": _get_option_value(f.get("customfield_10847")),
+        "release_commit_exception": _get_option_value(f.get("customfield_10849")),
         "created": f.get("created"),
         "changelog": changelog_data,
     }

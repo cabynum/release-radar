@@ -1,23 +1,21 @@
 id: color-summary-mismatch
 name: Color Status / Status Summary Mismatch
-description: 'When both Color Status and Status Summary are populated, the
-  color word in the summary text must match the Color Status field value.
-  Red status with empty summary is a special case requiring immediate attention.
+description: 'When Color Status is Red, Status Summary must not be empty
+  (SOURCE-12). Color-word prefix matching (summary must start with GREEN /
+  YELLOW / RED) was dropped 2026-08-06 as board convention, not
+  source-backed policy.
 
   '
 applies_to:
 - Feature
 - Epic
 condition:
-  any_of:
-  - field_set: color_status
-    status_summary_color_mismatch: true
-  - color_status: Red
-    field_empty: status_summary
+  color_status: Red
+  field_empty: status_summary
 action:
   type: alert
-  message: '{key} has Color Status = {color_status} but Status Summary {mismatch_detail}.
-    Align the two fields.
+  message: '{key} has Color Status = Red but Status Summary is empty. Add a
+    summary so stakeholders know what is blocked and why.
 
     '
   recipients:
@@ -26,8 +24,7 @@ scope: org
 verification: deterministic
 enforcement: comment
 sources:
-- id: SOURCE-07
-  excerpt: Color word (GREEN/YELLOW/RED) matches the Color Status field
 - id: SOURCE-12
   excerpt: Color Status is Red but Status Summary is empty
 date_added: 2026-07-28
+date_narrowed: 2026-08-06

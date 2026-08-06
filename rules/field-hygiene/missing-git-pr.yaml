@@ -1,8 +1,13 @@
 id: missing-git-pr
 name: Missing Git Pull Request Field
-description: 'Issues in Review or Testing must have the Git Pull Request field
-  populated (not links in comments). The PR/MR automation gate checks this
-  field.
+status: suppressed
+enabled: false
+description: 'SUPPRESSED 2026-08-06. SOURCE-85 checks native GitHub
+  integration and the Web Links field. SOURCE-03 covers git URLs in the
+  wrong location (comments/description). This rule required the Git Pull
+  Request custom field to be populated whenever status is Review/Testing,
+  inventing a mandatory-presence check on the wrong field. Re-enable only
+  with a wrong-location detector or a real Git Pull Request field mandate.
 
   '
 applies_to:
@@ -28,9 +33,10 @@ verification: deterministic
 enforcement: comment
 sources:
 - id: SOURCE-85
-  excerpt: PR/MR automation gate updated to check both native GitHub integration
-    and Web Links field
+  excerpt: 'MISATTRIBUTED: gate checks native GitHub integration and Web
+    Links field, not mandatory Git Pull Request custom field presence.'
 - id: SOURCE-03
   excerpt: Git link appears in comments instead of dedicated Git Pull Request
-    field
+    field (wrong-location, not empty-field)
 date_added: 2026-07-28
+date_suppressed: 2026-08-06

@@ -234,6 +234,57 @@ class TestVersionConditions:
         rule = _make_rule({"versions_differ": True})
         assert matches_condition(issue, rule) is False
 
+    def test_versions_differ_aliases_same_train(self):
+        """Extra TV alias for the same train is not a mismatch."""
+        issue = _make_issue(
+            target_version=["rhoai-3.5", "3.5 GA RHOAI RELEASE"],
+            fix_versions=["3.5 GA RHOAI RELEASE"],
+        )
+        rule = _make_rule({"versions_differ": True})
+        lookup = {
+            "rhoai-3.5": "3.5 GA",
+            "3.5 GA RHOAI RELEASE": "3.5 GA",
+        }
+        assert matches_condition(issue, rule, version_lookup=lookup) is False
+
+    def test_versions_differ_tv_covers_fv(self):
+        """TV may list more trains than FV; FV must be covered."""
+        issue = _make_issue(
+            target_version=["3.6 EA1 RHOAI RELEASE", "3.6 EA2 RHOAI RELEASE"],
+            fix_versions=["3.6 EA2 RHOAI RELEASE"],
+        )
+        rule = _make_rule({"versions_differ": True})
+        lookup = {
+            "3.6 EA1 RHOAI RELEASE": "3.6 EA1",
+            "3.6 EA2 RHOAI RELEASE": "3.6 EA2",
+        }
+        assert matches_condition(issue, rule, version_lookup=lookup) is False
+
+    def test_versions_differ_fv_not_in_tv(self):
+        """FV train missing from TV is a real mismatch."""
+        issue = _make_issue(
+            target_version=["3.6 EA1 RHOAI RELEASE"],
+            fix_versions=["3.6 EA2 RHOAI RELEASE"],
+        )
+        rule = _make_rule({"versions_differ": True})
+        lookup = {
+            "3.6 EA1 RHOAI RELEASE": "3.6 EA1",
+            "3.6 EA2 RHOAI RELEASE": "3.6 EA2",
+        }
+        assert matches_condition(issue, rule, version_lookup=lookup) is True
+
+    def test_versions_differ_different_trains(self):
+        issue = _make_issue(
+            target_version=["3.6 EA1 RHOAI RELEASE"],
+            fix_versions=["3.6 EA2 RHOAI RELEASE"],
+        )
+        rule = _make_rule({"versions_differ": True})
+        lookup = {
+            "3.6 EA1 RHOAI RELEASE": "3.6 EA1",
+            "3.6 EA2 RHOAI RELEASE": "3.6 EA2",
+        }
+        assert matches_condition(issue, rule, version_lookup=lookup) is True
+
     def test_fix_version_matches_release(self):
         issue = _make_issue(fix_versions=["3.5 GA RHOAI RELEASE"])
         rule = _make_rule({"fix_version_matches_release": True})
@@ -592,6 +643,129 @@ class TestStatusChangedAfter:
         )
         rule = _make_rule({"status_changed_after": "code_freeze_date"})
         assert matches_condition(issue, rule) is False
+
+
+# --- post-code-freeze exception (RHAISTRAT-1286 class) ---
+#
+# Moving to Release Pending / Closed after Code Freeze is completion, not a
+# blocker-exception event. Release Commit Exception (Feature Freeze scope) is
+# a different field from Release Blocker (Code Freeze).
+
+_POST_CF_EXCEPTION = {
+    "field_set": "fix_version",
+    "fix_version_matches_release": True,
+    "status_changed_after": "code_freeze_date",
+    "status_not": ["Release Pending", "Closed"],
+    "field_not_value": {"field": "release_blocker", "value": "Approved"},
+}
+
+_POST_CF_BLOCKER_EMPTY = {
+    "field_set": "fix_version",
+    "fix_version_matches_release": True,
+    "status_changed_after": "code_freeze_date",
+    "status_not": ["Release Pending", "Closed"],
+    "field_empty": "release_blocker",
+}
+
+_RELEASE_VERSIONS = ["3.5 GA RHOAI RELEASE", "rhoai-3.5"]
+
+
+def _post_cf_issue(**overrides) -> dict:
+    """Issue that changed status after Code Freeze with matching Fix Version."""
+    base = {
+        "status": "In Progress",
+        "fix_versions": ["3.5 GA RHOAI RELEASE"],
+        "release_blocker": None,
+        "release_commit_exception": "Approved",
+        "changelog": {
+            "last_status_change": "2026-07-29T10:00:00.000+0000",
+            "last_update": "2026-07-29T10:00:00.000+0000",
+            "field_history": {},
+        },
+    }
+    base.update(overrides)
+    return _make_issue(**base)
+
+
+class TestPostCodeFreezeException:
+    """Mirrors post-code-freeze-exception.yaml + release-blocker-field-required.yaml."""
+
+    def test_release_pending_after_cf_does_not_fire(self):
+        """RHAISTRAT-1286: Review -> Release Pending after CF is completion."""
+        milestone_date_context[0] = "2026-07-24"
+        try:
+            issue = _post_cf_issue(status="Release Pending")
+            rule = _make_rule(_POST_CF_EXCEPTION)
+            assert matches_condition(
+                issue, rule, release_versions=_RELEASE_VERSIONS
+            ) is False
+            empty_rule = _make_rule(_POST_CF_BLOCKER_EMPTY)
+            assert matches_condition(
+                issue, empty_rule, release_versions=_RELEASE_VERSIONS
+            ) is False
+        finally:
+            milestone_date_context[0] = None
+
+    def test_closed_after_cf_does_not_fire(self):
+        milestone_date_context[0] = "2026-07-24"
+        try:
+            issue = _post_cf_issue(status="Closed")
+            rule = _make_rule(_POST_CF_EXCEPTION)
+            assert matches_condition(
+                issue, rule, release_versions=_RELEASE_VERSIONS
+            ) is False
+        finally:
+            milestone_date_context[0] = None
+
+    def test_active_status_after_cf_without_blocker_fires(self):
+        milestone_date_context[0] = "2026-07-24"
+        try:
+            issue = _post_cf_issue(status="Review")
+            rule = _make_rule(_POST_CF_EXCEPTION)
+            assert matches_condition(
+                issue, rule, release_versions=_RELEASE_VERSIONS
+            ) is True
+            empty_rule = _make_rule(_POST_CF_BLOCKER_EMPTY)
+            assert matches_condition(
+                issue, empty_rule, release_versions=_RELEASE_VERSIONS
+            ) is True
+        finally:
+            milestone_date_context[0] = None
+
+    def test_active_status_with_blocker_approved_suppresses(self):
+        milestone_date_context[0] = "2026-07-24"
+        try:
+            issue = _post_cf_issue(
+                status="In Progress",
+                release_blocker="Approved",
+            )
+            rule = _make_rule(_POST_CF_EXCEPTION)
+            assert matches_condition(
+                issue, rule, release_versions=_RELEASE_VERSIONS
+            ) is False
+            # Empty-blocker rule also suppressed when Approved is set
+            empty_rule = _make_rule(_POST_CF_BLOCKER_EMPTY)
+            assert matches_condition(
+                issue, empty_rule, release_versions=_RELEASE_VERSIONS
+            ) is False
+        finally:
+            milestone_date_context[0] = None
+
+    def test_commit_exception_approved_does_not_satisfy_blocker(self):
+        """Release Commit Exception != Release Blocker (Feature vs Code Freeze)."""
+        milestone_date_context[0] = "2026-07-24"
+        try:
+            issue = _post_cf_issue(
+                status="Review",
+                release_blocker=None,
+                release_commit_exception="Approved",
+            )
+            rule = _make_rule(_POST_CF_EXCEPTION)
+            assert matches_condition(
+                issue, rule, release_versions=_RELEASE_VERSIONS
+            ) is True
+        finally:
+            milestone_date_context[0] = None
 
 
 class TestCreatedAfter:

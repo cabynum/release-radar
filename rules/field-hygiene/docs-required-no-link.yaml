@@ -1,8 +1,15 @@
 id: docs-required-no-link
 name: Docs Required but No Doc Link
-description: 'Features with Docs Required set to Yes must have a linked documentation
-  issue (via "documents" or "is documented by" link type). Missing doc links
-  risk shipping a feature without customer-facing documentation.
+status: suppressed
+enabled: false
+description: 'SUPPRESSED 2026-08-05. Continuous "must link a docs issue via
+  documents / is documented by" is not backed by SOURCE-01 (that source only
+  requires Docs Required = Yes/No). Re-enable only if a stronger source
+  appears. Feature Freeze draft handoff remains covered by
+  doc-draft-at-feature-freeze (SOURCE-102).
+
+  Original intent: Features with Docs Required = Yes should have a linked
+  documentation issue.
 
   '
 applies_to:
@@ -26,5 +33,7 @@ verification: heuristic
 enforcement: alert
 sources:
 - id: SOURCE-01
-  excerpt: Features with documentation requirements must have linked doc issues
+  excerpt: 'WEAK / MISATTRIBUTED: SOURCE-01 only requires Docs Required field
+    Yes or No. It does not require a linked documentation issue.'
 date_added: 2026-07-29
+date_suppressed: 2026-08-05

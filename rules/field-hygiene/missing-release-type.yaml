@@ -15,7 +15,8 @@ condition:
 action:
   type: alert
   message: 'Feature {key} has no Release Type. Set to GA, Tech Preview, or
-    Dev Preview. Required for QG1 and determines signoff requirements.
+    Dev Preview. Required for Quality Gate 1 and determines signoff
+    requirements.
 
     '
   recipients:

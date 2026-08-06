@@ -24,9 +24,9 @@ condition:
   - field: component
 action:
   type: alert
-  message: 'Feature {key} is missing QG1 requirements with {days} days until
-    Planning Freeze ({milestone_date}). Missing: {missing_items}. Features
-    failing QG1 will be excluded from GA scope.
+  message: 'Feature {key} is missing Quality Gate 1 requirements with {days}
+    days until Planning Freeze ({milestone_date}). Missing: {missing_items}.
+    Features failing Quality Gate 1 will be excluded from GA scope.
 
     '
   recipients:

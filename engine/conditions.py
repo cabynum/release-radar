@@ -36,6 +36,7 @@ FIELD_ALIASES = {
     "blocked": "blocked",
     "blocked_reason": "blocked_reason",
     "release_blocker": "release_blocker",
+    "release_commit_exception": "release_commit_exception",
     "release_note": "release_note",
     "release_note_type": "release_note_type",
     "release_text": "release_text",
@@ -259,10 +260,34 @@ def _version_matches_release(issue_versions: list, release_versions: list) -> bo
     return bool(issue_set & set(release_versions))
 
 
+def _canonical_releases(
+    versions: list,
+    version_lookup: dict[str, str] | None,
+) -> set[str]:
+    """Map Jira version strings to release-train names via milestones aliases.
+
+    Unknown strings stay as-is so truly novel version values still compare.
+    Example: rhoai-3.5 and 3.5 GA RHOAI RELEASE both -> "3.5 GA".
+    """
+    result: set[str] = set()
+    for ver in versions:
+        if not ver:
+            continue
+        if version_lookup and ver in version_lookup:
+            result.add(version_lookup[ver])
+        else:
+            result.add(ver)
+    return result
+
+
 # --- Main condition evaluation ---
 
-def matches_condition(issue: dict, rule: dict,
-                      release_versions: list[str] | None = None) -> bool:
+def matches_condition(
+    issue: dict,
+    rule: dict,
+    release_versions: list[str] | None = None,
+    version_lookup: dict[str, str] | None = None,
+) -> bool:
     """Check if an issue matches a rule's condition block.
 
     All top-level condition keys are AND-ed together.
@@ -377,7 +402,12 @@ def matches_condition(issue: dict, rule: dict,
         fv_list = fv if isinstance(fv, list) else ([fv] if fv else [])
         if not tv_list or not fv_list:
             return False
-        if set(tv_list) == set(fv_list):
+        # Alias-aware: TV must cover every Fix Version train.
+        # Extra TV aliases (e.g. rhoai-3.5 alongside 3.5 GA) are fine.
+        # Fire only when FV points at a train TV does not include.
+        tv_trains = _canonical_releases(tv_list, version_lookup)
+        fv_trains = _canonical_releases(fv_list, version_lookup)
+        if fv_trains.issubset(tv_trains):
             return False
 
     if "component_matches" in condition:

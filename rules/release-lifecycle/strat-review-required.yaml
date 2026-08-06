@@ -1,7 +1,12 @@
 id: strat-review-required
 name: Strat-Review Approval Required Before Planning Freeze
-description: 'All features targeting the upcoming release must have passed
-  strat-review with approved status before Planning Freeze.
+status: suppressed
+enabled: false
+description: 'SUPPRESSED 2026-08-06. Cited SOURCE-102 for a
+  strat-review-approved label requirement. Live SOURCE-102 (Confluence,
+  checked 2026-08-06) does not mention strat-review or that label. Planning
+  guidance uses DoR/DoD language instead. Re-enable only after a real source
+  defines the label or signal.
 
   '
 applies_to:
@@ -28,5 +33,7 @@ verification: heuristic
 enforcement: alert
 sources:
 - id: SOURCE-102
-  excerpt: All features must have passed strat-review with approved status
+  excerpt: 'NOT IN LIVE PAGE: "passed strat-review with approved status" is
+    not present in current SOURCE-102. Invented label strat-review-approved.'
 date_added: 2026-07-28
+date_suppressed: 2026-08-06

@@ -14,7 +14,7 @@ condition:
 action:
   type: alert
   message: 'Feature {key} has no Product Manager. PM assignment is mandatory
-    (QG1 requirement).
+    (Quality Gate 1 requirement).
 
     '
   recipients:

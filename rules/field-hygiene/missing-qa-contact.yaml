@@ -1,6 +1,12 @@
 id: missing-qa-contact
 name: Missing QA Contact on Epic
-description: 'Active Epics should have a named QA owner for test coordination.
+status: suppressed
+enabled: false
+description: 'SUPPRESSED 2026-08-06. Cited SOURCE-12 excerpt claimed the
+  health score includes QA Contact population rate. Available SOURCE-12
+  extract (health-scoring.md) covers Color / Summary / Cadence only — no
+  QA Contact rate. Re-enable only when a real source mandates QA Contact on
+  active Epics.
 
   '
 applies_to:
@@ -23,5 +29,7 @@ verification: deterministic
 enforcement: flag
 sources:
 - id: SOURCE-12
-  excerpt: Health score formula includes QA Contact population rate
+  excerpt: 'MISATTRIBUTED: health score formula does not include QA Contact
+    population rate in available extract.'
 date_added: 2026-07-28
+date_suppressed: 2026-08-06

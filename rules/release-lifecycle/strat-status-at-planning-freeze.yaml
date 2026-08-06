@@ -1,9 +1,12 @@
 id: strat-status-at-planning-freeze
 name: STRAT Status Must Be At Least To Do by Planning Freeze
-description: 'By Planning Freeze, all Features with Fix Version for the upcoming
-  release must have workflow status of at least To Do or In Progress. Features
-  still in New, Backlog, or Refinement indicate work has not been adequately
-  scoped or started for committed scope.
+status: suppressed
+enabled: false
+description: 'SUPPRESSED 2026-08-06. Only cites unregistered SOURCE-SLACK
+  (kitam, 2026-07-29). Live SOURCE-102 has no such status bar. Condition
+  uses unknown operator status_in, so the engine always skipped this rule
+  anyway. Re-enable only after registering the Slack source and fixing the
+  condition to use a supported operator (e.g. status:).
 
   '
 applies_to:
@@ -35,6 +38,8 @@ verification: deterministic
 enforcement: alert
 sources:
 - id: SOURCE-SLACK
-  excerpt: STRAT status also has to be at least in To Do or In Progress (kitam,
-    Planning Freeze guidance, 2026-07-29)
+  excerpt: 'UNREGISTERED: STRAT status also has to be at least in To Do or In
+    Progress (kitam, Planning Freeze guidance, 2026-07-29). Not in live
+    SOURCE-102.'
 date_added: 2026-07-29
+date_suppressed: 2026-08-06

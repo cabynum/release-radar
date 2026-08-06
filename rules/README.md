@@ -17,7 +17,7 @@ we expect at each stage of the release cycle. Every rule here traces to a proces
 | `missing-component` | **Active issues need a Component.** Boards, filters, and dashboards slice work by domain. |
 | `missing-product-manager` | **Features need a PM.** No product voice means no one guiding scope or acceptance. |
 | `missing-contributors` | **Active features should list contributors.** Dependent teams need to know who's involved. |
-| `missing-qa-contact` | **Epics need a QA contact.** Test planning needs a named owner. |
+| `missing-qa-contact` | **Suppressed (2026-08-06).** SOURCE-12 cite for QA Contact population rate not in available extract. |
 | `blocked-without-reason` | **Blocked flag requires a reason.** A flag without context doesn't help anyone resolve it. |
 | `cross-team-dependency` | **Cross-team blockers in bad state need escalation.** Blocked by another team's issue that's in Backlog/New or unassigned. |
 
@@ -48,7 +48,7 @@ These rules surface both.
 | `stale-status-summary` | **Status Summary** should be updated at least every 7 days on active work. This is how stakeholders get signal without interrupting engineers. |
 | `stale-backlog-with-tv` | If **status** = **New/Backlog** for 60+ days but **Target Version** is set, that's a false commitment. Either activate the work or remove the version. |
 | `missing-color-status` | If **Target Version** is set on an active issue, **Color Status** (Red/Yellow/Green) should be set too. Takes 10 seconds and gives stakeholders visibility. |
-| `color-summary-mismatch` | **Color Status** and **Status Summary** should tell the same story. If color is Green but the summary says "blocked on dependency," reporting becomes unreliable. |
+| `color-summary-mismatch` | **Narrowed (2026-08-06).** Red + empty Status Summary only (SOURCE-12). Color-word prefix matching dropped. |
 | `status-sprint-mismatch` | If **status** is active (In Progress, Review, Testing) the issue should be in an active sprint. If it's not, either the status or the sprint association is wrong. |
 | `missing-story-points` | **Sprint issues need story points.** Velocity tracking and capacity planning depend on it. |
 | `missing-activity-type` | **Issues need an Activity Type.** Drives 40/40/20 allocation tracking. |
@@ -61,7 +61,7 @@ release managers to plan around them.
 | ID | Expectation |
 |---|---|
 | `missing-docs-required` | **Features must indicate whether docs are needed.** Docs team plans capacity from this field. |
-| `docs-required-no-link` | If **Docs Required** = **Yes**, there should be a linked documentation issue. This gives the docs team something to track and plan against. |
+| `docs-required-no-link` | **Suppressed (2026-08-05).** Continuous linked-doc-issue check was not backed by SOURCE-01. Feature Freeze draft handoff stays in `doc-draft-at-feature-freeze`. |
 | `missing-release-notes` | If **Docs Required** = **Yes**, the **Release Note** fields must be populated. Empty release notes delay the release. |
 | `missing-release-type` | **Features need a Release Type.** Dev Preview, Tech Preview, or GA determines support contract and doc scope. |
 | `missing-products` | **Features need the Products field.** Organizes cross-product impact and release notes. |
@@ -76,7 +76,7 @@ These rules ensure the links between levels actually exist.
 | `missing-epic-parent` | **Stories, Tasks, and Spikes must link to an Epic.** Orphaned items are invisible to feature tracking. |
 | `missing-strat-parent` | **Epics must link to a Feature or Initiative.** No link means no line of sight to strategy. |
 | `component-hierarchy-mismatch` | **Child Component should match parent.** A mismatch means something is miscategorized. |
-| `missing-issue-links` | **Features with dependencies should use Issue Links.** Makes relationships explicit and trackable. |
+| `missing-issue-links` | **Suppressed (2026-08-06).** SOURCE-04 is conditional (if dependent); rule fired on any empty links. |
 | `no-subtasks` | **Track work at Story/Task level, not subtasks.** Team convention. Subtasks don't surface in sprint boards. |
 
 ### ✅ Refinement & Sign-off
@@ -99,7 +99,7 @@ tooling. These rules check that those connections are in place.
 
 | ID | Expectation |
 |---|---|
-| `missing-git-pr` | **Issues in Review/Testing need the PR field populated.** Traces code changes back to work items. |
+| `missing-git-pr` | **Suppressed (2026-08-06).** Wrong field (Web Links vs Git Pull Request); invented mandatory presence. |
 | `missing-test-coverage` | **Issues should indicate test coverage status.** Feeds quality dashboards and release confidence. |
 
 ## Release Lifecycle
@@ -114,8 +114,8 @@ to the release requires a formal exception with a hard cap of 5 per release befo
 | `fix-version-at-planning-freeze` | If **Target Version** is set for the upcoming release, **Fix Version** must also be set by Planning Freeze. This is what converts a PM request into an engineering commitment. |
 | `qg1-completeness` | Features must pass Quality Gate 1: the `strat-creator-human-sign-off` and `rp-qg1-pass` labels, plus **PM**, **Assignee**, **Release Type**, **Target Version**, **Product**, and **Components** must all be populated. Features that fail are excluded from GA scope. |
 | `scope-exception-required` | Features added after Planning Freeze require a formal Release Scope Exception. Hard cap of 5 exceptions per release before requiring executive review. |
-| `strat-review-required` | Features must have **strat-review** approval before Planning Freeze, confirming leadership sign-off on scope. |
-| `strat-status-at-planning-freeze` | The associated STRAT issue must have **status** at least **To Do** or **In Progress** by Planning Freeze. It cannot still be sitting in **New**. |
+| `strat-review-required` | **Suppressed (2026-08-06).** Live SOURCE-102 does not define strat-review / `strat-review-approved`. |
+| `strat-status-at-planning-freeze` | **Suppressed (2026-08-06).** Unregistered SOURCE-SLACK only; unknown `status_in` op (never evaluated). |
 
 ### 🧊 Feature Freeze
 

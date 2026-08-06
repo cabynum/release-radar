@@ -1,8 +1,10 @@
 id: release-blocker-field-required
 name: Release Blocker Field Required for Post-Freeze Changes
-description: 'Any issue modified after Code Freeze with Fix Version matching
-  the current release must have the Release Blocker field set (Proposed or
-  Approved). Empty Release Blocker after freeze = process violation.
+description: 'Any issue still in active delivery status after Code Freeze,
+  with Fix Version matching the release and a post-freeze status change,
+  must have Release Blocker set (Proposed or Approved). Empty Release
+  Blocker after freeze = process violation. Does not apply once the issue
+  is Release Pending or Closed.
 
   '
 applies_to:
@@ -18,12 +20,16 @@ condition:
   field_set: fix_version
   fix_version_matches_release: true
   status_changed_after: code_freeze_date
+  status_not:
+  - Release Pending
+  - Closed
   field_empty: release_blocker
 action:
   type: alert
-  message: '{key} was modified after Code Freeze without Release Blocker field
-    set. Must be Proposed (awaiting review) or Approved (exception granted).
-    Populate Affected Version + Fix Version and add risk assessment.
+  message: 'Feature {key} was modified after Code Freeze without Release
+    Blocker field set. Must be Proposed (awaiting review) or Approved
+    (exception granted). Populate Affected Version + Fix Version and add
+    risk assessment.
 
     '
   recipients:

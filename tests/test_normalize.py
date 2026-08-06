@@ -88,6 +88,14 @@ class TestNormalizeRestIssue:
         assert result["rice_score"] == 150
         assert result["target_end"] == "2026-08-15"
 
+    def test_release_blocker_and_commit_exception(self):
+        result = normalize_rest_issue(_raw_issue(
+            customfield_10847={"value": "Proposed"},
+            customfield_10849={"value": "Approved"},
+        ))
+        assert result["release_blocker"] == "Proposed"
+        assert result["release_commit_exception"] == "Approved"
+
     def test_user_fields(self):
         result = normalize_rest_issue(_raw_issue())
         assert result["qa_contact"] == "QA Person"

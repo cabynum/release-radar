@@ -96,9 +96,17 @@ def build_violation(issue: dict, rule: dict,
         if "{mismatch_detail}" in message:
             summary = issue.get("status_summary") or ""
             if not summary:
-                message = message.replace("{mismatch_detail}", "is empty (needs immediate update)")
+                message = message.replace(
+                    "{mismatch_detail}",
+                    "is empty (needs immediate update)"
+                )
             else:
-                message = message.replace("{mismatch_detail}", f"text does not reference '{color_status}'")
+                message = message.replace(
+                    "{mismatch_detail}",
+                    f"should start with {color_status.upper()} per format "
+                    f"(COLOR as of DATE. Current state. Next step) — "
+                    f"summary is present but missing the color word"
+                )
 
         if release_ctx:
             ms_date = release_ctx.get("milestone_date", "")

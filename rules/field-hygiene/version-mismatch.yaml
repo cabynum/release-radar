@@ -1,8 +1,10 @@
 id: version-mismatch
 name: Inconsistent Target Version vs Fix Version
-description: 'When both Target Version and Fix Version are set on the same
-  issue, they should point to the same release. Different values indicate
-  a planning/commitment conflict that needs resolution.
+description: 'When both Target Version and Fix Version are set, every Fix
+  Version release train must also appear in Target Version. Extra Target
+  Version aliases for the same train (e.g. rhoai-3.5 alongside 3.5 GA) are
+  not a mismatch. Fire when engineering committed to a train Product did
+  not target.
 
   '
 applies_to:
@@ -13,7 +15,8 @@ condition:
 action:
   type: alert
   message: '{key} has Target Version = {target_version} but Fix Version =
-    {fix_version}. Align the two fields or document why they differ.
+    {fix_version}. Fix Version must be covered by Target Version (same
+    release train). Align the fields or document why they differ.
 
     '
   recipients:
@@ -28,3 +31,4 @@ sources:
 - id: SOURCE-21
   excerpt: Target Version = PM request, Fix Version = delivery commitment
 date_added: 2026-07-28
+date_updated: 2026-08-06

@@ -119,7 +119,7 @@ def run_pipeline(releases: list[str], rules_dir: Path, output_dir: Path,
         snapshot_data = {
             "fetched_at": now.isoformat(),
             "releases": releases,
-            "projects": PROJECTS,
+            "projects": projects,
             "jql": jql,
             "issues": issues,
         }

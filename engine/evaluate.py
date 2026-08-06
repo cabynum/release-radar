@@ -109,6 +109,10 @@ def evaluate(rules_dir: Path, issues: list[dict], verbose: bool = False,
         rule_violations = 0
         rule_checks = 0
 
+        if rule.get("enabled") is False:
+            rules_skipped[rule["id"]] = "suppressed"
+            continue
+
         skipped_reason = preflight_check(rule)
         if skipped_reason:
             rules_skipped[rule["id"]] = skipped_reason
@@ -120,7 +124,11 @@ def evaluate(rules_dir: Path, issues: list[dict], verbose: bool = False,
                 continue
             rule_checks += 1
             checks_performed += 1
-            if matches_condition(issue, rule):
+            if matches_condition(
+                issue,
+                rule,
+                version_lookup=(milestones or {}).get("version_lookup"),
+            ):
                 matched_link = find_matched_link(issue, rule)
                 violations.append(
                     build_violation(issue, rule, matched_link=matched_link)
@@ -141,6 +149,10 @@ def evaluate(rules_dir: Path, issues: list[dict], verbose: bool = False,
             rule_violations = 0
             rule_checks = 0
 
+            if rule.get("enabled") is False:
+                rules_skipped[rule["id"]] = "suppressed"
+                continue
+
             skipped_reason = preflight_check(rule)
             if skipped_reason:
                 rules_skipped[rule["id"]] = skipped_reason
@@ -160,7 +172,12 @@ def evaluate(rules_dir: Path, issues: list[dict], verbose: bool = False,
                         continue
                     rule_checks += 1
                     checks_performed += 1
-                    if matches_condition(issue, rule, release_versions=rel_versions):
+                    if matches_condition(
+                        issue,
+                        rule,
+                        release_versions=rel_versions,
+                        version_lookup=milestones.get("version_lookup"),
+                    ):
                         violations.append(
                             build_violation(issue, rule, release_ctx=rel_ctx)
                         )

@@ -1,7 +1,16 @@
 id: missing-issue-links
 name: Missing Issue Links on Feature
-description: 'Features that are blocked by, dependent on, or related to other
-  issues must use the Issue Links field to capture those relationships.
+status: suppressed
+enabled: false
+description: 'SUPPRESSED 2026-08-06. SOURCE-04 requires Issue Links when a
+  Feature is blocked by, dependent on, or related to another issue. The rule
+  fired on any empty Issue Links field (unconditional), inventing a "every
+  Feature must have links" mandate. Re-enable only with a condition that
+  detects an actual dependency signal. Message previously hedged ("If there
+  are…") but the condition did not.
+
+  Original intent: Features with dependencies should capture them in Issue
+  Links.
 
   '
 applies_to:
@@ -24,6 +33,8 @@ verification: heuristic
 enforcement: flag
 sources:
 - id: SOURCE-04
-  excerpt: Feature is blocked/dependent/related but Issue Links field not
-    populated
+  excerpt: 'WEAK / OVERREACH: SOURCE-04 requires Issue Links when
+    blocked/dependent/related. Unconditional empty-field check invented a
+    broader mandate.'
 date_added: 2026-07-28
+date_suppressed: 2026-08-06
