@@ -34,7 +34,13 @@ DEFAULT_PROJECTS = ["RHAISTRAT", "RHAIENG", "RHOAIENG"]
 
 def _build_jql(releases: list[str], projects: list[str],
                component: str, milestones: dict | None = None) -> str:
-    """Build JQL targeting issues for the given team and release cycles."""
+    """Build JQL targeting issues for the given team and release cycles.
+
+    Board scope is component-based (Data Processing + Spark Operator).
+    Version / In Progress covers Feature work. Open Blocker/Critical
+    issues are included even without a version so CVE bots cannot hide
+    in To Do without Fix Version.
+    """
     projects_str = ", ".join(projects)
 
     all_versions = set()
@@ -48,13 +54,18 @@ def _build_jql(releases: list[str], projects: list[str],
         sys.exit("No version names found. Check milestones.yaml and --releases.")
 
     versions = ", ".join(f'"{v}"' for v in sorted(all_versions))
+    # Spark Operator shares DP ownership on RHOAIENG boards.
+    components = ", ".join(
+        f'"{c}"' for c in sorted({component, "Kubeflow Spark Operator"})
+    )
 
     return (
         f"project in ({projects_str}) AND "
-        f"component = '{component}' AND ("
+        f"component in ({components}) AND ("
         f"fixVersion in ({versions}) OR "
         f'"Target Version" in ({versions}) OR '
-        f"statusCategory = 'In Progress'"
+        f"statusCategory = 'In Progress' OR "
+        f"(statusCategory != Done AND priority in (Blocker, Critical))"
         f") ORDER BY key ASC"
     )
 

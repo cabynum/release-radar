@@ -131,6 +131,19 @@ def fetch_issues(jql: str, fields: list[str],
     return all_issues
 
 
+def fetch_issues_by_keys(
+    keys: list[str],
+    fields: list[str],
+    *,
+    verbose: bool = False,
+) -> list[dict]:
+    """Fetch specific issues by key (for contribution parent Features)."""
+    if not keys:
+        return []
+    quoted = ", ".join(f'"{k}"' for k in keys)
+    return fetch_issues(f"key in ({quoted})", fields, verbose=verbose)
+
+
 def fetch_changelogs(issue_keys: list[str],
                      verbose: bool = False) -> dict[str, list]:
     """Fetch changelog for each issue.
