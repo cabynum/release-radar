@@ -7,6 +7,7 @@ import base64
 import json
 import os
 import sys
+import time
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -14,6 +15,18 @@ from pathlib import Path
 
 PROJECT_DIR = Path(__file__).resolve().parent.parent
 JIRA_BASE = "https://redhat.atlassian.net"
+
+# Transient network failures that should not abort a daily scan.
+_RETRY_EXCEPTIONS = (
+    urllib.error.URLError,
+    TimeoutError,
+    ConnectionResetError,
+    ConnectionAbortedError,
+    ConnectionRefusedError,
+    BrokenPipeError,
+)
+_MAX_ATTEMPTS = 4
+_RETRY_BASE_SLEEP = 1.5
 
 
 def load_env():
@@ -39,13 +52,35 @@ def _auth_header() -> str:
     return f"Basic {base64.b64encode(f'{email}:{token}'.encode()).decode()}"
 
 
+def _request_json(req: urllib.request.Request, *, timeout: int = 30) -> dict:
+    """GET/POST with retries on transient network errors."""
+    last_exc: BaseException | None = None
+    for attempt in range(1, _MAX_ATTEMPTS + 1):
+        try:
+            with urllib.request.urlopen(req, timeout=timeout) as resp:
+                return json.loads(resp.read())
+        except urllib.error.HTTPError:
+            raise
+        except _RETRY_EXCEPTIONS as exc:
+            last_exc = exc
+            if attempt >= _MAX_ATTEMPTS:
+                break
+            sleep_s = _RETRY_BASE_SLEEP * (2 ** (attempt - 1))
+            print(
+                f"  WARNING: Jira network error ({exc.__class__.__name__}); "
+                f"retry {attempt}/{_MAX_ATTEMPTS - 1} in {sleep_s:.1f}s"
+            )
+            time.sleep(sleep_s)
+    assert last_exc is not None
+    raise last_exc
+
+
 def jira_get(path: str) -> dict:
     url = f"{JIRA_BASE}{path}"
     req = urllib.request.Request(url, method="GET")
     req.add_header("Authorization", _auth_header())
     req.add_header("Accept", "application/json")
-    with urllib.request.urlopen(req, timeout=30) as resp:
-        return json.loads(resp.read())
+    return _request_json(req)
 
 
 def jira_post(path: str, body: dict) -> dict:
@@ -55,8 +90,7 @@ def jira_post(path: str, body: dict) -> dict:
     req.add_header("Authorization", _auth_header())
     req.add_header("Accept", "application/json")
     req.add_header("Content-Type", "application/json")
-    with urllib.request.urlopen(req, timeout=30) as resp:
-        return json.loads(resp.read())
+    return _request_json(req)
 
 
 def fetch_issues(jql: str, fields: list[str],
@@ -102,6 +136,8 @@ def fetch_changelogs(issue_keys: list[str],
     """Fetch changelog for each issue.
 
     Returns a dict mapping issue key -> list of changelog history entries.
+    Transient network errors are retried inside jira_get. Persistent
+    failures for a single issue skip that changelog and continue.
     """
     changelogs = {}
     total = len(issue_keys)
@@ -117,6 +153,12 @@ def fetch_changelogs(issue_keys: list[str],
             except urllib.error.HTTPError as e:
                 if verbose:
                     print(f"  WARNING: changelog fetch failed for {key}: {e.code}")
+                break
+            except _RETRY_EXCEPTIONS as e:
+                print(
+                    f"  WARNING: changelog fetch failed for {key} after "
+                    f"retries: {e.__class__.__name__}"
+                )
                 break
 
             values = data.get("values", [])
