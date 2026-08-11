@@ -20,6 +20,13 @@ def _raw_issue(**field_overrides) -> dict:
         "issuelinks": [],
         "parent": {"key": "RHAIENG-50"},
         "created": "2026-06-01T10:00:00.000+0000",
+        "customfield_10001": {
+            "id": "ec74d716-af36-4b3c-950f-f79213d08f71-183",
+            "name": "RHAI Data Processing",
+            "title": "RHAI Data Processing",
+            "isVisible": True,
+            "isShared": True,
+        },
         "customfield_10028": 5,
         "customfield_10020": [{"name": "Sprint 42", "state": "active"}],
         "customfield_10464": {"value": "New Feature"},
@@ -82,11 +89,53 @@ class TestNormalizeRestIssue:
 
     def test_custom_fields(self):
         result = normalize_rest_issue(_raw_issue())
+        assert result["team"] == "RHAI Data Processing"
         assert result["story_points"] == 5
         assert result["activity_type"] == "New Feature"
         assert result["color_status"] == "Green"
         assert result["rice_score"] == 150
         assert result["target_end"] == "2026-08-15"
+
+    def test_team_from_teams_plugin(self):
+        result = normalize_rest_issue(_raw_issue(
+            customfield_10001={
+                "id": "ec74d716-af36-4b3c-950f-f79213d08f71-183",
+                "name": "RHAI Data Processing",
+                "title": "RHAI Data Processing",
+            },
+        ))
+        assert result["team"] == "RHAI Data Processing"
+
+    def test_team_from_nested_value(self):
+        result = normalize_rest_issue(_raw_issue(
+            customfield_10001={
+                "value": {
+                    "id": "ec74d716-af36-4b3c-950f-f79213d08f71-183",
+                    "name": "RHAI Data Processing",
+                    "title": "RHAI Data Processing",
+                },
+            },
+        ))
+        assert result["team"] == "RHAI Data Processing"
+
+    def test_team_falls_back_to_title(self):
+        result = normalize_rest_issue(_raw_issue(
+            customfield_10001={
+                "id": "ec74d716-af36-4b3c-950f-f79213d08f71-183",
+                "title": "RHAI Data Processing",
+            },
+        ))
+        assert result["team"] == "RHAI Data Processing"
+
+    def test_team_empty(self):
+        result = normalize_rest_issue(_raw_issue(customfield_10001=None))
+        assert result["team"] is None
+
+    def test_team_uuid_only_treated_as_empty(self):
+        result = normalize_rest_issue(_raw_issue(
+            customfield_10001="ec74d716-af36-4b3c-950f-f79213d08f71-183",
+        ))
+        assert result["team"] is None
 
     def test_release_blocker_and_commit_exception(self):
         result = normalize_rest_issue(_raw_issue(

@@ -6,6 +6,7 @@ consumed by the evaluation engine.
 
 # Jira custom field ID -> snapshot field name
 CUSTOM_FIELDS = {
+    "customfield_10001": "team",
     "customfield_10028": "story_points",
     "customfield_10020": "sprint",
     "customfield_10464": "activity_type",
@@ -50,6 +51,32 @@ def _get_option_value(field_data):
     if isinstance(field_data, dict):
         return field_data.get("value")
     return field_data
+
+
+def _get_team_name(field_data) -> str | None:
+    """Extract team name from the Jira Teams plugin field (customfield_10001).
+
+    REST shape is typically::
+
+        {"id": "...", "name": "RHAI Data Processing", "title": "...", ...}
+
+    Some clients nest the same object under ``value``. A bare UUID string is
+    treated as unset for hygiene (cannot verify a human-readable team name).
+    """
+    if field_data is None:
+        return None
+    if isinstance(field_data, dict):
+        nested = field_data.get("value")
+        if isinstance(nested, dict):
+            field_data = nested
+        name = field_data.get("name") or field_data.get("title")
+        if isinstance(name, str) and name.strip():
+            return name.strip()
+        return None
+    if isinstance(field_data, str) and field_data.strip():
+        # UUID-only payloads are not useful for missing-team checks.
+        return None
+    return None
 
 
 def _get_user_display(field_data) -> str | None:
@@ -226,7 +253,7 @@ def normalize_rest_issue(raw: dict, histories: list | None = None) -> dict:
         "fix_versions": fix_versions,
         "target_version": target_version,
         "labels": labels,
-        "team": None,
+        "team": _get_team_name(f.get("customfield_10001")),
         "story_points": f.get("customfield_10028"),
         "activity_type": _get_option_value(f.get("customfield_10464")),
         "color_status": _get_option_value(f.get("customfield_10712")),
