@@ -74,8 +74,8 @@ class TestTriggerActive:
     def test_days_after_active(self):
         ms = _milestones()
         rule = _make_rule({"milestone": "code_freeze", "days_after": 0})
-        # 3.5 GA code_freeze is 2026-07-24; testing on 2026-07-28
-        ctx = trigger_active(rule, ms, date(2026, 7, 28))
+        # 3.5 GA code_freeze is 2026-07-31; testing on 2026-08-04
+        ctx = trigger_active(rule, ms, date(2026, 8, 4))
         assert ctx is not None
         releases = [r["release"] for r in ctx["active_releases"]]
         assert "3.5 GA" in releases
@@ -112,8 +112,8 @@ class TestTriggerActive:
     def test_on_milestone_day_days_after(self):
         ms = _milestones()
         rule = _make_rule({"milestone": "code_freeze", "days_after": 0})
-        # On the exact code_freeze day for 3.5 GA (2026-07-24)
-        ctx = trigger_active(rule, ms, date(2026, 7, 24))
+        # On the exact code_freeze day for 3.5 GA (2026-07-31)
+        ctx = trigger_active(rule, ms, date(2026, 7, 31))
         assert ctx is not None
         releases = [r["release"] for r in ctx["active_releases"]]
         assert "3.5 GA" in releases
@@ -129,7 +129,7 @@ class TestTriggerActive:
     def test_context_includes_versions(self):
         ms = _milestones()
         rule = _make_rule({"milestone": "code_freeze", "days_after": 0})
-        ctx = trigger_active(rule, ms, date(2026, 7, 28))
+        ctx = trigger_active(rule, ms, date(2026, 8, 4))
         match = next(r for r in ctx["active_releases"] if r["release"] == "3.5 GA")
         assert "3.5 GA RHOAI RELEASE" in match["versions"]
         assert "rhoai-3.5" in match["versions"]
