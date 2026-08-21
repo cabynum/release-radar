@@ -72,6 +72,7 @@ KNOWN_CONDITION_KEYS = {
     "no_linked_signoff_template",
     "no_doc_draft_linked",
     "no_signoff_complete",
+    "all_children_complete", "docs_resolved",
     "pr_merged_to_release_branch", "no_jira_key_in_pr",
 }
 
@@ -587,6 +588,14 @@ def matches_condition(
 
     if "no_signoff_complete" in condition and condition["no_signoff_complete"]:
         if not issue.get("_signoff_incomplete"):
+            return False
+
+    if "all_children_complete" in condition and condition["all_children_complete"]:
+        if not issue.get("_all_children_complete"):
+            return False
+
+    if "docs_resolved" in condition and condition["docs_resolved"]:
+        if not issue.get("_docs_resolved"):
             return False
 
     if "pr_merged_to_release_branch" in condition and condition["pr_merged_to_release_branch"]:

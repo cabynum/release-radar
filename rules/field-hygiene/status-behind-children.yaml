@@ -1,0 +1,26 @@
+id: status-behind-children
+name: Feature Status Behind Completed Children
+description: >
+  All child Epics and Stories are in a Done state but the parent
+  Feature has not advanced to Release Pending or Closed.
+applies_to:
+- Feature
+condition:
+  status:
+  - In Progress
+  - Review
+  all_children_complete: true
+action:
+  type: alert
+  message: >
+    {key} is in {status} but all child Epics/Stories are complete.
+    Advance to Release Pending or Closed.
+  recipients:
+  - assignee
+scope: org
+verification: heuristic
+enforcement: alert
+sources:
+- id: SOURCE-user
+  excerpt: Feature status should reflect child completion state
+date_added: 2026-08-21

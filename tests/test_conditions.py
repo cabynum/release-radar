@@ -982,3 +982,37 @@ class TestExternalEnrichmentFlags:
         issue["_pr_missing_jira_key"] = True
         rule = _make_rule({"no_jira_key_in_pr": True})
         assert matches_condition(issue, rule) is True
+
+    def test_all_children_complete_flag_true(self):
+        issue = _make_issue()
+        issue["_all_children_complete"] = True
+        rule = _make_rule({"all_children_complete": True})
+        assert matches_condition(issue, rule) is True
+
+    def test_all_children_complete_flag_false(self):
+        issue = _make_issue()
+        issue["_all_children_complete"] = False
+        rule = _make_rule({"all_children_complete": True})
+        assert matches_condition(issue, rule) is False
+
+    def test_all_children_complete_flag_missing(self):
+        issue = _make_issue()
+        rule = _make_rule({"all_children_complete": True})
+        assert matches_condition(issue, rule) is False
+
+    def test_docs_resolved_flag_true(self):
+        issue = _make_issue()
+        issue["_docs_resolved"] = True
+        rule = _make_rule({"docs_resolved": True})
+        assert matches_condition(issue, rule) is True
+
+    def test_docs_resolved_flag_false(self):
+        issue = _make_issue()
+        issue["_docs_resolved"] = False
+        rule = _make_rule({"docs_resolved": True})
+        assert matches_condition(issue, rule) is False
+
+    def test_docs_resolved_flag_missing(self):
+        issue = _make_issue()
+        rule = _make_rule({"docs_resolved": True})
+        assert matches_condition(issue, rule) is False

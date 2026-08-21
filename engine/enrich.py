@@ -12,6 +12,7 @@ import json
 import re
 import subprocess
 import urllib.error
+import urllib.parse
 import urllib.request
 
 from .jira_client import jira_get, load_env
@@ -113,6 +114,112 @@ def enrich_signoff_status(issues: list[dict], verbose: bool = False) -> bool:
         print(f"  Signoff status: {len(targets)} features with templates, "
               f"{incomplete}/{len(features)} incomplete")
     return True
+
+
+def enrich_child_completion(issues: list[dict], verbose: bool = False) -> bool:
+    """Check whether all child issues of a Feature are in a Done state.
+
+    For Features in (In Progress, Review, Release Pending), fetches direct
+    children (Epics) and their children (Stories/Tasks) via JQL. Sets:
+      _all_children_complete = True when every descendant has statusCategory "Done"
+      _docs_resolved = True when docs_required != "Yes" OR linked doc issue is Done
+
+    Features with no children are skipped (flags not set).
+    """
+    target_statuses = {"In Progress", "Review", "Release Pending"}
+    features = [
+        i for i in issues
+        if i.get("issue_type") == "Feature" and i.get("status") in target_statuses
+    ]
+
+    if not features:
+        return True
+
+    load_env()
+    checked = 0
+
+    for issue in features:
+        key = issue["key"]
+
+        try:
+            children = _fetch_all_children(key)
+        except (urllib.error.HTTPError, Exception):
+            continue
+
+        if not children:
+            continue
+
+        all_done = all(
+            child.get("status_category") == "Done" for child in children
+        )
+        issue["_all_children_complete"] = all_done
+        issue["_docs_resolved"] = _check_docs_resolved(issue)
+        checked += 1
+
+    if verbose:
+        closeable = sum(
+            1 for i in features
+            if i.get("_all_children_complete") and i.get("_docs_resolved")
+        )
+        print(f"  Child completion: {checked}/{len(features)} features checked, "
+              f"{closeable} likely closeable")
+    return True
+
+
+def _fetch_all_children(feature_key: str) -> list[dict]:
+    """Fetch two levels of children: Epics under Feature, then Stories under Epics.
+
+    Returns a flat list of dicts with {key, status_category} for every descendant.
+    """
+    children = []
+
+    level1 = _jql_search_status(f'parent = "{feature_key}"')
+    if not level1:
+        return []
+
+    children.extend(level1)
+
+    epic_keys = [c["key"] for c in level1]
+    if epic_keys:
+        quoted = ", ".join(f'"{k}"' for k in epic_keys)
+        level2 = _jql_search_status(f"parent in ({quoted})")
+        children.extend(level2)
+
+    return children
+
+
+def _jql_search_status(jql: str) -> list[dict]:
+    """Run a JQL search returning only key and statusCategory for each result."""
+    encoded = urllib.parse.quote(jql)
+    path = f"/rest/api/3/search?jql={encoded}&fields=status&maxResults=100"
+    data = jira_get(path)
+
+    results = []
+    for raw_issue in data.get("issues", []):
+        cat = (raw_issue.get("fields", {}).get("status", {})
+               .get("statusCategory", {}).get("name", ""))
+        results.append({"key": raw_issue["key"], "status_category": cat})
+    return results
+
+
+def _check_docs_resolved(issue: dict) -> bool:
+    """Check if documentation requirements are satisfied.
+
+    Returns True if docs_required is not "Yes", or if a linked doc issue
+    exists with statusCategory "Done".
+    """
+    docs_required = (issue.get("docs_required") or "").lower()
+    if docs_required != "yes":
+        return True
+
+    links = issue.get("issue_links", []) or []
+    for link in links:
+        verb_and_type = (link.get("verb", "") + " " + link.get("type", "")).lower()
+        if any(term in verb_and_type for term in ("document", "doc")):
+            if link.get("target_status_category") == "Done":
+                return True
+
+    return False
 
 
 def enrich_pr_data(issues: list[dict], milestone_dates: dict | None = None,
@@ -230,6 +337,7 @@ def run_enrichment(issues: list[dict], milestones: dict | None = None,
 
     results["doc_drafts"] = enrich_doc_drafts(issues, verbose)
     results["signoff_status"] = enrich_signoff_status(issues, verbose)
+    results["child_completion"] = enrich_child_completion(issues, verbose)
 
     milestone_dates = {}
     if milestones:
