@@ -1,6 +1,6 @@
 # release-radar milestone dates
 # Source: knowledge/jira/release-schedule.md (Product Pages)
-# Updated: 2026-08-14
+# Updated: 2026-08-24
 #
 # Version names must match Jira's "Fix Version" / "Target Version" values exactly.
 # Pattern: "{release} {type} RHOAI RELEASE" (e.g., "3.5 GA RHOAI RELEASE")
@@ -31,7 +31,7 @@ releases:
     versions: ["3.6 EA1 RHOAI RELEASE", "rhoai-3.6.EA1"]
     milestones:
       planning_freeze: "2026-07-29"
-      code_freeze: "2026-08-21"
+      code_freeze: "2026-08-31"
 
   "3.6 EA2":
     versions: ["3.6 EA2 RHOAI RELEASE", "rhoai-3.6.EA2"]

@@ -2,7 +2,10 @@ id: qg1-completeness
 name: Quality Gate 1 Completeness
 description: 'Features must pass QG1 by the PM Planning Checkpoint (typically
   7 days before Planning Freeze). Missing fields or labels means exclusion
-  from GA scope.
+  from GA scope. Per SOURCE-164, rp-qg1-pass already covers Target Version,
+  Release Type, Components, Docs Required, Priority, RICE, and human sign-off
+  as a bundle. Only PM and Assignee require independent verification beyond
+  the label.
 
   '
 applies_to:
@@ -14,14 +17,9 @@ condition:
   field_set: target_version
   target_version_matches_release: true
   any_missing:
-  - label: strat-creator-human-sign-off
   - label: rp-qg1-pass
   - field: product_manager
   - field: assignee
-  - field: release_type
-  - field: target_version
-  - field: products
-  - field: component
 action:
   type: alert
   message: 'Feature {key} is missing Quality Gate 1 requirements with {days}
@@ -43,4 +41,9 @@ sources:
     Features that miss will not progress into GA scope.
 - id: SOURCE-102
   excerpt: All features must have passed strat-review with approved status
+- id: SOURCE-164
+  excerpt: rp-qg1-pass covers Target Version, Release Type, Components, Docs
+    Required, Priority, RICE, and human sign-off as a bundle. PM and Assignee
+    are independently required.
 date_added: 2026-07-28
+date_updated: 2026-08-24
