@@ -1,9 +1,12 @@
 id: missing-products
 name: Missing Products Field on Feature
-description: 'Active Features must have the Products field set to indicate
-  the product line. Do not use Components for product-line identification.
+status: suppressed
+enabled: false
+description: 'SUPPRESSED 2026-09-17. Engine policy + practice: Products is PM/QG1 catalog metadata (SOURCE-144: Delivery & Feature Owners / PMs), not an engineering day-to-day field. Always-on hygiene nags Delivery Owners about a field DP Features never populate (0/20 in live snapshot). QG1 coverage stays via rp-qg1-pass / Planning Freeze, not perpetual Feature bullets.
 
-  '
+Original intent: Active Features must set Products (product-line indicator); do not use Components for product-line ID.
+
+'
 applies_to:
 - Feature
 condition:
@@ -28,3 +31,4 @@ sources:
 - id: SOURCE-06
   excerpt: Do not use Components for product-line identification
 date_added: 2026-07-28
+date_suppressed: 2026-09-17

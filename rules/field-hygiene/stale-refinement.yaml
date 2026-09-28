@@ -1,9 +1,12 @@
 id: stale-refinement
 name: Stale Refinement
-description: 'Issues should not linger in Refinement indefinitely. After 21
-  days, either advance to In Progress, return to Backlog, or escalate blockers.
+status: suppressed
+enabled: false
+description: 'SUPPRESSED 2026-09-17. Engine policy: only rules with a documented process consequence (release exclusion, freeze gate, exception process, or mandatory field for that issue type/status) stay active. This rule fails that bar. Re-enable only if a source elevates it to a hard requirement.
 
-  '
+Original intent: Flag items lingering in Refinement for 21+ days.
+
+'
 applies_to:
 - Story
 - Task
@@ -31,3 +34,4 @@ sources:
 - id: SOURCE-01
   excerpt: Issue has been in Refinement status for more than 21 days
 date_added: 2026-07-28
+date_suppressed: 2026-09-17

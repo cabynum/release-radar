@@ -1,11 +1,12 @@
 id: color-summary-mismatch
 name: Color Status / Status Summary Mismatch
-description: 'When Color Status is Red, Status Summary must not be empty
-  (SOURCE-12). Color-word prefix matching (summary must start with GREEN /
-  YELLOW / RED) was dropped 2026-08-06 as board convention, not
-  source-backed policy.
+status: suppressed
+enabled: false
+description: 'SUPPRESSED 2026-09-17. Engine policy: only rules with a documented process consequence (release exclusion, freeze gate, exception process, or mandatory field for that issue type/status) stay active. This rule fails that bar. Re-enable only if a source elevates it to a hard requirement.
 
-  '
+Original intent: Red Color Status must have a non-empty Status Summary.
+
+'
 applies_to:
 - Feature
 - Epic
@@ -28,3 +29,4 @@ sources:
   excerpt: Color Status is Red but Status Summary is empty
 date_added: 2026-07-28
 date_narrowed: 2026-08-06
+date_suppressed: 2026-09-17

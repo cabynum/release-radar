@@ -1,12 +1,36 @@
 # release-radar milestone dates
-# Source: knowledge/jira/release-schedule.md (Product Pages)
-# Updated: 2026-08-24
+# Source: Product Pages (Y-stream: rhai-3.x; Z-stream: rhai-Z-Stream)
+# Mirrored in knowledge/jira/release-schedule.md
+# Updated: 2026-09-28
 #
 # Version names must match Jira's "Fix Version" / "Target Version" values exactly.
-# Pattern: "{release} {type} RHOAI RELEASE" (e.g., "3.5 GA RHOAI RELEASE")
-# Some issues use legacy tag format (e.g., "rhoai-3.5")
+# Y-stream pattern: "{release} {type} RHOAI RELEASE" (e.g., "3.5 GA RHOAI RELEASE")
+# Z-stream pattern: "{x.y.z} GA RHOAI" (e.g., "3.5.1 GA RHOAI") — no RELEASE suffix
+# Some issues use legacy tag format (e.g., "rhoai-3.5", "rhoai-3.5.1")
 
 releases:
+  # Z-stream for supported 2.25 line (SOURCE-186 Oct 2 priority train).
+  # Dates from Product Pages rhai-Z-Stream.
+  "2.25.12":
+    versions: ["2.25.12 GA RHOAI", "rhoai-2.25.12"]
+    milestones:
+      code_freeze: "2026-10-02"
+      ga: "2026-10-14"
+
+  "2.25.13":
+    versions: ["2.25.13 GA RHOAI", "rhoai-2.25.13"]
+    milestones:
+      code_freeze: "2026-11-13"
+      ga: "2026-11-30"
+
+  # Z-stream for supported 3.4 line. Product Pages still marks CF/GA as
+  # draft, but Jira Target Version "3.4.5 GA RHOAI" is live (CVE retargets).
+  "3.4.5":
+    versions: ["3.4.5 GA RHOAI", "rhoai-3.4.5"]
+    milestones:
+      code_freeze: "2026-10-16"
+      ga: "2026-10-28"
+
   "3.5 GA":
     versions: ["3.5 GA RHOAI RELEASE", "rhoai-3.5"]
     milestones:
@@ -14,6 +38,19 @@ releases:
       feature_freeze: "2026-07-17"
       code_freeze: "2026-07-31"
       ga: "2026-08-26"
+
+  # Z-stream (patch); dates from Product Pages rhai-Z-Stream
+  "3.5.1":
+    versions: ["3.5.1 GA RHOAI", "rhoai-3.5.1"]
+    milestones:
+      code_freeze: "2026-09-04"
+      ga: "2026-09-17"
+
+  "3.5.2":
+    versions: ["3.5.2 GA RHOAI", "rhoai-3.5.2"]
+    milestones:
+      code_freeze: "2026-10-30"
+      ga: "2026-11-11"
 
   "3.5 EA1":
     versions: ["3.5 EA1 RHOAI RELEASE"]

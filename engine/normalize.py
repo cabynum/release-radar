@@ -33,8 +33,8 @@ CUSTOM_FIELDS = {
 
 JIRA_FIELDS = [
     "summary", "status", "issuetype", "assignee", "components",
-    "fixVersions", "labels", "issuelinks", "parent", "created",
-    "priority",
+    "fixVersions", "versions", "labels", "issuelinks", "parent", "created",
+    "priority", "duedate",
 ] + list(CUSTOM_FIELDS.keys())
 
 # Changelog field name mapping for staleness tracking
@@ -217,6 +217,9 @@ def normalize_rest_issue(raw: dict, histories: list | None = None) -> dict:
     priority = f.get("priority") or {}
 
     fix_versions = [v.get("name", "") for v in (f.get("fixVersions") or [])]
+    affected_versions = [v.get("name", "") for v in (f.get("versions") or [])]
+    due_raw = f.get("duedate")
+    due_date = str(due_raw)[:10] if due_raw else None
     tv_raw = f.get("customfield_10855") or []
     target_version = [v.get("name", "") for v in tv_raw] if isinstance(tv_raw, list) else []
 
@@ -251,6 +254,8 @@ def normalize_rest_issue(raw: dict, histories: list | None = None) -> dict:
         "assignee": assignee.get("displayName", "Unassigned") if assignee else "Unassigned",
         "components": components,
         "fix_versions": fix_versions,
+        "affected_versions": affected_versions,
+        "due_date": due_date,
         "target_version": target_version,
         "labels": labels,
         "team": _get_team_name(f.get("customfield_10001")),

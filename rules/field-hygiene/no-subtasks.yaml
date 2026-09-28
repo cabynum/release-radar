@@ -1,10 +1,12 @@
 id: no-subtasks
 name: No Subtask Usage
-description: 'Work is tracked at the story/task/spike level. Subtasks are
-  not visible in sprint tracking and break allocation calculations. Any subtask
-  in the snapshot is a violation.
+status: suppressed
+enabled: false
+description: 'SUPPRESSED 2026-09-17. Engine policy: only rules with a documented process consequence (release exclusion, freeze gate, exception process, or mandatory field for that issue type/status) stay active. This rule fails that bar. Re-enable only if a source elevates it to a hard requirement.
 
-  '
+Original intent: Team convention against Sub-tasks; track at Story/Task/Spike level.
+
+'
 applies_to:
 - Sub-task
 condition: {}
@@ -23,3 +25,4 @@ sources:
 - id: SOURCE-03
   excerpt: Do not use subtasks. Work is tracked at the story/task/spike level.
 date_added: 2026-07-28
+date_suppressed: 2026-09-17

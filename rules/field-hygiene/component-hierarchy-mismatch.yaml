@@ -1,9 +1,12 @@
 id: component-hierarchy-mismatch
 name: Component Mismatch Across Hierarchy
-description: 'A child issue''s Component should align with its parent''s Component.
-  Mismatches confuse ownership and routing.
+status: suppressed
+enabled: false
+description: 'SUPPRESSED 2026-09-17. Engine policy: only rules with a documented process consequence (release exclusion, freeze gate, exception process, or mandatory field for that issue type/status) stay active. This rule is advisory / team-scoped hygiene with no such consequence. Re-enable only if a source elevates it to a hard requirement.
 
-  '
+Original intent: Child Component should align with parent Component.
+
+'
 applies_to:
 - Epic
 - Story
@@ -27,3 +30,4 @@ sources:
 - id: SOURCE-12
   excerpt: Child issue Component differs from parent Component
 date_added: 2026-07-28
+date_suppressed: 2026-09-17

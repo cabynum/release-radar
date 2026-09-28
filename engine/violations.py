@@ -38,6 +38,10 @@ def build_violation(issue: dict, rule: dict,
     if message:
         message = message.strip().replace("{key}", issue["key"])
         message = message.replace("{status}", issue["status"])
+        message = message.replace(
+            "{release_type}",
+            str(issue.get("release_type") or ""),
+        )
 
         if "{days}" in message and not release_ctx:
             changelog = issue.get("changelog") or {}

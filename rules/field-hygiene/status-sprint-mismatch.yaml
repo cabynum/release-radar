@@ -1,9 +1,12 @@
 id: status-sprint-mismatch
 name: Status/Sprint Mismatch
-description: 'Issues in active status (In Progress, Review, Testing) must
-  be in an active sprint. Active work outside a sprint is invisible to planning.
+status: suppressed
+enabled: false
+description: 'SUPPRESSED 2026-09-17. Engine policy: only rules with a documented process consequence (release exclusion, freeze gate, exception process, or mandatory field for that issue type/status) stay active. This rule fails that bar. Re-enable only if a source elevates it to a hard requirement.
 
-  '
+Original intent: Active-status work should be in an active sprint.
+
+'
 applies_to:
 - Story
 - Task
@@ -30,3 +33,4 @@ sources:
 - id: SOURCE-12
   excerpt: Health scoring penalizes in-progress issues without sprint assignment
 date_added: 2026-07-28
+date_suppressed: 2026-09-17

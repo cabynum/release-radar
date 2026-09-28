@@ -1,9 +1,12 @@
 id: missing-target-end
 name: Missing Target End on Feature
-description: 'Features should have a Target End date (PM''s need-by date).
-  Useful for planning but not included in QG1 mandatory fields.
+status: suppressed
+enabled: false
+description: 'SUPPRESSED 2026-09-17. Engine policy: only rules with a documented process consequence (release exclusion, freeze gate, exception process, or mandatory field for that issue type/status) stay active. This rule is advisory / team-scoped hygiene with no such consequence. Re-enable only if a source elevates it to a hard requirement.
 
-  '
+Original intent: Target End as PM need-by date for timeline reporting.
+
+'
 applies_to:
 - Feature
 condition:
@@ -29,3 +32,4 @@ sources:
 - id: SOURCE-14
   excerpt: 'Target End: PM''s ''no later than'' delivery date'
 date_added: 2026-07-28
+date_suppressed: 2026-09-17

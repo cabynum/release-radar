@@ -1,10 +1,12 @@
 id: signoff-incomplete
 name: Incomplete Sign-Off on Feature
-description: 'Features with a cloned sign-off template (DP/TP/GA) must have
-  all subtask sign-offs completed before the feature can be considered release-ready.
-  Incomplete sign-offs indicate outstanding approvals.
+status: suppressed
+enabled: false
+description: 'SUPPRESSED 2026-09-17. SOURCE-149 (Feb 2026) asked Delivery Owners to manually clone DP/TP/GA signoff templates. ADLC/strat-creator does not attach these templates; DP Features with Release Type never have the links. Manual clone hygiene is outdated relative to the AI Feature pipeline. Re-enable only if a current org process re-mandates template cloning (or ADLC automates it).
 
-  '
+Original intent: All subtasks on the cloned signoff template must be Done before release-ready.
+
+'
 applies_to:
 - Feature
 condition:
@@ -29,3 +31,4 @@ sources:
   excerpt: Sign-off process requires cloning the template and completing all
     subtask approvals
 date_added: 2026-07-29
+date_suppressed: 2026-09-17

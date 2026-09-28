@@ -1,9 +1,12 @@
 id: missing-test-coverage
 name: Missing Test Coverage Field
-description: 'Work items should indicate test coverage status: Automated,
-  Manual, or No Coverage.
+status: suppressed
+enabled: false
+description: 'SUPPRESSED 2026-09-17. Engine policy: only rules with a documented process consequence (release exclusion, freeze gate, exception process, or mandatory field for that issue type/status) stay active. This rule is advisory / team-scoped hygiene with no such consequence. Re-enable only if a source elevates it to a hard requirement.
 
-  '
+Original intent: Test Coverage field for quality dashboards.
+
+'
 applies_to:
 - Story
 - Task
@@ -29,3 +32,4 @@ sources:
 - id: SOURCE-07
   excerpt: 'Test Coverage field: Automated, Manual, No Coverage'
 date_added: 2026-07-28
+date_suppressed: 2026-09-17

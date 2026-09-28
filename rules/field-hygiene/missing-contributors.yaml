@@ -1,9 +1,12 @@
 id: missing-contributors
 name: Missing Contributors on Feature
-description: 'Active features should have the Contributors field populated
-  with the people doing day-to-day work. Feeds cadence scoring and rollup.
+status: suppressed
+enabled: false
+description: 'SUPPRESSED 2026-09-17. Engine policy: only rules with a documented process consequence (release exclusion, freeze gate, exception process, or mandatory field for that issue type/status) stay active. This rule is advisory / team-scoped hygiene with no such consequence. Re-enable only if a source elevates it to a hard requirement.
 
-  '
+Original intent: Contributors feeds cadence scoring for multi-owner Features.
+
+'
 applies_to:
 - Feature
 condition:
@@ -26,3 +29,4 @@ sources:
 - id: SOURCE-12
   excerpt: Multi-user; feeds cadence scoring
 date_added: 2026-07-28
+date_suppressed: 2026-09-17

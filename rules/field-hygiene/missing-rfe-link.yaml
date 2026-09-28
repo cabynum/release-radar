@@ -1,10 +1,12 @@
 id: missing-rfe-link
 name: Missing RFE Link on Feature
-description: 'Features should be linked via a "clones" link to an approved
-  RHAIRFE issue. Features without RFE provenance lack the RFE Council vetting
-  that establishes priority and team assignment.
+status: suppressed
+enabled: false
+description: 'SUPPRESSED 2026-09-17. Engine policy: only rules with a documented process consequence (release exclusion, freeze gate, exception process, or mandatory field for that issue type/status) stay active. This rule is advisory / team-scoped hygiene with no such consequence. Re-enable only if a source elevates it to a hard requirement.
 
-  '
+Original intent: Features should link to an approved RHAIRFE for intake provenance.
+
+'
 applies_to:
 - Feature
 condition:
@@ -29,3 +31,4 @@ sources:
   excerpt: Feature is in active status and is not linked via 'clones' link
     to an approved RHAIRFE issue
 date_added: 2026-07-28
+date_suppressed: 2026-09-17

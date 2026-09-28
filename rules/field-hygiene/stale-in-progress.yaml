@@ -1,9 +1,12 @@
 id: stale-in-progress
 name: Stale In Progress
-description: 'Issues in In Progress for more than 21 days without any update
-  (status change, comment, or field modification) are likely stalled.
+status: suppressed
+enabled: false
+description: 'SUPPRESSED 2026-09-17. Engine policy: only rules with a documented process consequence (release exclusion, freeze gate, exception process, or mandatory field for that issue type/status) stay active. This rule fails that bar. Re-enable only if a source elevates it to a hard requirement.
 
-  '
+Original intent: Flag In Progress items with no updates for 21+ days.
+
+'
 applies_to:
 - Story
 - Task
@@ -33,3 +36,4 @@ sources:
 - id: SOURCE-12
   excerpt: Cadence scoring penalizes issues without recent updates
 date_added: 2026-07-28
+date_suppressed: 2026-09-17

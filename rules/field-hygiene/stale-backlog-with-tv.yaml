@@ -1,10 +1,12 @@
 id: stale-backlog-with-tv
 name: Stale Backlog with Target Version
-description: 'Features in New or Backlog for 60+ days with Target Version
-  set are likely stale commitments. Either start refinement, remove the Target
-  Version, or push to a later release.
+status: suppressed
+enabled: false
+description: 'SUPPRESSED 2026-09-17. Engine policy: only rules with a documented process consequence (release exclusion, freeze gate, exception process, or mandatory field for that issue type/status) stay active. This rule is advisory / team-scoped hygiene with no such consequence. Re-enable only if a source elevates it to a hard requirement.
 
-  '
+Original intent: Stale New/Backlog Features with Target Version are false commitments.
+
+'
 applies_to:
 - Feature
 condition:
@@ -31,3 +33,4 @@ sources:
   excerpt: Feature in New/Backlog for more than 60 days with Target Version
     set
 date_added: 2026-07-28
+date_suppressed: 2026-09-17

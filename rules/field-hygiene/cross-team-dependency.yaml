@@ -1,10 +1,12 @@
 id: cross-team-dependency
 name: Cross-Team Dependency in Bad State
-description: 'When your issue is blocked by another team''s issue, and that
-  blocker is in Backlog, New, or has no assignee, your work is at risk. Surface
-  these early.
+status: suppressed
+enabled: false
+description: 'SUPPRESSED 2026-09-17. Engine policy: only rules with a documented process consequence (release exclusion, freeze gate, exception process, or mandatory field for that issue type/status) stay active. This rule fails that bar. Re-enable only if a source elevates it to a hard requirement.
 
-  '
+Original intent: Surface blockers owned by other teams that are New/Backlog/unassigned.
+
+'
 applies_to:
 - Feature
 - Epic
@@ -37,3 +39,4 @@ sources:
 - id: SOURCE-12
   excerpt: Cross-field validations include dependency state checks
 date_added: 2026-07-28
+date_suppressed: 2026-09-17

@@ -16,10 +16,10 @@ we expect at each stage of the release cycle. Every rule here traces to a proces
 | `missing-team` | **Every non-Done issue needs a Team.** Org-level reporting and filtering depend on it. |
 | `missing-component` | **Active issues need a Component.** Boards, filters, and dashboards slice work by domain. |
 | `missing-product-manager` | **Features need a PM.** No product voice means no one guiding scope or acceptance. |
-| `missing-contributors` | **Active features should list contributors.** Dependent teams need to know who's involved. |
+| `missing-contributors` | **Suppressed (2026-09-17).** Advisory cadence-scoring field; no process consequence. |
 | `missing-qa-contact` | **Suppressed (2026-08-06).** SOURCE-12 cite for QA Contact population rate not in available extract. |
 | `blocked-without-reason` | **Blocked flag requires a reason.** A flag without context doesn't help anyone resolve it. |
-| `cross-team-dependency` | **Cross-team blockers in bad state need escalation.** Blocked by another team's issue that's in Backlog/New or unassigned. |
+| `cross-team-dependency` | **Suppressed (2026-09-17).** Risk signal, not a field mandate. |
 
 ### 🎯 Planning & Release Commitment
 
@@ -32,9 +32,9 @@ we expect at each stage of the release cycle. Every rule here traces to a proces
 | `missing-fix-version` | **Fix Version** must be set when work begins, not after it ships. If **status** is In Progress or beyond, this field should already be populated. |
 | `fix-version-without-target` | If **Fix Version** is set but **Target Version** is not, engineering has committed to delivery without PM planning approval. |
 | `labels-as-commitment` | **Labels** should not be used as a substitute for **Fix Version**. Delivery commitments belong in **Fix Version**. |
-| `premature-target-version` | If **status** = **New**, **Target Version** should not be set yet. No scoping or refinement has happened. |
+| `premature-target-version` | **Suppressed (2026-09-17).** Process taste; TV-in-New is not exclusionary. |
 | `version-mismatch` | **Target Version** and **Fix Version** should point to the same release. A mismatch means PM and engineering disagree on timing. |
-| `missing-target-end` | **Features need a Target End date.** Drives timeline reporting and surfaces schedule risk. |
+| `missing-target-end` | **Suppressed (2026-09-17).** Timeline convenience; not a freeze gate or QG1 field. |
 
 ### ⏱️ Progress & Maintenance
 
@@ -43,13 +43,13 @@ These rules surface both.
 
 | ID | Expectation |
 |---|---|
-| `stale-in-progress` | If **status** = **In Progress** for 21+ days with no update (status change, comment, or field edit), the issue is likely stalled. Update it or move it. |
-| `stale-refinement` | If **status** = **Refinement** for an extended period with no progress, the issue needs to move forward or be removed from scope. |
+| `stale-in-progress` | **Suppressed (2026-09-17).** Staleness heuristic; no process consequence. |
+| `stale-refinement` | **Suppressed (2026-09-17).** Staleness heuristic; no process consequence. |
 | `stale-status-summary` | **Status Summary** should be updated at least every 7 days on active work. This is how stakeholders get signal without interrupting engineers. |
-| `stale-backlog-with-tv` | If **status** = **New/Backlog** for 60+ days but **Target Version** is set, that's a false commitment. Either activate the work or remove the version. |
+| `stale-backlog-with-tv` | **Suppressed (2026-09-17).** SOURCE-12 health heuristic; no process consequence. |
 | `missing-color-status` | If **Target Version** is set on an active issue, **Color Status** (Red/Yellow/Green) should be set too. Takes 10 seconds and gives stakeholders visibility. |
-| `color-summary-mismatch` | **Narrowed (2026-08-06).** Red + empty Status Summary only (SOURCE-12). Color-word prefix matching dropped. |
-| `status-sprint-mismatch` | If **status** is active (In Progress, Review, Testing) the issue should be in an active sprint. If it's not, either the status or the sprint association is wrong. |
+| `color-summary-mismatch` | **Suppressed (2026-09-17).** Leadership readability; not exclusionary. |
+| `status-sprint-mismatch` | **Suppressed (2026-09-17).** Health scoring; not a release requirement. |
 | `missing-story-points` | **Sprint issues need story points.** Velocity tracking and capacity planning depend on it. |
 | `missing-activity-type` | **Issues need an Activity Type.** Drives 40/40/20 allocation tracking. |
 
@@ -64,7 +64,7 @@ release managers to plan around them.
 | `docs-required-no-link` | **Suppressed (2026-08-05).** Continuous linked-doc-issue check was not backed by SOURCE-01. Feature Freeze draft handoff stays in `doc-draft-at-feature-freeze`. |
 | `missing-release-notes` | If **Docs Required** = **Yes**, the **Release Note** fields must be populated. Empty release notes delay the release. |
 | `missing-release-type` | **Features need a Release Type.** Dev Preview, Tech Preview, or GA determines support contract and doc scope. |
-| `missing-products` | **Features need the Products field.** Organizes cross-product impact and release notes. |
+| `missing-products` | **Suppressed (2026-09-17).** PM/QG1 catalog field; not eng day-to-day. |
 
 ### 🔗 Structure & Hierarchy
 
@@ -75,9 +75,9 @@ These rules ensure the links between levels actually exist.
 |---|---|
 | `missing-epic-parent` | **Stories, Tasks, and Spikes must link to an Epic.** Orphaned items are invisible to feature tracking. |
 | `missing-strat-parent` | **Epics must link to a Feature or Initiative.** No link means no line of sight to strategy. |
-| `component-hierarchy-mismatch` | **Child Component should match parent.** A mismatch means something is miscategorized. |
+| `component-hierarchy-mismatch` | **Suppressed (2026-09-17).** Miscategorization flag; no process consequence. |
 | `missing-issue-links` | **Suppressed (2026-08-06).** SOURCE-04 is conditional (if dependent); rule fired on any empty links. |
-| `no-subtasks` | **Track work at Story/Task level, not subtasks.** Team convention. Subtasks don't surface in sprint boards. |
+| `no-subtasks` | **Suppressed (2026-09-17).** Team convention, not an org process gate. |
 
 ### ✅ Refinement & Sign-off
 
@@ -86,11 +86,11 @@ These rules check that the process is complete and traceable.
 
 | ID | Expectation |
 |---|---|
-| `missing-rice-score` | **Features past Refinement need a RICE score.** Objective prioritization requires it. |
-| `missing-rfe-link` | **Features should link to an approved RFE.** Connects delivery work to the intake process that justified it. |
+| `missing-rice-score` | **Suppressed (2026-09-17).** Prioritization aid; not independently mandatory for release. |
+| `missing-rfe-link` | **Suppressed (2026-09-17).** Intake hygiene; not a release gate. |
 | `missing-strat-creator-signoff` | **Features need `strat-creator-human-sign-off`.** Confirms a human reviewed AI-generated strategy content. |
-| `missing-signoff-template` | **Features need a sign-off template.** The DP/TP/GA checklist of pre-delivery requirements. |
-| `signoff-incomplete` | **All sign-off subtasks must be Done.** The checklist isn't optional. |
+| `missing-signoff-template` | **Suppressed (2026-09-17).** Manual template clone from SOURCE-149; not ADLC-automated. |
+| `signoff-incomplete` | **Suppressed (2026-09-17).** Paired with missing-signoff-template; same SOURCE-149 process. |
 
 ### 🔌 Cross-System Integrity
 
@@ -100,7 +100,7 @@ tooling. These rules check that those connections are in place.
 | ID | Expectation |
 |---|---|
 | `missing-git-pr` | **Suppressed (2026-08-06).** Wrong field (Web Links vs Git Pull Request); invented mandatory presence. |
-| `missing-test-coverage` | **Issues should indicate test coverage status.** Feeds quality dashboards and release confidence. |
+| `missing-test-coverage` | **Suppressed (2026-09-17).** Dashboard feed; not a hard requirement. |
 
 ## Release Lifecycle
 

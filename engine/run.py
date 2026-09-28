@@ -27,9 +27,11 @@ from .milestones import load_milestones
 from .evaluate import evaluate
 from .enrich import run_enrichment
 
-DEFAULT_RELEASES = ["3.5", "3.6"]
+DEFAULT_RELEASES = ["2.25", "3.4", "3.5", "3.6"]
 DEFAULT_COMPONENT = "Data Processing"
-DEFAULT_PROJECTS = ["RHAISTRAT", "RHAIENG", "RHOAIENG"]
+# RHAI is the destination / primary Red Hat AI engineering project
+# (SOURCE-175 CVE routing; broader migration from RHOAIENG/RHAIENG expected).
+DEFAULT_PROJECTS = ["RHAI", "RHAISTRAT", "RHAIENG", "RHOAIENG"]
 
 
 def _build_jql(releases: list[str], projects: list[str],

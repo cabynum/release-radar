@@ -1,10 +1,12 @@
 id: missing-signoff-template
 name: Feature Signoff Template Missing
-description: 'Delivery Owners must include the appropriate Jira signoff template
-  (DP/TP/GA) immediately when creating a feature. PM and UX sign-off is required
-  before code freeze.
+status: suppressed
+enabled: false
+description: 'SUPPRESSED 2026-09-17. SOURCE-149 (Feb 2026) asked Delivery Owners to manually clone DP/TP/GA signoff templates. ADLC/strat-creator does not attach these templates; DP Features with Release Type never have the links. Manual clone hygiene is outdated relative to the AI Feature pipeline. Re-enable only if a current org process re-mandates template cloning (or ADLC automates it).
 
-  '
+Original intent: Delivery Owners clone DP/TP/GA signoff templates (SOURCE-149) when creating Features.
+
+'
 applies_to:
 - Feature
 condition:
@@ -30,3 +32,4 @@ sources:
   excerpt: Delivery Owners must include the appropriate Jira template immediately
     when creating the feature
 date_added: 2026-07-28
+date_suppressed: 2026-09-17

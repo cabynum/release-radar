@@ -1,10 +1,12 @@
 id: missing-rice-score
 name: Missing RICE Score on Feature
-description: 'Features in Refinement or beyond should have complete RICE scoring
-  (Reach, Impact, Confidence, Effort). Grandfathering: features on releases
-  <= rhoai-3.3 or rhoai-3.4-ea1 are exempt.
+status: suppressed
+enabled: false
+description: 'SUPPRESSED 2026-09-17. Engine policy: only rules with a documented process consequence (release exclusion, freeze gate, exception process, or mandatory field for that issue type/status) stay active. This rule is advisory / team-scoped hygiene with no such consequence. Re-enable only if a source elevates it to a hard requirement.
 
-  '
+Original intent: RICE scoring for prioritization past Refinement.
+
+'
 applies_to:
 - Feature
 condition:
@@ -30,3 +32,4 @@ sources:
 - id: SOURCE-01
   excerpt: Feature in Refinement with incomplete RICE score
 date_added: 2026-07-28
+date_suppressed: 2026-09-17

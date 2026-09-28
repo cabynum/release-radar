@@ -59,11 +59,11 @@ cp .env.example .env
 # Edit .env with your Jira email and API token
 
 # Run against live Jira (defaults to Data Processing team)
-python3 -m engine.run --releases 3.5,3.6
+python3 -m engine.run --releases 2.25,3.4,3.5,3.6
 
 # Target a different team
 python3 -m engine.run --releases 3.5,3.6 --component "Model Serving"
-python3 -m engine.run --releases 3.5,3.6 --projects RHAISTRAT,RHOAIENG
+python3 -m engine.run --releases 3.5,3.6 --projects RHAI,RHAISTRAT,RHOAIENG
 
 # Run against a saved snapshot (no network needed)
 python3 -m engine.run --snapshot output/snapshot.json
@@ -77,8 +77,8 @@ Jira projects:
 | Flag | Default | Description |
 |---|---|---|
 | `--component` | `Data Processing` | Jira component to filter on |
-| `--projects` | `RHAISTRAT,RHAIENG,RHOAIENG` | Comma-separated Jira project keys |
-| `--releases` | `3.5,3.6` | Comma-separated release versions |
+| `--projects` | `RHAI,RHAISTRAT,RHAIENG,RHOAIENG` | Comma-separated Jira project keys (`RHAI` is the destination / primary engineering project) |
+| `--releases` | `2.25,3.4,3.5,3.6` | Comma-separated release versions |
 
 Override any flag to target your team's issues. The rules themselves are
 org-wide RHOAI policy and apply to all teams.

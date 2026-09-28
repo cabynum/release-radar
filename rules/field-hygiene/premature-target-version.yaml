@@ -1,10 +1,12 @@
 id: premature-target-version
 name: Premature Release Target
-description: 'Issues in New status with Target Version already set suggest
-  premature release assignment before refinement confirms scope. Initiatives
-  are exempt (visibility is acceptable).
+status: suppressed
+enabled: false
+description: 'SUPPRESSED 2026-09-17. Engine policy: only rules with a documented process consequence (release exclusion, freeze gate, exception process, or mandatory field for that issue type/status) stay active. This rule is advisory / team-scoped hygiene with no such consequence. Re-enable only if a source elevates it to a hard requirement.
 
-  '
+Original intent: Target Version should wait until refinement confirms scope.
+
+'
 applies_to:
 - Feature
 - Epic
@@ -34,3 +36,4 @@ sources:
 - id: SOURCE-02
   excerpt: Initiatives with TV in New is acceptable for visibility
 date_added: 2026-07-28
+date_suppressed: 2026-09-17
